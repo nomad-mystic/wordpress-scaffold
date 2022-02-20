@@ -3,14 +3,15 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackNotifier = require('webpack-notifier');
 const babelConfig = require('./babel.config.json');
 const TerserPlugin = require('terser-webpack-plugin');
+const themeName = 'THEME_VALUE';
 
 module.exports = () => {
     let config = {
         mode: process.env.NODE_ENV,
         entry: {
             main: [
-                path.resolve(__dirname, `source/js/main.js`),
-                path.resolve(__dirname, `source/sass/main.scss`),
+                path.resolve(__dirname, `wp-content/themes/${themeName}/src/js/main.js`),
+                path.resolve(__dirname, `wp-content/themes/${themeName}/src/sass/main.scss`),
             ],
         },
         optimization: {

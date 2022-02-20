@@ -9,8 +9,8 @@ module.exports = () => {
         mode: process.env.NODE_ENV,
         entry: {
             main: [
-                path.resolve(__dirname, `source/js/main.js`),
-                path.resolve(__dirname, `source/sass/main.scss`),
+                path.resolve(__dirname, `src/js/main.js`),
+                path.resolve(__dirname, `src/sass/main.scss`),
             ],
         },
         optimization: {

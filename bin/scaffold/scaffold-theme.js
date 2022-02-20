@@ -45,7 +45,7 @@ const scaffoldTheme = (answers) => {
     console.log(themeName);
     console.log(themeDescription);
     console.log(addWebpack);
-    console.log(safeThemeName)
+    console.log(safeThemeName);
 
     console.log(capAndSnakeCaseTheme);
 
@@ -74,7 +74,7 @@ const scaffoldTheme = (answers) => {
             newThemePath,
             'functions.php',
             {
-                stringToUpdate: 'KEITH_THEME_VALUE',
+                stringToUpdate: 'THEME_VALUE',
                 updateString: safeThemeName,
             }
         );

@@ -1,3 +1,6 @@
+### IDE
+.idea
+
 ### WordPress template
 # ignore these plugins
 wp-content/plugins/hello.php

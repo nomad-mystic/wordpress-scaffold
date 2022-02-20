@@ -1,4 +1,4 @@
 <?php
 
-const THEME_NAME_DOMAIN = 'THEME_NAME_VALUE';
+const THEME_NAME_DOMAIN = 'THEME_VALUE';
 
