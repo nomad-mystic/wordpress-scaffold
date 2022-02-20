@@ -61,6 +61,12 @@ const scaffoldTheme = (answers) => {
         // Copy our files over to the themes folder
         fse.copySync(`${path.join(__dirname + '../../../scaffolding/theme')}`, newThemePath, {overwrite: false});
 
+        // Sometimes users might not want to have a build system
+        if (addWebpack) {
+            // Copy our files over to the themes folder
+            fse.copySync(`${path.join(__dirname + '../../../scaffolding/theme-root/theme-extra-folders')}`, newThemePath, {overwrite: false});
+        }
+
         updateScaffoldFile(
             newThemePath,
             'functions.php',
