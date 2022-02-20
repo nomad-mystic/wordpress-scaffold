@@ -1,8 +1,13 @@
+// Community Modules
+require('dotenv').config();
 const fs = require('fs-extra');
 const path = require('path');
 const fuzzy = require('fuzzy');
 const {readdirSync} = require('fs');
 const { random } = require('lodash');
+
+// Enable debug mode?
+const isDebugMode = !!process.env?.DEBUG;
 
 /**
  * @description Gets the current path
@@ -11,7 +16,15 @@ const { random } = require('lodash');
  */
 const whereAmI = function() {
 
-    return path.resolve(process.cwd());
+    if (isDebugMode) {
+
+        return path.resolve(process.env.WORDPRESS_PATH);
+
+    } else {
+
+        return path.resolve(process.cwd());
+
+    }
 
 };
 

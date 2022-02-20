@@ -1,17 +1,44 @@
 #! /usr/bin/env node
 
+// Community modules
+require('dotenv').config();
 const inquirer = require('inquirer');
+const colors = require('colors');
 
 // Package modules
 const themeOptions = require('./config/theme-options');
 const scaffoldTheme = require('./scaffold/scaffold-theme');
+
+const {
+    whereAmI,
+    isWordpressInstall,
+    getThemesFolderPath,
+} = require('./utils/path-utils');
+
+console.log(whereAmI());
+console.log(isWordpressInstall());
+console.log(getThemesFolderPath());
+
+// Enable debug mode?
+const isDebugMode = !!process.env?.DEBUG;
+
+// Let the user know they need to be in the root of the project
+if (!isWordpressInstall() && !isDebugMode) {
+
+    console.log(colors.yellow('Your path is not at the root of your Drupal install.'))
+    console.log(colors.yellow(`You are located at ${whereAmI()}`));
+    console.log(colors.yellow('Please move to the root Drupal install folder.'));
+
+    process.exit();
+}
+
 
 // Starting point for scaffolding a theme
 inquirer
     .prompt(themeOptions)
     .then((answers) => {
         // Absolute path of the custom folder
-        // const customPath = getModulesFolderPath();
+        const themesPath = getThemesFolderPath();
 
         // Build the module
         scaffoldTheme(answers);
