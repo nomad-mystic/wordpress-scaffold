@@ -4,7 +4,12 @@
   "description": "This project is created to speed up WordPress development",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev:root": "node ./bin/scaffold-root.js",
+    "dev:theme": "node ./bin/scaffold-theme.js"
+  },
+  "bin": {
+    "ws-scaffold-root": "./bin/scaffold-root.js",
+    "ws-scaffold-theme": "./bin/scaffold-theme.js"
   },
   "repository": {
     "type": "git",
@@ -12,7 +17,8 @@
   },
   "keywords": [
     "WordPress",
-    "Scaffold"
+    "Scaffold",
+    "CLI"
   ],
   "author": "nomadmystics@gmail.com",
   "license": "ISC",
