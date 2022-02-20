@@ -5,11 +5,15 @@
   "main": "index.js",
   "scripts": {
     "dev:plugin": "node ./bin/scaffold-plugin.js",
-    "dev:theme": "node ./bin/scaffold-theme.js"
+    "dev:plugin:add": "node ./bin/scaffold-plugin-add.js",
+    "dev:theme": "node ./bin/scaffold-theme.js",
+    "dev:theme:add": "node ./bin/scaffold-theme-add.js"
   },
   "bin": {
     "ws-scaffold-plugin": "./bin/scaffold-plugin.js",
-    "ws-scaffold-theme": "./bin/scaffold-theme.js"
+    "ws-scaffold-theme": "./bin/scaffold-theme.js",
+    "ws-scaffold-plugin-add": "./bin/scaffold-plugin-add.js",
+    "ws-scaffold-theme-add": "./bin/scaffold-theme-add.js"
   },
   "repository": {
     "type": "git",

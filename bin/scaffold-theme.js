@@ -7,7 +7,7 @@ const colors = require('colors');
 
 // Package modules
 const themeOptions = require('./config/theme-options');
-const scaffoldTheme = require('./scaffold/scaffold-theme');
+const scaffoldTheme = require('./scaffold/theme/scaffold-theme');
 
 const {
     whereAmI,

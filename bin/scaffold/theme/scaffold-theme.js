@@ -9,17 +9,17 @@ const {
     whereAmI,
     isWordpressInstall,
     getThemesFolderPath,
-} = require('../utils/path-utils');
+} = require('../../utils/path-utils');
 
 const {
     addDashesToString,
     capAndSnakeCaseString,
     pascalCaseString,
-} = require('../utils/string-utils');
+} = require('../../utils/string-utils');
 
 const {
     updateScaffoldFile,
-} = require('../utils/update-scaffold-file');
+} = require('../../utils/update-scaffold-file');
 
 /**
  * @description Based on user input scaffold our theme
@@ -60,11 +60,11 @@ const scaffoldTheme = (answers) => {
         }
 
         // Copy our files over to the themes folder
-        fse.copySync(`${path.join(__dirname + '../../../scaffolding/theme')}`, newThemePath, {overwrite: false});
+        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme')}`, newThemePath, {overwrite: false});
 
         // Sometimes users might not want to have a build system
         if (addWebpack) {
-            fse.copySync(`${path.join(__dirname + '../../../scaffolding/theme-root/theme-extra-folders')}`, newThemePath, {overwrite: false});
+            fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/theme-extra-folders')}`, newThemePath, {overwrite: false});
         }
 
         updateScaffoldFile(
