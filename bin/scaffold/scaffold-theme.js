@@ -14,6 +14,7 @@ const {
 const {
     addDashesToString,
     capAndSnakeCaseString,
+    pascalCaseString,
 } = require('../utils/string-utils');
 
 const {
@@ -63,7 +64,6 @@ const scaffoldTheme = (answers) => {
 
         // Sometimes users might not want to have a build system
         if (addWebpack) {
-            // Copy our files over to the themes folder
             fse.copySync(`${path.join(__dirname + '../../../scaffolding/theme-root/theme-extra-folders')}`, newThemePath, {overwrite: false});
         }
 

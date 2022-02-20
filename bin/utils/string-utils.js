@@ -1,3 +1,9 @@
+// Community modules
+const {
+    pascalCase,
+    pascalCaseTransformMerge,
+} = require('pascal-case');
+
 /**
  * @description
  *
@@ -22,7 +28,21 @@ const capAndSnakeCaseString = (string) => {
     return snakeCaseString.toUpperCase();
 };
 
+/**
+ * @description
+ * @see https://www.npmjs.com/package/pascal-case
+ *
+ * @param {string} string
+ * @return {string}
+ */
+const pascalCaseString = (string) => {
+    return pascalCase(string,{
+        transform: pascalCaseTransformMerge
+    });
+};
+
 module.exports = {
     addDashesToString,
     capAndSnakeCaseString,
+    pascalCaseString,
 }
