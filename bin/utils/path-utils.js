@@ -46,7 +46,7 @@ const isWordpressInstall = function() {
  */
 const getThemesFolderPath = function() {
 
-    return path.resolve(`${whereAmI()}/wp-content/themes/`);
+    return path.resolve(`${whereAmI()}/wp-content/themes`);
 
 };
 

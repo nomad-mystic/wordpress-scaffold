@@ -15,9 +15,9 @@ const {
     getThemesFolderPath,
 } = require('./utils/path-utils');
 
-console.log(whereAmI());
-console.log(isWordpressInstall());
-console.log(getThemesFolderPath());
+// console.log(whereAmI());
+// console.log(isWordpressInstall());
+// console.log(getThemesFolderPath());
 
 // Enable debug mode?
 const isDebugMode = !!process.env?.DEBUG;
