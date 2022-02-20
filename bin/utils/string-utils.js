@@ -10,6 +10,19 @@ const addDashesToString = (string) => {
 
 };
 
+/**
+ * @description
+ *
+ * @param {string} string
+ * @return {string}
+ */
+const capAndSnakeCaseString = (string) => {
+    let snakeCaseString = string.replaceAll('-', '_');
+
+    return snakeCaseString.toUpperCase();
+};
+
 module.exports = {
     addDashesToString,
+    capAndSnakeCaseString,
 }

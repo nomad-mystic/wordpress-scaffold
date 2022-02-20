@@ -1,2 +1,4 @@
 <?php
 
+const THEME_NAME_DOMAIN = 'THEME_NAME_VALUE';
+

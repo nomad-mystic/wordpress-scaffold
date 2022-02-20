@@ -13,7 +13,12 @@ const {
 
 const {
     addDashesToString,
-} = require("../utils/string-utils");
+    capAndSnakeCaseString,
+} = require('../utils/string-utils');
+
+const {
+    updateScaffoldFile,
+} = require('../utils/update-scaffold-file');
 
 /**
  * @description Based on user input scaffold our theme
@@ -35,11 +40,14 @@ const scaffoldTheme = (answers) => {
 
     // Make folder "safe" if there are spaces
     const safeThemeName = addDashesToString(themeName);
+    const capAndSnakeCaseTheme = capAndSnakeCaseString(safeThemeName);
 
     console.log(themeName);
     console.log(themeDescription);
     console.log(addWebpack);
     console.log(safeThemeName)
+
+    console.log(capAndSnakeCaseTheme);
 
     const newThemePath = `${themesPath}/${safeThemeName}`;
 
@@ -53,6 +61,23 @@ const scaffoldTheme = (answers) => {
         // Copy our files over to the themes folder
         fse.copySync(`${path.join(__dirname + '../../../scaffolding/theme')}`, newThemePath, {overwrite: false});
 
+        updateScaffoldFile(
+            newThemePath,
+            'functions.php',
+            {
+                stringToUpdate: 'THEME_NAME',
+                updateString: capAndSnakeCaseTheme,
+            }
+        );
+
+        updateScaffoldFile(
+            newThemePath,
+            'functions.php',
+            {
+                stringToUpdate: 'KEITH_THEME_VALUE',
+                updateString: safeThemeName,
+            }
+        );
 
     } catch (err) {
 
