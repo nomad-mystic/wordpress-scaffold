@@ -1,0 +1,27 @@
+{
+  "name": "wordpress-scaffold-cli",
+  "version": "0.0.1",
+  "description": "This project is created to speed up WordPress development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nomad-mystic/wordpress-scaffold-cli.git"
+  },
+  "keywords": [
+    "WordPress",
+    "Scaffold"
+  ],
+  "author": "nomadmystics@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nomad-mystic/wordpress-scaffold-cli/issues"
+  },
+  "homepage": "https://github.com/nomad-mystic/wordpress-scaffold-cli#readme",
+  "dependencies": {
+    "fs-extra": "^10.0.0",
+    "inquirer": "^8.2.0"
+  }
+}
