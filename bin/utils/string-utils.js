@@ -41,8 +41,20 @@ const pascalCaseString = (string) => {
     });
 };
 
+/**
+ * @description
+ * @see https://gist.github.com/youssman/745578062609e8acac9f?permalink_comment_id=2304728
+ *
+ * @param string
+ * @returns {string}
+ */
+const camelCaseToDash = (string) => {
+    return string.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase()
+}
+
 module.exports = {
     addDashesToString,
     capAndSnakeCaseString,
     pascalCaseString,
+    camelCaseToDash,
 }

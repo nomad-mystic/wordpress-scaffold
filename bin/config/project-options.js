@@ -3,7 +3,7 @@ const projectOptions = [
         type: 'input',
         name: 'projectName',
         message: 'What is the name of your WordPress site?',
-        default: 'scaffold-theme',
+        default: 'scaffold-project',
     },
     {
         type: 'confirm',

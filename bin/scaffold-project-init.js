@@ -6,13 +6,25 @@ const inquirer = require('inquirer');
 const colors = require('colors');
 const shell = require('shelljs');
 
-
 // Package modules
 const projectOptions = require('./config/project-options');
 const scaffoldProject = require('./scaffold/project/scaffold-project');
-const {apiGetText} = require("./utils/rest-utils");
 
-// console.log(whereAmI());
+const {
+    apiGetText,
+} = require('./utils/rest-utils');
+
+const {
+    whereAmI,
+} = require('./utils/path-utils');
+
+const {
+    camelCaseToDash,
+} = require('./utils/string-utils');
+const updateScaffoldJson = require("./utils/update-scaffold-json");
+
+
+console.log(whereAmI());
 // console.log(isWordpressInstall());
 // console.log(getThemesFolderPath());
 
@@ -30,7 +42,18 @@ if (!shell.which('wp')) {
     shell.exit(1);
 }
 
-// Starting point for scaffolding a theme
+/**
+ * @description Starting point for scaffolding the WordPress core files and DB
+ *
+ * @param {Object} answers
+ * @param {object} answers.projectName
+ * @param {object} answers.databaseSetup
+ * @param {object|null} answers.databaseName
+ * @param {object|null} answers.databasePassword
+ * @param {object|null} answers.databaseUsername
+ * @param salts
+ * @return void
+ */
 inquirer
 .prompt(projectOptions)
 .then(async (answers) => {
@@ -39,7 +62,11 @@ inquirer
     // Hit the WordPress API for our site's salts
     let salts = await apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
 
-    scaffoldProject(answers, salts);
+    // scaffoldProject(answers, salts);
+
+    const filePath = `${whereAmI()}/internal/project/project-config.json`;
+
+    updateScaffoldJson(filePath, answers);
 
     // Let the user know it has been created
     // console.log(colors.green(`Your ${themeName} theme has been scaffold.`));

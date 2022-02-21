@@ -24,8 +24,9 @@ const scaffoldProject = (answers, salts) => {
     const configFile = `${whereAmI()}/wp-config.php`
     let updateObjectsArray = [];
 
-    // console.log(configFile);
-    // console.log(salts);
+    console.log(answers);
+    console.log(configFile);
+    console.log(salts);
 
     if (fs.existsSync(configFile)) {
         console.log(colors.red('There is already a wp-config.php file.'));
@@ -82,9 +83,6 @@ const scaffoldProject = (answers, salts) => {
 
         }
     }
-
-
-
 };
 
 module.exports = scaffoldProject;
