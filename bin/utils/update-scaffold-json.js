@@ -40,13 +40,19 @@ const updateScaffoldJson = (filePath, json) => {
         'database-username',
     ];
 
-    // Update our project-config
-    let jsonFile = fs.readFileSync(`${whereAmI()}/internal/project/project-config.json`, 'utf-8');
+    // Update our config file
+    let jsonFile = fs.readFileSync(filePath, 'utf-8');
+
+    if (!jsonFile || typeof jsonFile === 'undefined' || jsonFile === '') {
+        return;
+    }
+
     let jsonFileParsed = JSON.parse(jsonFile);
 
     for (const property in json) {
+        // Sanity Check
         if (json.hasOwnProperty(property) && property && typeof property !== 'undefined') {
-
+            // These come through the CLI as camelCase
             let dashedProperty = camelCaseToDash(property);
 
             // What if there value isn't empty?
@@ -54,7 +60,11 @@ const updateScaffoldJson = (filePath, json) => {
                 continue;
             }
 
+            if (jsonFileParsed[dashedProperty] && typeof jsonFileParsed[dashedProperty] !== 'undefined' && jsonFileParsed[dashedProperty] !== '') {
+                continue;
+            }
 
+            // Update the values
             if (dashedValues.includes(dashedProperty)) {
                 jsonFileParsed[`${dashedProperty}`] = addDashesToString(json[property].trim());
 
@@ -78,9 +88,6 @@ const updateScaffoldJson = (filePath, json) => {
 
     // Write our updated values
     fs.writeFileSync(filePath, JSON.stringify(jsonFileParsed));
-
 };
 
 module.exports = updateScaffoldJson;
-
-// https://yahoo.com
