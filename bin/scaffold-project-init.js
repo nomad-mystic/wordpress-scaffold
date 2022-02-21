@@ -4,22 +4,33 @@
 require('dotenv').config();
 const inquirer = require('inquirer');
 const colors = require('colors');
+const shell = require('shelljs');
 
 // Package modules
-const projectInit = require('./config/theme-options');
+const projectOptions = require('./config/project-options');
 
 // console.log(whereAmI());
 // console.log(isWordpressInstall());
 // console.log(getThemesFolderPath());
 
+// Bail early!!!
+// Check to make sure we have PHP and WP-CLI
+if (!shell.which('php')) {
+    shell.echo('Sorry, this script requires the PHP CLI');
+
+    shell.exit(1);
+}
+
+if (!shell.which('wp')) {
+    shell.echo('Sorry, this script requires the WP-CLI');
+
+    shell.exit(1);
+}
+
 // Starting point for scaffolding a theme
 inquirer
-.prompt(projectInit)
+.prompt(projectOptions)
 .then((answers) => {
-
-    // Check to make sure we have PHP, WP-CLI
-
-
     console.log(answers);
 
     // Let the user know it has been created
