@@ -119,7 +119,7 @@ const scaffoldThemeRoot = (answers, {
         for (let update = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
-                console.log(updateObjectsArray[update].fileName);
+                // console.log(updateObjectsArray[update].fileName);
 
                 updateScaffoldFile(
                     whereAmI(),

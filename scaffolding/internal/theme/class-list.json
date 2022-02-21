@@ -1,0 +1,29 @@
+[
+    {
+        "namespace": "base",
+        "init": [
+            "ClassForInit"
+        ],
+        "admin_init": [
+            "ClassForAdminInit"
+        ],
+        "classes": [
+            "EnqueueAssets"
+        ]
+    },
+    {
+        "namespace": "post-types",
+        "init": [
+            {
+                "class-name": "NewPostType"
+            }
+        ],
+        "admin_init": [{}]
+    },
+    {
+        "namespace": "post-types/admin",
+        "admin_init": [
+            "NewPostTypeAdmin"
+        ]
+    }
+]

@@ -6,8 +6,11 @@ const inquirer = require('inquirer');
 const colors = require('colors');
 const shell = require('shelljs');
 
+
 // Package modules
 const projectOptions = require('./config/project-options');
+const scaffoldProject = require('./scaffold/project/scaffold-project');
+const {apiGetText} = require("./utils/rest-utils");
 
 // console.log(whereAmI());
 // console.log(isWordpressInstall());
@@ -30,8 +33,13 @@ if (!shell.which('wp')) {
 // Starting point for scaffolding a theme
 inquirer
 .prompt(projectOptions)
-.then((answers) => {
-    console.log(answers);
+.then(async (answers) => {
+    // console.log(answers);
+
+    // Hit the WordPress API for our site's salts
+    let salts = await apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
+
+    scaffoldProject(answers, salts);
 
     // Let the user know it has been created
     // console.log(colors.green(`Your ${themeName} theme has been scaffold.`));

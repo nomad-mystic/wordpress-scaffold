@@ -19,6 +19,14 @@ const projectOptions = [
         when(answers) {
             return answers.databaseSetup;
         },
+        validate(value) {
+
+            if (value !== '') {
+                return true;
+            }
+
+            return 'Please enter a database name.';
+        },
     },
     {
         type: 'password',
@@ -28,15 +36,41 @@ const projectOptions = [
         when(answers) {
             return answers.databaseSetup;
         },
+        validate(value) {
+            if (value !== '') {
+                return true;
+            }
+
+            return 'Please enter a database password.';
+        },
     },
     {
         type: 'input',
-        name: 'databaseUser',
-        message: 'What is the DB user for the site?',
+        name: 'databaseUsername',
+        message: 'What is the DB username for the site?',
         default: '',
         when(answers) {
             return answers.databaseSetup;
         },
+        validate(value) {
+            if (value !== '') {
+                return true;
+            }
+
+            return 'Please enter a database username.';
+        },
+    },
+    {
+        type: 'input',
+        name: 'siteUrl',
+        message: 'What is the URL of your WordPress site?',
+        default: 'https://example.com',
+    },
+    {
+        type: 'input',
+        name: 'devSiteUrl',
+        message: 'What is the development URL of your WordPress site?',
+        default: 'https://example.com.test',
     },
 ];
 

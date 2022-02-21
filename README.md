@@ -2,6 +2,16 @@
 
 ### Create WordPress Project
 @todo maybe create command for this?
+
+#### DB Setup 
+```shell
+$ sudo mysql
+$ CREATE DATABASE databasename;
+$ GRANT ALL PRIVILEGES ON databasename.* TO "wordpressusername"@"hostname" IDENTIFIED BY "password";
+$ FLUSH PRIVILEGES;
+$ EXIT;
+```
+
 ```shell
 $ mkdir YOUR_PROJECT_NAME
 $ cd YOUR_PROJECT_NAME
@@ -34,7 +44,14 @@ mention .htacess and config update above
 * Classes
   * Initialize with JSON config (theme-root/config)
   * Add base on init and append while adding classes
-  * THEME_NAME for composer and JSON config (PascalCase)
+  * PROJECT_NAME for composer and JSON config (PascalCase)
   
 ### Development
 * Mention .env creation
+
+### Resources
+* https://wordpress.org/support/article/creating-database-for-wordpress/
+* https://wp-cli.org/
+* https://getcomposer.org/doc/
+* https://vuejs.org/
+* https://sass-lang.com/
