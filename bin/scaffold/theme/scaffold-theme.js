@@ -28,23 +28,27 @@ const {
  * @param {string} answers.themeName
  * @param {string} answers.themeDescription
  * @param {boolean} answers.addWebpack
+ * @param {string} themeName
  * @param {string} themesPath
+ * @param {string} newThemePath
  * @param {string} themeDescription
  * @param {boolean} addWebpack
  * @param {string} safeThemeName
  * @param {string} capAndSnakeCaseTheme
+ * @param {string} pascalThemeName
  *
  * @return void
  */
 const scaffoldTheme = (answers, {
+    themeName,
     themesPath,
+    newThemePath,
     themeDescription,
     addWebpack,
     safeThemeName,
     capAndSnakeCaseTheme,
+    pascalThemeName,
 }) => {
-    const newThemePath = `${themesPath}/${safeThemeName}`;
-
     try {
         if (fs.existsSync(newThemePath)) {
             console.log(colors.red('There is already a theme with that name. Please use another name.'));
@@ -60,23 +64,49 @@ const scaffoldTheme = (answers, {
             fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/theme-extra-folders')}`, newThemePath, {overwrite: false});
         }
 
-        updateScaffoldFile(
-            newThemePath,
-            'functions.php',
+        // Our updates
+        const updateObjectsArray = [
             {
+                fileName: 'functions.php',
                 stringToUpdate: 'THEME_NAME',
                 updateString: capAndSnakeCaseTheme,
-            }
-        );
-
-        updateScaffoldFile(
-            newThemePath,
-            'functions.php',
+            },
             {
+                fileName: 'functions.php',
                 stringToUpdate: 'THEME_VALUE',
                 updateString: safeThemeName,
+            },
+            {
+                fileName: 'style.css',
+                stringToUpdate: 'THEME_VALUE',
+                updateString: safeThemeName,
+            },
+            {
+                fileName: 'style.css',
+                stringToUpdate: 'THEME_NAME',
+                updateString: themeName,
+            },
+            {
+                fileName: 'style.css',
+                stringToUpdate: 'THEME_DESCRIPTION',
+                updateString: themeDescription,
+            },
+        ];
+
+        // Update our files based on object properties
+        for (let update = 0; update < updateObjectsArray.length; update++) {
+            if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
+
+                updateScaffoldFile(
+                    newThemePath,
+                    updateObjectsArray[update].fileName,
+                    {
+                        stringToUpdate: updateObjectsArray[update].stringToUpdate,
+                        updateString: updateObjectsArray[update].updateString,
+                    }
+                );
             }
-        );
+        }
 
     } catch (err) {
 

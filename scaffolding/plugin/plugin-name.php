@@ -14,4 +14,7 @@ define('PLUGIN_NAME_THEME_DIR', get_stylesheet_directory());
 
 const PLUGIN_NAME_TEXT_DOMAIN = 'PLUGIN_NAME';
 
-require_once(PLUGIN_NAME_PLUGIN_DIR . 'vendor/autoload.php');
+if (file_exists(PLUGIN_NAME_PLUGIN_DIR . 'vendor/autoload.php')) {
+    require_once(PLUGIN_NAME_PLUGIN_DIR . 'vendor/autoload.php');
+}
+
