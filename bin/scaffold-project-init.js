@@ -9,6 +9,7 @@ const shell = require('shelljs');
 // Package modules
 const projectOptions = require('./config/project-options');
 const scaffoldProject = require('./scaffold/project/scaffold-project');
+const updateScaffoldJson = require('./utils/update-scaffold-json');
 
 const {
     apiGetText,
@@ -21,8 +22,6 @@ const {
 const {
     camelCaseToDash,
 } = require('./utils/string-utils');
-const updateScaffoldJson = require("./utils/update-scaffold-json");
-
 
 console.log(whereAmI());
 // console.log(isWordpressInstall());

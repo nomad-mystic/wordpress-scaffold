@@ -1,12 +1,17 @@
+// Community modules
 const fs = require('fs');
 const colors = require('colors');
+const fse = require('fs-extra');
+const path = require('path');
 
+// Package modules
 const {
     whereAmI,
 } = require('../../utils/path-utils');
-const fse = require("fs-extra");
-const path = require("path");
-const {updateScaffoldFile} = require("../../utils/update-scaffold-file");
+
+const {
+    updateScaffoldFile,
+} = require('../../utils/update-scaffold-file');
 
 /**
  * @description
