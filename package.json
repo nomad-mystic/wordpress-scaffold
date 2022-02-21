@@ -4,12 +4,14 @@
   "description": "This project is created to speed up WordPress development",
   "main": "index.js",
   "scripts": {
+    "dev:project-init": "node ./bin/scaffold-project-init.js",
     "dev:plugin": "node ./bin/scaffold-plugin.js",
     "dev:plugin:add": "node ./bin/scaffold-plugin-add.js",
     "dev:theme": "node ./bin/scaffold-theme.js",
     "dev:theme:add": "node ./bin/scaffold-theme-add.js"
   },
   "bin": {
+    "ws-scaffold-project-init": "./bin/scaffold-project-init.js",
     "ws-scaffold-plugin": "./bin/scaffold-plugin.js",
     "ws-scaffold-theme": "./bin/scaffold-theme.js",
     "ws-scaffold-plugin-add": "./bin/scaffold-plugin-add.js",
