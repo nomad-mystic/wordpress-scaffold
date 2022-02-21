@@ -1,5 +1,5 @@
 {
-  "name": "PROJECT_NAME",
+  "name": "THEME_NAME",
   "version": "1.0.0",
   "description": "PROJECT_DESCRIPTION",
   "main": "webpack.config.js",

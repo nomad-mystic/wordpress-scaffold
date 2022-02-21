@@ -28,28 +28,21 @@ const {
  * @param {string} answers.themeName
  * @param {string} answers.themeDescription
  * @param {boolean} answers.addWebpack
+ * @param {string} themesPath
+ * @param {string} themeDescription
+ * @param {boolean} addWebpack
+ * @param {string} safeThemeName
+ * @param {string} capAndSnakeCaseTheme
+ *
  * @return void
  */
-const scaffoldTheme = (answers) => {
-    // Absolute path of the custom folder
-    const themesPath = getThemesFolderPath();
-
-    // User inputs
-    const themeName = answers.themeName.trim();
-    const themeDescription = answers.themeDescription.trim();
-    const addWebpack = answers.addWebpack;
-
-    // Make folder "safe" if there are spaces
-    const safeThemeName = addDashesToString(themeName);
-    const capAndSnakeCaseTheme = capAndSnakeCaseString(safeThemeName);
-
-    console.log(themeName);
-    console.log(themeDescription);
-    console.log(addWebpack);
-    console.log(safeThemeName);
-
-    console.log(capAndSnakeCaseTheme);
-
+const scaffoldTheme = (answers, {
+    themesPath,
+    themeDescription,
+    addWebpack,
+    safeThemeName,
+    capAndSnakeCaseTheme,
+}) => {
     const newThemePath = `${themesPath}/${safeThemeName}`;
 
     try {

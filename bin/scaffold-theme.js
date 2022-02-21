@@ -14,6 +14,7 @@ const {
     isWordpressInstall,
     getThemesFolderPath,
 } = require('./utils/path-utils');
+const {addDashesToString, capAndSnakeCaseString} = require("./utils/string-utils");
 
 // console.log(whereAmI());
 // console.log(isWordpressInstall());
@@ -25,9 +26,9 @@ const isDebugMode = !!process.env?.DEBUG;
 // Let the user know they need to be in the root of the project
 if (!isWordpressInstall() && !isDebugMode) {
 
-    console.log(colors.yellow('Your path is not at the root of your Drupal install.'))
+    console.log(colors.yellow('Your path is not at the root of your WordPress install.'))
     console.log(colors.yellow(`You are located at ${whereAmI()}`));
-    console.log(colors.yellow('Please move to the root Drupal install folder.'));
+    console.log(colors.yellow('Please move to the root WordPress install folder.'));
 
     process.exit();
 }
@@ -35,27 +36,49 @@ if (!isWordpressInstall() && !isDebugMode) {
 
 // Starting point for scaffolding a theme
 inquirer
-    .prompt(themeOptions)
-    .then((answers) => {
-        // Absolute path of the custom folder
-        const themesPath = getThemesFolderPath();
+.prompt(themeOptions)
+.then((answers) => {
+    // Absolute path of the custom folder
+    const themesPath = getThemesFolderPath();
 
-        // Build the module
-        scaffoldTheme(answers);
+    // User inputs
+    const themeName = answers.themeName.trim();
+    const themeDescription = answers.themeDescription.trim();
+    const addWebpack = answers.addWebpack;
 
-        // Let the user know it has been created
-        // console.log("\n");
-        // console.log(colors.green(`Your ${answers.machineName} module has been scaffold.`));
-        // console.log(colors.yellow(`Check: ${customPath}/${answers.machineName}`));
-    })
-    .catch((error) => {
-        if (error.isTtyError) {
+    // Make folder "safe" if there are spaces
+    const safeThemeName = addDashesToString(themeName);
+    const capAndSnakeCaseTheme = capAndSnakeCaseString(safeThemeName);
 
-            console.error('Prompt couldn\'t be rendered in the current environment.');
+    console.log(themeName);
+    console.log(themeDescription);
+    console.log(addWebpack);
+    console.log(safeThemeName);
 
-        } else {
-            console.log(colors.red('Something else went wrong!'));
+    console.log(capAndSnakeCaseTheme);
 
-            console.error(error);
-        }
+    // Build the theme
+    scaffoldTheme(answers, {
+        themesPath,
+        themeDescription,
+        addWebpack,
+        safeThemeName,
+        capAndSnakeCaseTheme,
     });
+
+    // Let the user know it has been created
+    console.log("\n");
+    console.log(colors.green(`Your ${themeName} theme has been scaffold.`));
+    console.log(colors.yellow(`Check: ${themesPath}/${safeThemeName}`));
+})
+.catch((error) => {
+    if (error.isTtyError) {
+
+        console.error('Prompt couldn\'t be rendered in the current environment.');
+
+    } else {
+        console.log(colors.red('Something else went wrong!'));
+
+        console.error(error);
+    }
+});
