@@ -43,13 +43,17 @@ if (!isWordpressInstall() && !isDebugMode) {
 inquirer
 .prompt(themeOptions)
 .then((answers) => {
+
+    console.log(answers);
+
     // Absolute path of the themes folder
     const themesPath = getThemesFolderPath();
 
     // User inputs
-    const themeName = answers.themeName.trim();
-    const themeDescription = answers.themeDescription.trim();
-    const addWebpack = answers.addWebpack;
+    const themeName = answers?.themeName.trim();
+    const themeDescription = answers?.themeDescription.trim();
+    const addFrontEndBuildTools = answers?.addFrontEndBuildTools;
+    const frontEndFramework = answers?.frontEndFramework;
 
     // Make folder "safe" if there are spaces
     const safeThemeName = addDashesToString(themeName);
@@ -61,12 +65,12 @@ inquirer
     const capAndSnakeCaseTheme = capAndSnakeCaseString(safeThemeName);
     const pascalThemeName = pascalCaseString(safeThemeName);
 
-    console.log(themeName);
-    console.log(themeDescription);
-    console.log(addWebpack);
-    console.log(safeThemeName);
-    console.log(capAndSnakeCaseTheme);
-    console.log(pascalThemeName);
+    // console.log(themeName);
+    // console.log(themeDescription);
+    // console.log(addFrontEndBuildTools);
+    // console.log(safeThemeName);
+    // console.log(capAndSnakeCaseTheme);
+    // console.log(pascalThemeName);
 
     // Build the theme
     scaffoldTheme(answers, {
@@ -74,7 +78,8 @@ inquirer
         themesPath,
         newThemePath,
         themeDescription,
-        addWebpack,
+        addFrontEndBuildTools,
+        frontEndFramework,
         safeThemeName,
         capAndSnakeCaseTheme,
         pascalThemeName,
@@ -85,14 +90,14 @@ inquirer
         themesPath,
         newThemePath,
         themeDescription,
-        addWebpack,
+        addFrontEndBuildTools,
+        frontEndFramework,
         safeThemeName,
         capAndSnakeCaseTheme,
         pascalThemeName,
     });
 
     // Let the user know it has been created
-    console.log("\n");
     console.log(colors.green(`Your ${themeName} theme has been scaffold.`));
     console.log(colors.yellow(`Check: ${themesPath}/${safeThemeName}`));
 })

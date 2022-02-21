@@ -1,12 +1,6 @@
 {
     "name": "THEME_NAME/THEME_NAME",
     "description": "THEME_DESCRIPTION",
-    "authors": [
-        {
-            "name": "",
-            "email": ""
-        }
-    ],
     "type": "project",
     "scripts": {
         "auto-load-classes": "composer dump-autoload -o"

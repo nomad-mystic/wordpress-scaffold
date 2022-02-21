@@ -12,7 +12,7 @@ const {
  */
 const addDashesToString = (string) => {
 
-    return string.replaceAll(' ', '-');
+    return string.replaceAll(' ', '-').toLowerCase();
 
 };
 

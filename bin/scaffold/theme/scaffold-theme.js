@@ -32,7 +32,8 @@ const {
  * @param {string} themesPath
  * @param {string} newThemePath
  * @param {string} themeDescription
- * @param {boolean} addWebpack
+ * @param {boolean} addFrontEndBuildTools
+ * @param {boolean} frontEndFramework
  * @param {string} safeThemeName
  * @param {string} capAndSnakeCaseTheme
  * @param {string} pascalThemeName
@@ -44,7 +45,8 @@ const scaffoldTheme = (answers, {
     themesPath,
     newThemePath,
     themeDescription,
-    addWebpack,
+    addFrontEndBuildTools,
+    frontEndFramework,
     safeThemeName,
     capAndSnakeCaseTheme,
     pascalThemeName,
@@ -60,7 +62,7 @@ const scaffoldTheme = (answers, {
         fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme')}`, newThemePath, {overwrite: false});
 
         // Sometimes users might not want to have a build system
-        if (addWebpack) {
+        if (addFrontEndBuildTools) {
             fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/theme-extra-folders')}`, newThemePath, {overwrite: false});
         }
 
@@ -96,6 +98,8 @@ const scaffoldTheme = (answers, {
         // Update our files based on object properties
         for (let update = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
+
+                console.log(updateObjectsArray[update].fileName);
 
                 updateScaffoldFile(
                     newThemePath,

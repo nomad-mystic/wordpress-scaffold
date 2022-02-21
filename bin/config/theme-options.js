@@ -1,3 +1,8 @@
+/**
+ * @description Interactive CLI options for building the theme
+ *
+ * @type {[{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string},{default: boolean, name: string, type: string, message: string},{default: string, name: string, type: string, message: string, choices: string[], when(*): boolean|*}]}
+ */
 const themeOptions = [
     {
         type: 'input',
@@ -5,12 +10,6 @@ const themeOptions = [
         message: 'What is the name of your theme?',
         default: 'scaffold-theme',
     },
-    // {
-    //     type: 'input',
-    //     name: 'moduleAdminName',
-    //     message: 'What is the admin name of your module?',
-    //     default: 'Scaffold Module',
-    // },
     {
         type: 'input',
         name: 'themeDescription',
@@ -19,9 +18,19 @@ const themeOptions = [
     },
     {
         type: 'confirm',
-        name: 'addWebpack',
-        message: 'Would you like to scaffold a Webpack build system?',
+        name: 'addFrontEndBuildTools',
+        message: 'Would you like to scaffold a front-end build system?',
         default: true,
+    },
+    {
+        type: 'list',
+        name: 'frontEndFramework',
+        message: 'What front-end framework would you like to add?',
+        choices: ['None', 'Vue', 'React'],
+        when(answers) {
+            return answers.addFrontEndBuildTools;
+        },
+        default: 'None',
     },
 ];
 

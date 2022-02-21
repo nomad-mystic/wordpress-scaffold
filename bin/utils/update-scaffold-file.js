@@ -17,16 +17,19 @@ const updateScaffoldFile = (updatePath, fileName, {
 }) => {
     let updatedContent = '';
 
-    // Get our file in memory
-    let fileContents = fs.readFileSync(`${updatePath}/${fileName}`, 'utf8');
+    // MAke sure the files exists before we start updating them
+    if (fs.existsSync(`${updatePath}/${fileName}`)) {
+        // Get our file in memory
+        let fileContents = fs.readFileSync(`${updatePath}/${fileName}`, 'utf8');
 
-    // Replace our file with user input values
-    let reg = new RegExp(stringToUpdate, 'gm');
+        // Replace our file with user input values
+        let reg = new RegExp(stringToUpdate, 'gm');
 
-    updatedContent = fileContents.replaceAll(reg, updateString);
+        updatedContent = fileContents.replaceAll(reg, updateString);
 
-    // Write our updated values
-    fs.writeFileSync(`${updatePath}/${fileName}`, updatedContent);
+        // Write our updated values
+        fs.writeFileSync(`${updatePath}/${fileName}`, updatedContent);
+    }
 };
 
 module.exports = {

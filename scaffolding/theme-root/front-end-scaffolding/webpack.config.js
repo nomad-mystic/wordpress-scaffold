@@ -3,7 +3,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackNotifier = require('webpack-notifier');
 const babelConfig = require('./babel.config.json');
 const TerserPlugin = require('terser-webpack-plugin');
-const themeName = 'THEME_VALUE';
+const themeName = 'THEME_NAME';
 
 module.exports = () => {
     let config = {
@@ -11,7 +11,7 @@ module.exports = () => {
         entry: {
             main: [
                 path.resolve(__dirname, `wp-content/themes/${themeName}/src/js/main.js`),
-                path.resolve(__dirname, `wp-content/themes/${themeName}/src/sass/main.scss`),
+                path.resolve(__dirname, `wp-content/themes/${themeName}/src/scss/main.scss`),
             ],
         },
         optimization: {
@@ -23,7 +23,8 @@ module.exports = () => {
             ],
         },
         output: {
-            path: path.resolve(__dirname),
+            path: path.resolve(__dirname, `wp-content/themes/${themeName}/`),
+            publicPath: `wp-content/themes/${themeName}/`,
             filename: 'js/[name].js',
         },
         module: {
@@ -74,7 +75,7 @@ module.exports = () => {
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // all options are optional
-                filename: 'css/[name].css',
+                filename: `./wp-content/themes/${themeName}/css/[name].css`,
                 chunkFilename: '[id].css',
                 ignoreOrder: false, // Enable to remove warnings about conflicting order
             }),
