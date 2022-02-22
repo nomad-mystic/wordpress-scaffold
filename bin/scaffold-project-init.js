@@ -56,6 +56,10 @@ if (!shell.which('wp')) {
 inquirer
 .prompt(projectOptions)
 .then(async (answers) => {
+    // Build the core files
+    // shell.exec('wp core download --quiet');
+    shell.exec('wp core download');
+
     const filePath = `${whereAmI()}/internal/project/project-config.json`;
 
     const config = updateScaffoldJson(filePath, answers);

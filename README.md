@@ -1,6 +1,6 @@
 # WordPress Scaffold CLI
 
-### Create WordPress Project
+### Create WordPress Project (apache, hosts)
 @todo maybe create command for this?
 
 #### DB Setup 
@@ -12,18 +12,14 @@ $ FLUSH PRIVILEGES;
 $ EXIT;
 ```
 
+#### Project Setup
+
 ```shell
 $ mkdir YOUR_PROJECT_NAME
 $ cd YOUR_PROJECT_NAME
-$ wp core download
+$ npm run ws-scaffold-project-init
 $ wp core install --url=SITE_URL --title=SITE_TITLE --admin_user=ADMIN_USER --admin_password=ADMIN_PASSWORD --admin_email=ADMIN_EMAIL
 ```
-
-### Commands
-* 
-* Mention root folder 
-*
-
 
 ### Scaffold todos 
 * Create constants 
