@@ -1,6 +1,6 @@
 {
   "name": "@nomadmystic/wordpress-scaffold-cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "This project is created to speed up WordPress development",
   "main": "index.js",
   "scripts": {

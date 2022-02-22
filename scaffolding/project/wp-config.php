@@ -53,11 +53,6 @@ define( 'DB_COLLATE', '');
 
 /**#@-*/
 
-// For our local environments
-if (file_exists('wp-config-local.php')) {
-    require_once('wp-config-local.php');
-}
-
 /**
  * WordPress database table prefix.
  *
@@ -65,6 +60,14 @@ if (file_exists('wp-config-local.php')) {
  * a unique prefix. Only numbers, letters, and underscores please!
  */
 $table_prefix = 'wp_';
+
+
+/**
+ * For our local environments
+ */
+if (file_exists('wp-config-local.php')) {
+    require_once('wp-config-local.php');
+}
 
 /**
  * For developers: WordPress debugging mode.
