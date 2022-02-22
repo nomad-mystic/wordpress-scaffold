@@ -1,6 +1,6 @@
 {
   "name": "@nomadmystic/wordpress-scaffold-cli",
-  "version": "0.1.5",
+  "version": "0.1.7",
   "description": "This project is created to speed up WordPress development",
   "main": "index.js",
   "scripts": {
@@ -17,10 +17,6 @@
     "ws-scaffold-plugin-add": "./bin/scaffold-plugin-add.js",
     "ws-scaffold-theme-add": "./bin/scaffold-theme-add.js"
   },
-  "files": [
-    "scaffolding/project",
-    "scaffolding/theme-root/root"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nomad-mystic/wordpress-scaffold-cli.git"
