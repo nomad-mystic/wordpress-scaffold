@@ -1,5 +1,23 @@
 # WordPress Scaffold CLI
 
+# Installation 
+`$ npm i -g @nomadmystic/wordpress-scaffold-cli`
+
+    NOTE: This packages uses node version 16.x
+
+
+## Commands
+`$ ws-scaffold-project-init` (Work in-progress)
+
+`$ ws-scaffold-plugin` (Future Release)
+
+`$ ws-scaffold-theme` (Testing)
+
+`$ ws-scaffold-plugin-add` (Future Release)
+
+`$ ws-scaffold-theme-add` (Future Release)
+
+## Setup
 ### Create WordPress Project (apache, hosts)
 @todo maybe create command for this?
 
