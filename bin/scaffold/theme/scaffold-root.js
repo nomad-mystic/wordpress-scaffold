@@ -26,6 +26,7 @@ const {
  * @param {string} themesPath
  * @param {string} newThemePath
  * @param {string} themeDescription
+ * @param {string} frontEndFramework
  * @param {boolean} addWebpack
  * @param {string} safeThemeName
  * @param {string} capAndSnakeCaseTheme
@@ -38,7 +39,6 @@ const scaffoldThemeRoot = (answers, {
     themesPath,
     newThemePath,
     themeDescription,
-    addFrontEndBuildTools,
     frontEndFramework,
     safeThemeName,
     capAndSnakeCaseTheme,
@@ -55,7 +55,7 @@ const scaffoldThemeRoot = (answers, {
         fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/root')}`, whereAmI(), {overwrite: false});
 
         // Sometimes users might not want to have a build system
-        if (addFrontEndBuildTools && typeof frontEndFramework !== 'undefined' && frontEndFramework !== 'None') {
+        if (typeof frontEndFramework !== 'undefined' && frontEndFramework !== 'None') {
             fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/front-end-scaffolding')}`, whereAmI(), {overwrite: false});
         }
 
@@ -64,6 +64,7 @@ const scaffoldThemeRoot = (answers, {
 
             console.log(colors.red('Looks like you already have a composer.json file, so this will not be scaffolded'));
             console.log(colors.yellow('See documentation on how to autoload classes with psr-4'));
+            console.log("\n");
 
         } else {
 
@@ -92,8 +93,9 @@ const scaffoldThemeRoot = (answers, {
 
             console.log(colors.red('Looks like you already have a package.json file, so this will not be scaffolded'));
             console.log(colors.yellow('See documentation on Node.js'));
+            console.log("\n");
 
-        } else if (addFrontEndBuildTools) {
+        } else {
             const npmObjects = [
                 {
                     fileName: 'package.json',

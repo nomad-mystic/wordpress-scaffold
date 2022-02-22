@@ -1,7 +1,5 @@
 // Community modules
 const fs = require('fs');
-const fse = require('fs-extra');
-const path = require('path');
 
 // Package modules
 const {
@@ -20,12 +18,7 @@ const {
  * @return void
  */
 const updateScaffoldJson = (filePath, json) => {
-    // Make sure we have our internal folder, if not copy it over
-    if (!fs.existsSync(`${whereAmI()}/internal`)) {
-
-        fse.copySync(`${path.join(__dirname + '../../../scaffolding/internal')}`, `${whereAmI()}/internal`, {overwrite: false});
-
-    }
+    require('../utils/scaffold-internal').scaffoldInternal();
 
     // Setup our arrays for json update logic
     const dashedValues = [
@@ -60,12 +53,8 @@ const updateScaffoldJson = (filePath, json) => {
                 continue;
             }
 
-            if (jsonFileParsed[dashedProperty] && typeof jsonFileParsed[dashedProperty] !== 'undefined' && jsonFileParsed[dashedProperty] !== '') {
-                continue;
-            }
-
             // Update the values
-            if (dashedValues.includes(dashedProperty)) {
+            if (typeof json[property] !== 'undefined' && dashedValues.includes(dashedProperty)) {
                 jsonFileParsed[`${dashedProperty}`] = addDashesToString(json[property].trim());
 
                 // Pretty specific maybe refactor and abstract this out?
@@ -78,8 +67,8 @@ const updateScaffoldJson = (filePath, json) => {
                 continue;
             }
 
-            // Default to raw
-            if (!disallowedKeys.includes(dashedProperty)) {
+            // Same information we don't want to save, so do that here
+            if (typeof json[property] !== 'undefined' && !disallowedKeys.includes(dashedProperty)) {
                 jsonFileParsed[`${dashedProperty}`] = json[property];
             }
 

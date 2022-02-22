@@ -9,6 +9,7 @@ const colors = require('colors');
 const themeOptions = require('./config/theme-options');
 const scaffoldTheme = require('./scaffold/theme/scaffold-theme');
 const scaffoldThemeRoot = require('./scaffold/theme/scaffold-root');
+const updateScaffoldJson = require("./utils/update-scaffold-json");
 
 const {
     whereAmI,
@@ -43,17 +44,18 @@ if (!isWordpressInstall() && !isDebugMode) {
 inquirer
 .prompt(themeOptions)
 .then((answers) => {
-
-    console.log(answers);
+    const configFilePath = `${whereAmI()}/internal/project/project-config.json`;
 
     // Absolute path of the themes folder
     const themesPath = getThemesFolderPath();
 
     // User inputs
+    const projectName = answers?.projectName;
     const themeName = answers?.themeName.trim();
     const themeDescription = answers?.themeDescription.trim();
-    const addFrontEndBuildTools = answers?.addFrontEndBuildTools;
     const frontEndFramework = answers?.frontEndFramework;
+    const siteUrl = answers?.siteUrl;
+    const devSiteUrl = answers?.devSiteUrl;
 
     // Make folder "safe" if there are spaces
     const safeThemeName = addDashesToString(themeName);
@@ -65,37 +67,49 @@ inquirer
     const capAndSnakeCaseTheme = capAndSnakeCaseString(safeThemeName);
     const pascalThemeName = pascalCaseString(safeThemeName);
 
-    // console.log(themeName);
-    // console.log(themeDescription);
-    // console.log(addFrontEndBuildTools);
-    // console.log(safeThemeName);
-    // console.log(capAndSnakeCaseTheme);
-    // console.log(pascalThemeName);
+    console.log(safeThemeName);
 
-    // Build the theme
-    scaffoldTheme(answers, {
-        themeName,
-        themesPath,
-        newThemePath,
-        themeDescription,
-        addFrontEndBuildTools,
-        frontEndFramework,
-        safeThemeName,
-        capAndSnakeCaseTheme,
-        pascalThemeName,
-    });
+    let configUpdates = {
+        'active-theme': safeThemeName,
+        'active-theme-path': newThemePath,
+        'absolute-project-folder': whereAmI(),
+        'absolute-themes-folder': themesPath,
+        'theme-description': themeDescription,
+        'front-end-framework': frontEndFramework,
+        'site-url': siteUrl,
+        'dev-site-url': devSiteUrl,
+    };
 
-    scaffoldThemeRoot(answers, {
-        themeName,
-        themesPath,
-        newThemePath,
-        themeDescription,
-        addFrontEndBuildTools,
-        frontEndFramework,
-        safeThemeName,
-        capAndSnakeCaseTheme,
-        pascalThemeName,
-    });
+    if (projectName && typeof projectName !== 'undefined') {
+        configUpdates['project-name'] = projectName;
+        configUpdates['project-namespace'] = pascalCaseString(projectName);
+    }
+
+    // Update our config before we scaffold theme, so we can use it in our scaffold functions
+    updateScaffoldJson(configFilePath, configUpdates);
+
+    // // Build the theme
+    // scaffoldTheme(answers, {
+    //     themeName,
+    //     themesPath,
+    //     newThemePath,
+    //     themeDescription,
+    //     frontEndFramework,
+    //     safeThemeName,
+    //     capAndSnakeCaseTheme,
+    //     pascalThemeName,
+    // });
+    //
+    // scaffoldThemeRoot(answers, {
+    //     themeName,
+    //     themesPath,
+    //     newThemePath,
+    //     themeDescription,
+    //     frontEndFramework,
+    //     safeThemeName,
+    //     capAndSnakeCaseTheme,
+    //     pascalThemeName,
+    // });
 
     // Let the user know it has been created
     console.log(colors.green(`Your ${themeName} theme has been scaffold.`));

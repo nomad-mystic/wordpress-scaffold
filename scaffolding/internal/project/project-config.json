@@ -2,7 +2,12 @@
     "project-name": "",
     "project-namespace": "",
     "active-theme": "",
+    "active-theme-path": "",
     "active-plugins": [{}],
     "site-url": "",
-    "dev-site-url": ""
+    "dev-site-url": "",
+    "absolute-project-folder": "",
+    "absolute-themes-folder": "",
+    "theme-description": "",
+    "front-end-framework": ""
 }
