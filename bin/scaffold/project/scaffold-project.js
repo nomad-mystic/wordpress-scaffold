@@ -22,16 +22,13 @@ const {
  * @param {object|null} answers.databaseName
  * @param {object|null} answers.databasePassword
  * @param {object|null} answers.databaseUsername
+ * @param {object} config
  * @param salts
  * @return void
  */
-const scaffoldProject = (answers, salts) => {
+const scaffoldProject = (answers, config, salts) => {
     const configFile = `${whereAmI()}/wp-config.php`
     let updateObjectsArray = [];
-
-    console.log(answers);
-    console.log(configFile);
-    console.log(salts);
 
     if (fs.existsSync(configFile)) {
         console.log(colors.red('There is already a wp-config.php file.'));
@@ -44,7 +41,7 @@ const scaffoldProject = (answers, salts) => {
         fse.copySync(`${path.join(__dirname + '../../../../scaffolding/project')}`, whereAmI(), {overwrite: false});
 
         if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
-            const configObjects = [
+            const configDatabaseObjects = [
                 {
                     fileName: 'wp-config.php',
                     stringToUpdate: 'DATABASE_NAME_HERE',
@@ -60,15 +57,25 @@ const scaffoldProject = (answers, salts) => {
                     stringToUpdate: 'PASSWORD_HERE',
                     updateString: answers.databaseUsername,
                 },
-                {
-                    fileName: 'wp-config.php',
-                    stringToUpdate: '// ADD_OUR_SALTS_HERE',
-                    updateString: salts,
-                },
             ];
 
-            updateObjectsArray.push(...configObjects);
+            updateObjectsArray.push(...configDatabaseObjects);
         }
+
+        const configObjects = [
+            {
+                fileName: 'wp-config.php',
+                stringToUpdate: '// ADD_OUR_SALTS_HERE',
+                updateString: salts,
+            },
+            {
+                fileName: 'wp-config-local.php',
+                stringToUpdate: 'DEV_SITE_URL',
+                updateString: config['dev-site-url'],
+            },
+        ];
+
+        updateObjectsArray.push(...configObjects);
     }
 
     // Update our files based on object properties

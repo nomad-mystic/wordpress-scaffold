@@ -56,20 +56,17 @@ if (!shell.which('wp')) {
 inquirer
 .prompt(projectOptions)
 .then(async (answers) => {
-    // console.log(answers);
+    const filePath = `${whereAmI()}/internal/project/project-config.json`;
+
+    const config = updateScaffoldJson(filePath, answers);
 
     // Hit the WordPress API for our site's salts
     let salts = await apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
 
-    // scaffoldProject(answers, salts);
-
-    const filePath = `${whereAmI()}/internal/project/project-config.json`;
-
-    updateScaffoldJson(filePath, answers);
+    scaffoldProject(answers, config, salts);
 
     // Let the user know it has been created
-    // console.log(colors.green(`Your ${themeName} theme has been scaffold.`));
-    // console.log(colors.yellow(`Check: ${themesPath}/${safeThemeName}`));
+    console.log(colors.green(`Your ${config['project-name']} project has been scaffold.`));
 })
 .catch((error) => {
     if (error.isTtyError) {
