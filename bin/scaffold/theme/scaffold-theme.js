@@ -47,8 +47,7 @@ const scaffoldTheme = (answers, {
     themeDescription,
     frontEndFramework,
     safeThemeName,
-    capAndSnakeCaseTheme,
-    pascalThemeName,
+    capAndSnakeCaseTheme
 }) => {
     try {
         if (fs.existsSync(newThemePath)) {

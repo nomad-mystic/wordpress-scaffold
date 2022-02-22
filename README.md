@@ -22,11 +22,13 @@ $ wp core install --url=SITE_URL --title=SITE_TITLE --admin_user=ADMIN_USER --ad
 ### Commands
 * 
 * Mention root folder 
-* 
+*
+
 
 ### Scaffold todos 
 * Create constants 
 * Create inputs
+* Mention manual config updates
 * Add class creation 
 * Update WebPack, maybe vanilla JS, Vue, React configs?
 * Variables 

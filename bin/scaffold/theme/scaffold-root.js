@@ -30,7 +30,7 @@ const {
  * @param {boolean} addWebpack
  * @param {string} safeThemeName
  * @param {string} capAndSnakeCaseTheme
- * @param {string} pascalThemeName
+ * @param {string} projectNamespace
  *
  * @return void
  */
@@ -42,7 +42,8 @@ const scaffoldThemeRoot = (answers, {
     frontEndFramework,
     safeThemeName,
     capAndSnakeCaseTheme,
-    pascalThemeName,
+    projectName,
+    projectNamespace,
 }) => {
     try {
         let updateObjectsArray = [];
@@ -54,10 +55,7 @@ const scaffoldThemeRoot = (answers, {
         // Default to scaffold /theme-root/root
         fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/root')}`, whereAmI(), {overwrite: false});
 
-        // Sometimes users might not want to have a build system
-        if (typeof frontEndFramework !== 'undefined' && frontEndFramework !== 'None') {
-            fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/front-end-scaffolding')}`, whereAmI(), {overwrite: false});
-        }
+        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/front-end-scaffolding')}`, whereAmI(), {overwrite: false});
 
         // Check if the composer.json exists and let the user know
         if (composerExists) {
@@ -72,12 +70,12 @@ const scaffoldThemeRoot = (answers, {
                 {
                     fileName: 'composer.json',
                     stringToUpdate: 'THEME_NAME',
-                    updateString: safeThemeName,
+                    updateString: projectName,
                 },
                 {
                     fileName: 'composer.json',
                     stringToUpdate: 'PASCAL_NAME',
-                    updateString: pascalThemeName,
+                    updateString: projectNamespace,
                 },
                 {
                     fileName: 'composer.json',
@@ -109,8 +107,8 @@ const scaffoldThemeRoot = (answers, {
                 },
                 {
                     fileName: 'webpack.config.js',
-                    stringToUpdate: 'THEME_NAME',
-                    updateString: safeThemeName,
+                    stringToUpdate: 'PROJECT_NAME',
+                    updateString: projectName,
                 },
             ];
 

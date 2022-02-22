@@ -31,7 +31,6 @@ const themeOptions = [
     },
 ];
 
-
 let jsonFileParsed = getInternalConfig('project/project-config.json');
 
 // Gather the information we need if the user didn't use the init command

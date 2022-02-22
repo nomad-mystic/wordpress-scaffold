@@ -15,7 +15,7 @@ const {
  *
  * @param {string} filePath
  * @param {object} json
- * @return void
+ * @return {string}
  */
 const updateScaffoldJson = (filePath, json) => {
     require('../utils/scaffold-internal').scaffoldInternal();
@@ -77,6 +77,8 @@ const updateScaffoldJson = (filePath, json) => {
 
     // Write our updated values
     fs.writeFileSync(filePath, JSON.stringify(jsonFileParsed));
+
+    return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 };
 
 module.exports = updateScaffoldJson;

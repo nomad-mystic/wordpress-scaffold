@@ -3,15 +3,18 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackNotifier = require('webpack-notifier');
 const babelConfig = require('./babel.config.json');
 const TerserPlugin = require('terser-webpack-plugin');
-const themeName = 'THEME_NAME';
+const fs = require('fs');
+
+const config =  JSON.parse(fs.readFileSync(path.resolve(__dirname, 'internal/project/project-config.json'), 'utf-8'));
+const activeTheme = config['active-theme'];
 
 module.exports = () => {
     let config = {
         mode: process.env.NODE_ENV,
         entry: {
             main: [
-                path.resolve(__dirname, `wp-content/themes/${themeName}/src/js/main.js`),
-                path.resolve(__dirname, `wp-content/themes/${themeName}/src/scss/main.scss`),
+                path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/js/main.js`),
+                path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/scss/main.scss`),
             ],
         },
         optimization: {
@@ -23,8 +26,8 @@ module.exports = () => {
             ],
         },
         output: {
-            path: path.resolve(__dirname, `wp-content/themes/${themeName}/`),
-            publicPath: `wp-content/themes/${themeName}/`,
+            path: path.resolve(__dirname, `wp-content/themes/${activeTheme}/`),
+            publicPath: `wp-content/themes/${activeTheme}/`,
             filename: 'js/[name].js',
         },
         module: {
@@ -75,7 +78,7 @@ module.exports = () => {
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // all options are optional
-                filename: `./wp-content/themes/${themeName}/css/[name].css`,
+                filename: `./wp-content/themes/${activeTheme}/css/[name].css`,
                 chunkFilename: '[id].css',
                 ignoreOrder: false, // Enable to remove warnings about conflicting order
             }),

@@ -67,8 +67,6 @@ inquirer
     const capAndSnakeCaseTheme = capAndSnakeCaseString(safeThemeName);
     const pascalThemeName = pascalCaseString(safeThemeName);
 
-    console.log(safeThemeName);
-
     let configUpdates = {
         'active-theme': safeThemeName,
         'active-theme-path': newThemePath,
@@ -86,30 +84,30 @@ inquirer
     }
 
     // Update our config before we scaffold theme, so we can use it in our scaffold functions
-    updateScaffoldJson(configFilePath, configUpdates);
+    const projectConfig = updateScaffoldJson(configFilePath, configUpdates);
 
-    // // Build the theme
-    // scaffoldTheme(answers, {
-    //     themeName,
-    //     themesPath,
-    //     newThemePath,
-    //     themeDescription,
-    //     frontEndFramework,
-    //     safeThemeName,
-    //     capAndSnakeCaseTheme,
-    //     pascalThemeName,
-    // });
-    //
-    // scaffoldThemeRoot(answers, {
-    //     themeName,
-    //     themesPath,
-    //     newThemePath,
-    //     themeDescription,
-    //     frontEndFramework,
-    //     safeThemeName,
-    //     capAndSnakeCaseTheme,
-    //     pascalThemeName,
-    // });
+    // Build the theme
+    scaffoldTheme(answers, {
+        themeName,
+        themesPath,
+        newThemePath,
+        themeDescription,
+        frontEndFramework,
+        safeThemeName,
+        capAndSnakeCaseTheme,
+    });
+
+    scaffoldThemeRoot(answers, {
+        themeName,
+        themesPath,
+        newThemePath,
+        themeDescription,
+        frontEndFramework,
+        safeThemeName,
+        capAndSnakeCaseTheme,
+        projectName: projectConfig['project-name'],
+        projectNamespace: projectConfig['project-namespace'],
+    });
 
     // Let the user know it has been created
     console.log(colors.green(`Your ${themeName} theme has been scaffold.`));
