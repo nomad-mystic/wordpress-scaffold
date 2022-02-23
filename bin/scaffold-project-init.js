@@ -71,7 +71,7 @@ inquirer
 
     // If we didn't set up the wp-config.php we can't install WordPress
     if (answers.databaseSetup) {
-        shell.exec(`wp core install --url=${answers.siteUrl} --title=${answers.siteTitle} --admin_user=${answers.siteAdminUser} --admin_password=${answers.siteAdminPassword} --admin_email=${answers.adminEmail}`)
+        shell.exec(`wp core install --url="${answers.siteUrl}" --title="${answers.siteTitle}" --admin_user="${answers.siteAdminUser}" --admin_password="${answers.siteAdminPassword}" --admin_email="${answers.adminEmail}"`)
     }
 
     // Let the user know it has been created
