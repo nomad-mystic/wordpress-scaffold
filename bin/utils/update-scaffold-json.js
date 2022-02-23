@@ -31,13 +31,16 @@ const updateScaffoldJson = (filePath, json) => {
         'database-name',
         'database-password',
         'database-username',
+        'site-admin-password',
+        'site-admin-user',
+        'admin-email',
     ];
 
     // Update our config file
     let jsonFile = fs.readFileSync(filePath, 'utf-8');
 
     if (!jsonFile || typeof jsonFile === 'undefined' || jsonFile === '') {
-        return;
+        return '';
     }
 
     let jsonFileParsed = JSON.parse(jsonFile);

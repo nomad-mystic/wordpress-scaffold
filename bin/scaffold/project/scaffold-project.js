@@ -40,6 +40,9 @@ const scaffoldProject = (answers, config, salts) => {
         // Copy over and updates our values
         fse.copySync(`${path.join(__dirname + '../../../../scaffolding/project')}`, whereAmI(), {overwrite: false});
 
+        // Copy over and updates our values
+        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/project')}`, whereAmI(), {overwrite: false});
+
         if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
             const configDatabaseObjects = [
                 {

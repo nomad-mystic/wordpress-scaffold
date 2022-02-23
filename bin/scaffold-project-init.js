@@ -23,10 +23,6 @@ const {
     camelCaseToDash,
 } = require('./utils/string-utils');
 
-console.log(whereAmI());
-// console.log(isWordpressInstall());
-// console.log(getThemesFolderPath());
-
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI
 if (!shell.which('php')) {
@@ -64,9 +60,15 @@ inquirer
 
     const config = updateScaffoldJson(filePath, answers);
 
+    // Manually update these properties
+    updateScaffoldJson(filePath, {
+        'absolute-project-folder': whereAmI(),
+    });
+
     // Hit the WordPress API for our site's salts
     let salts = await apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
 
+    // Update our files
     scaffoldProject(answers, config, salts);
 
     // If we didn't set up the wp-config.php we can't install WordPress

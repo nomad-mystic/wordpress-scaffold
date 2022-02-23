@@ -23,10 +23,6 @@ const {
     pascalCaseString
 } = require('./utils/string-utils');
 
-// console.log(whereAmI());
-// console.log(isWordpressInstall());
-// console.log(getThemesFolderPath());
-
 // Enable debug mode?
 const isDebugMode = !!process.env?.DEBUG;
 

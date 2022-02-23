@@ -1,7 +1,8 @@
-const {whereAmI} = require("./path-utils");
-const fs = require("fs");
+const {whereAmI} = require('./path-utils');
+const fs = require('fs');
 
 /**
+ * @description Grab an internal config file
  *
  * @param  config
  * @returns {{}|any}
