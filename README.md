@@ -25,7 +25,7 @@
 ```shell
 $ sudo mysql
 $ CREATE DATABASE databasename;
-$ GRANT ALL PRIVILEGES ON databasename.* TO "wordpressusername"@"hostname" IDENTIFIED BY "password";
+$ GRANT ALL PRIVILEGES ON databasename.* TO "wordpressusername"@"localhost" IDENTIFIED BY "password";
 $ FLUSH PRIVILEGES;
 $ EXIT;
 ```

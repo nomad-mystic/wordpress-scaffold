@@ -61,12 +61,11 @@ define( 'DB_COLLATE', '');
  */
 $table_prefix = 'wp_';
 
-
 /**
  * For our local environments
  */
-if (file_exists('wp-config-local.php')) {
-    require_once('wp-config-local.php');
+if (file_exists(dirname(__FILE__) . '/wp-config-local.php')) {
+    require_once(dirname(__FILE__) . '/wp-config-local.php');
 }
 
 /**
@@ -81,11 +80,11 @@ if (file_exists('wp-config-local.php')) {
  *
  * @link https://wordpress.org/support/article/debugging-in-wordpress/
  */
-define( 'WP_DEBUG', false );
+if (!defined( 'WP_DEBUG')) {
+    define('WP_DEBUG', false);
+}
 
 /* Add any custom values between this line and the "stop editing" line. */
-
-
 
 /* That's all, stop editing! Happy publishing. */
 
