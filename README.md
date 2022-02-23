@@ -58,6 +58,7 @@ $ wp core install --url=SITE_URL --title=SITE_TITLE --admin_user=ADMIN_USER --ad
   * Initialize with JSON config (theme-root/config)
   * Add base on init and append while adding classes
   * PROJECT_NAME for composer and JSON config (PascalCase)
+* NPM does not publish .gitignore fix this when you generate
   
 ### Development
 * Mention .env creation

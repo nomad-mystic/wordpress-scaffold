@@ -64,6 +64,11 @@ inquirer
 
     const config = updateScaffoldJson(filePath, answers);
 
+    // If we didn't set up the wp-config.php we can't install WordPress
+    if (answers.databaseSetup) {
+        shell.exec(`wp core install --url=${answers.siteUrl} --title=${answers.siteTitle} --admin_user=${answers.siteAdminUser} --admin_password=${answers.siteAdminPassword} --admin_email=${answers.adminEmail}`)
+    }
+
     // Hit the WordPress API for our site's salts
     let salts = await apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
 

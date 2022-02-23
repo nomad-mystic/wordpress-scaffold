@@ -64,6 +64,37 @@ const projectOptions = [
             return 'Please enter a database username.';
         },
     },
+    {
+        type: 'input',
+        name: 'siteTitle',
+        message: 'What is the title for the site?',
+        default: 'Example Site',
+    },
+    {
+        type: 'input',
+        name: 'siteAdminUser',
+        message: 'What is the admin username for the site?',
+        default: 'example@example.com',
+    },
+    {
+        type: 'input',
+        name: 'adminEmail',
+        message: 'What is the admin email for the site?',
+        default: 'example@example.com',
+    },
+    {
+        type: 'password',
+        name: 'siteAdminPassword',
+        message: 'What is the admin user\'s password for the site?',
+        default: '',
+        validate(value) {
+            if (value !== '') {
+                return true;
+            }
+
+            return 'Please enter your admin user\'s password.';
+        },
+    },
 ];
 
 let jsonFileParsed = getInternalConfig('project/project-config.json');
