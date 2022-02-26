@@ -54,7 +54,6 @@ inquirer
 .prompt(projectOptions)
 .then(async (answers) => {
     // Build the core files
-    // shell.exec('wp core download --quiet');
     shell.exec('wp core download');
 
     const filePath = `${whereAmI()}/internal/project/project-config.json`;
@@ -77,6 +76,7 @@ inquirer
         shell.exec(`wp core install --url="${answers.siteUrl}" --title="${answers.siteTitle}" --admin_user="${answers.siteAdminUser}" --admin_password="${answers.siteAdminPassword}" --admin_email="${answers.adminEmail}"`)
     }
 
+    // Init a git repo if we don't have one already
     if (shell.which('git') && !fs.existsSync('.git')) {
         shell.exec('git init');
     }

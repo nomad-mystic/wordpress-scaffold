@@ -2,7 +2,7 @@ const {
     getInternalConfig,
 } = require('../utils/get-config');
 
-require('../utils/scaffold-internal').scaffoldInternal();
+require('../scaffold/common/scaffold-internal').scaffoldInternal();
 
 /**
  * @description Interactive CLI options for building the theme

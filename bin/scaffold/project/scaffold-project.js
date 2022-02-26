@@ -11,7 +11,7 @@ const {
 
 const {
     updateScaffoldFile,
-} = require('../../utils/update-scaffold-file');
+} = require('../common/update-scaffold-file');
 
 /**
  * @description
@@ -40,8 +40,16 @@ const scaffoldProject = (answers, config, salts) => {
         // Copy over and updates our values
         fse.copySync(`${path.join(__dirname + '../../../../scaffolding/project')}`, whereAmI(), {overwrite: false});
 
-        // Copy over and updates our values
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/project')}`, whereAmI(), {overwrite: false});
+        // Our common root files
+        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/common/root')}`, whereAmI(), {overwrite: false});
+
+        // NPM doesn't like to publish the .gitignore file, so handle that here
+        if (fs.existsSync(`${whereAmI()}/.gitignores`)) {
+            const oldPath = path.join(whereAmI(), '/.gitignores');
+            const newPath = path.join(whereAmI(), '/.gitignore');
+
+            fs.renameSync(oldPath, newPath)
+        }
 
         if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
             const configDatabaseObjects = [

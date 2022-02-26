@@ -1,7 +1,7 @@
 // Community modules
 const fse = require('fs-extra');
 const path = require('path');
-const fs = require('fs-extra');
+const fs = require('fs');
 const colors = require('colors');
 
 // Package Modules
@@ -13,7 +13,7 @@ const {
 
 const {
     updateScaffoldFile,
-} = require('../../utils/update-scaffold-file');
+} = require('../common/update-scaffold-file');
 
 /**
  * @description
@@ -49,13 +49,24 @@ const scaffoldThemeRoot = (answers, {
         let updateObjectsArray = [];
 
         // Create our checks before we start the copy process
-        const composerExists = fs.pathExistsSync(`${whereAmI()}/composer.json`);
-        const packageExists = fs.pathExistsSync(`${whereAmI()}/package.json`);
+        const composerExists = fse.pathExistsSync(`${whereAmI()}/composer.json`);
+        const packageExists = fse.pathExistsSync(`${whereAmI()}/package.json`);
 
         // Default to scaffold /theme-root/root
         fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/root')}`, whereAmI(), {overwrite: false});
 
         fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/front-end-scaffolding')}`, whereAmI(), {overwrite: false});
+
+        // Our common root files
+        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/common/root')}`, whereAmI(), {overwrite: false});
+
+        // NPM doesn't like to publish the .gitignore file, so handle that here
+        if (fs.existsSync(`${whereAmI()}/.gitignores`)) {
+            const oldPath = path.join(whereAmI(), '/.gitignores');
+            const newPath = path.join(whereAmI(), '/.gitignore');
+
+            fs.renameSync(oldPath, newPath);
+        }
 
         // Check if the composer.json exists and let the user know
         if (composerExists) {

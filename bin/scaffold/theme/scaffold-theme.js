@@ -19,7 +19,7 @@ const {
 
 const {
     updateScaffoldFile,
-} = require('../../utils/update-scaffold-file');
+} = require('../common/update-scaffold-file');
 
 /**
  * @description Based on user input scaffold our theme
@@ -92,7 +92,7 @@ const scaffoldTheme = (answers, {
         for (let update = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
-                console.log(updateObjectsArray[update].fileName);
+                // console.log(updateObjectsArray[update].fileName);
 
                 updateScaffoldFile(
                     newThemePath,

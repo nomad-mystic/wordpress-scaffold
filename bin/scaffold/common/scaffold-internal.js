@@ -4,7 +4,7 @@ const path = require('path');
 
 const {
     whereAmI,
-} = require('../utils/path-utils');
+} = require('../../utils/path-utils');
 
 /**
  * @description Make sure we have our internal folder, if not copy it over

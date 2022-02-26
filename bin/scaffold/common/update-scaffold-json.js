@@ -18,7 +18,7 @@ const {
  * @return {string}
  */
 const updateScaffoldJson = (filePath, json) => {
-    require('../utils/scaffold-internal').scaffoldInternal();
+    require('./scaffold-internal').scaffoldInternal();
 
     // Setup our arrays for json update logic
     const dashedValues = [
