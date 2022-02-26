@@ -9,7 +9,7 @@ const colors = require('colors');
 const themeOptions = require('./config/theme-options');
 const scaffoldTheme = require('./scaffold/theme/scaffold-theme');
 const scaffoldThemeRoot = require('./scaffold/theme/scaffold-root');
-const updateScaffoldJson = require("./utils/update-scaffold-json");
+const updateScaffoldJson = require('./scaffold/common/update-scaffold-json');
 
 const {
     whereAmI,

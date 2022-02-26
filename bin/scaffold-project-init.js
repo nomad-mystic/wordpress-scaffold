@@ -10,7 +10,7 @@ const fs = require('fs');
 // Package modules
 const projectOptions = require('./config/project-options');
 const scaffoldProject = require('./scaffold/project/scaffold-project');
-const updateScaffoldJson = require('./utils/update-scaffold-json');
+const updateScaffoldJson = require('./scaffold/common/update-scaffold-json');
 
 const {
     apiGetText,

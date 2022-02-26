@@ -15,7 +15,7 @@ const scaffoldInternal = () => {
 
     if (!fs.existsSync(`${whereAmI()}/internal`)) {
 
-        fse.copySync(`${path.join(__dirname + '../../../scaffolding/internal')}`, `${whereAmI()}/internal`, {overwrite: false});
+        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/internal')}`, `${whereAmI()}/internal`, {overwrite: false});
 
     }
 

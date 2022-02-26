@@ -4,11 +4,11 @@ const fs = require('fs');
 // Package modules
 const {
     camelCaseToDash, addDashesToString, pascalCaseString,
-} = require('./string-utils');
+} = require('../../utils/string-utils');
 
 const {
     whereAmI,
-} = require('./path-utils');
+} = require('../../utils/path-utils');
 
 /**
  * @description Updates our internal JSON with properties for use later
