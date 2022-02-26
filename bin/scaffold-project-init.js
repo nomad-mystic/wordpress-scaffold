@@ -5,6 +5,7 @@ require('dotenv').config();
 const inquirer = require('inquirer');
 const colors = require('colors');
 const shell = require('shelljs');
+const fs = require('fs');
 
 // Package modules
 const projectOptions = require('./config/project-options');
@@ -74,6 +75,10 @@ inquirer
     // If we didn't set up the wp-config.php we can't install WordPress
     if (answers.databaseSetup) {
         shell.exec(`wp core install --url="${answers.siteUrl}" --title="${answers.siteTitle}" --admin_user="${answers.siteAdminUser}" --admin_password="${answers.siteAdminPassword}" --admin_email="${answers.adminEmail}"`)
+    }
+
+    if (shell.which('git') && !fs.existsSync('.git')) {
+        shell.exec('git init');
     }
 
     // Let the user know it has been created
