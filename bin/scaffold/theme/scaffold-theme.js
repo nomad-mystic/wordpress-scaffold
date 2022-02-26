@@ -67,11 +67,6 @@ const scaffoldTheme = (answers, {
                 updateString: capAndSnakeCaseTheme,
             },
             {
-                fileName: 'functions.php',
-                stringToUpdate: 'THEME_VALUE',
-                updateString: safeThemeName,
-            },
-            {
                 fileName: 'style.css',
                 stringToUpdate: 'THEME_VALUE',
                 updateString: safeThemeName,

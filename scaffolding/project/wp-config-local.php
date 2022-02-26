@@ -1,5 +1,7 @@
 <?php
 
+// Maybe grab our values from the project-config?
+
 define('WP_CACHE', false);
 
 define('WP_DEBUG', true);

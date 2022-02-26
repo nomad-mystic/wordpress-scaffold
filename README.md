@@ -15,7 +15,7 @@ and initializes a git repo if not one already.
 
 `$ ws-scaffold-plugin` (Future Release)
 
-`$ ws-scaffold-theme` (Testing)
+`$ ws-scaffold-theme` (Building features)
 
 `$ ws-scaffold-plugin-add` (Future Release)
 

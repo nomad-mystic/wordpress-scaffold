@@ -81,7 +81,7 @@ const scaffoldThemeRoot = (answers, {
                 {
                     fileName: 'composer.json',
                     stringToUpdate: 'THEME_NAME',
-                    updateString: projectName,
+                    updateString: safeThemeName,
                 },
                 {
                     fileName: 'composer.json',

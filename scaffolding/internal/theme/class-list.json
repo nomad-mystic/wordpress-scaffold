@@ -1,29 +1,8 @@
 [
     {
-        "namespace": "base",
-        "init": [
-            "ClassForInit"
-        ],
-        "admin_init": [
-            "ClassForAdminInit"
-        ],
+        "namespace": "ScaffoldProjectBase",
         "classes": [
-            "EnqueueAssets"
-        ]
-    },
-    {
-        "namespace": "post-types",
-        "init": [
-            {
-                "class-name": "NewPostType"
-            }
-        ],
-        "admin_init": [{}]
-    },
-    {
-        "namespace": "post-types/admin",
-        "admin_init": [
-            "NewPostTypeAdmin"
+            "EnqueueScriptsAndStyles"
         ]
     }
 ]

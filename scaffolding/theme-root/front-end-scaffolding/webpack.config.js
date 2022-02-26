@@ -16,6 +16,10 @@ module.exports = () => {
                 path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/js/main.js`),
                 path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/scss/main.scss`),
             ],
+            admin: [
+                path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/js/admin.js`),
+                path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/scss/admin.scss`),
+            ],
         },
         optimization: {
             minimize: process.env.NODE_ENV === 'production',
