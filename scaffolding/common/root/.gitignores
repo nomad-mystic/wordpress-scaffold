@@ -8,6 +8,7 @@ wp-content/plugins/hello.php
 
 # ignore specific themes
 wp-content/themes/twenty*/
+wp-config-local.php
 
 # ignore log files and databases
 *.log
