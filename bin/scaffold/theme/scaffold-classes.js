@@ -3,6 +3,7 @@ const fse = require('fs-extra');
 const path = require('path');
 const fs = require('fs');
 const colors = require('colors');
+const glob = require('glob');
 
 // Package Modules
 const {
@@ -52,6 +53,35 @@ const updateScaffoldClasses = (answers, {
         const composerExists = fse.pathExistsSync(`${whereAmI()}/composer.json`);
         const themeClassListExists = fse.pathExistsSync(`${whereAmI()}/internal/theme/class-list.json`);
 
+        const phpFiles = glob.sync(`${newThemePath}/classes/**/*.php`, {
+            nodir: true,
+        });
+
+        let classFileUpdates = [];
+
+        // For each of the classes we scaffold replace their namespace names
+        if (phpFiles && typeof phpFiles !== 'undefined' && phpFiles.length > 0) {
+            for (let classPath = 0; classPath < phpFiles.length; classPath++) {
+
+                if (phpFiles[classPath] && typeof phpFiles[classPath] !== 'undefined') {
+                    let classObject = {};
+
+                    // Extract the information we need
+                    const afterLastSlash = phpFiles[classPath].substring(phpFiles[classPath].lastIndexOf('/') + 1);
+                    const beforeLastSlash = phpFiles[classPath].match(/^(.*[\\\/])/);
+
+                    classObject.updatePath = beforeLastSlash[0].slice(0, -1);
+                    classObject.fileName = afterLastSlash;
+                    classObject.stringToUpdate = 'PASCAL_NAME';
+                    classObject.updateString = projectNamespace;
+
+                    classFileUpdates.push(classObject);
+                }
+            }
+
+            updateObjectsArray.push(...classFileUpdates);
+        }
+
         // Let the user know?
         if (themeClassListExists) {
             const classListObjects = [
@@ -65,9 +95,6 @@ const updateScaffoldClasses = (answers, {
 
             updateObjectsArray.push(...classListObjects);
         }
-
-        // console.log(themeClassListExists);
-        // console.log(updateObjectsArray);
 
         // Update our files based on object properties
         for (let update = 0; update < updateObjectsArray.length; update++) {
