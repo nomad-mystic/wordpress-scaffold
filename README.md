@@ -53,7 +53,7 @@ public function some_filter_method(string $content): string
 }
 ```
 
-##### Filter:
+##### Action:
 ```PHP
 /**
  * @description This enqueues scripts
@@ -67,7 +67,7 @@ public function some_action_method(): void
 }
 ```
 
-##### With Priority:
+##### Action with Priority:
 ```PHP
 /**
  * @description This enqueues scripts
