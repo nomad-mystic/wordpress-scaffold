@@ -9,6 +9,7 @@ const colors = require('colors');
 const themeOptions = require('./config/theme-options');
 const scaffoldTheme = require('./scaffold/theme/scaffold-theme');
 const scaffoldThemeRoot = require('./scaffold/theme/scaffold-root');
+const scaffoldClasses = require('./scaffold/theme/scaffold-classes');
 const updateScaffoldJson = require('./scaffold/common/update-scaffold-json');
 
 const {
@@ -94,6 +95,18 @@ inquirer
     });
 
     scaffoldThemeRoot(answers, {
+        themeName,
+        themesPath,
+        newThemePath,
+        themeDescription,
+        frontEndFramework,
+        safeThemeName,
+        capAndSnakeCaseTheme,
+        projectName: projectConfig['project-name'],
+        projectNamespace: projectConfig['project-namespace'],
+    });
+
+    scaffoldClasses(answers, {
         themeName,
         themesPath,
         newThemePath,

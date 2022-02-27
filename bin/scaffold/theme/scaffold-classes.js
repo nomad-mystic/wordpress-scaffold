@@ -34,7 +34,7 @@ const {
  *
  * @return void
  */
-const scaffoldThemeRoot = (answers, {
+const scaffoldClasses = (answers, {
     themeName,
     themesPath,
     newThemePath,
@@ -166,4 +166,4 @@ const scaffoldThemeRoot = (answers, {
     }
 };
 
-module.exports = scaffoldThemeRoot;
+module.exports = scaffoldClasses;

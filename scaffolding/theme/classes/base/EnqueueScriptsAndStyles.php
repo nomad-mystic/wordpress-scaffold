@@ -1,6 +1,6 @@
 <?php
 
-namespace ScaffoldProjectBase;
+namespace PASCAL_NAMEBase;
 
 if (!defined('ABSPATH')) {
     exit;
@@ -8,7 +8,7 @@ if (!defined('ABSPATH')) {
 
 /**
  * Class EnqueueScriptsAndStyles
- * @package ScaffoldProjectBase
+ * @package PASCAL_NAMEBase
  */
 class EnqueueScriptsAndStyles
 {

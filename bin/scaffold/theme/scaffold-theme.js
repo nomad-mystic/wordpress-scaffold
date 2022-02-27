@@ -36,7 +36,6 @@ const {
  * @param {boolean} frontEndFramework
  * @param {string} safeThemeName
  * @param {string} capAndSnakeCaseTheme
- * @param {string} pascalThemeName
  *
  * @return void
  */

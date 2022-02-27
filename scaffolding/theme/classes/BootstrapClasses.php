@@ -1,6 +1,6 @@
 <?php
 
-namespace ScaffoldProject;
+namespace PASCAL_NAME;
 
 use ReflectionClass;
 use ReflectionException;
@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 
 /**
  * Class BootstrapClasses
- * @package ScaffoldProject
+ * @package PASCAL_NAME
  */
 class BootstrapClasses
 {
@@ -101,13 +101,12 @@ class BootstrapClasses
 
             foreach ($methods as $method) {
                 if (isset($method) && !empty($method)) {
-                    //  var_dump($method->getName());
                     $method_name = $method->getName();
 
                     // Get method docBlocks string
                     $doc_blocks = $reflector->getMethod($method_name)->getdoccomment();
 
-                    // Define the regular expression pattern to use for string matching
+                    // Define the regular expression pattern to use for string matching (Checking for @ in docBlock)
                     $pattern = "#(@[a-zA-Z]+\s*[a-zA-Z0-9, ()_].*)#";
                     $matches = null;
 
@@ -115,24 +114,27 @@ class BootstrapClasses
                     preg_match_all($pattern, $doc_blocks, $matches, PREG_PATTERN_ORDER);
 
                     // Make sure we have match with @ in the docBlock
-                    if (isset($matches[0]) && !empty($matches[0])) {
+                    if (isset($matches[0]) && !empty($matches[0]) && is_array($matches[0])) {
+
+                        // We need to check for priority in the doc blocks first then apply theme to the action or filter
+                        $priority = 10;
+                        $priority_value = $this->check_for_property('@priority', $matches[0]);
+
+                        if (!empty($priority_value)) {
+                            $priority_level = preg_split("/[\s,]+/", $priority_value);
+
+                            $priority = (int) $priority_level[1];
+                        }
+
                         // Check for our desired properties
                         foreach ($matches[0] as $block_property) {
                             if (isset($block_property) && !empty($block_property)) {
-                                $priority = 10;
-
                                 // Check for filter or action
                                 preg_match('/@add_action/', $block_property, $action_found);
                                 preg_match('/@add_filter/', $block_property, $filter_found);
-                                preg_match('/@priority/', $block_property, $priority_found);
-
-//                                if (isset($priority_found) && !empty($priority_found)) {
-//
-//                                }
 
                                 // Here we go
                                 if (isset($action_found) && !empty($action_found)) {
-
                                     // Grab the hook name
                                     $actions_name = preg_split("/[\s,]+/", $block_property);
 
@@ -148,13 +150,33 @@ class BootstrapClasses
                                     // Do the filter
                                     add_filter($filter_name[1], [$class, $method_name], $priority);
                                 }
-                            }
-                        }
-                    }
-                }
+                            } // End sanity $block_property
+                        } // End foreach $block_property
+                    } // End sanity check
+                } // End sanity check
+            } // End foreach $methods
+        } // End $methods
+    } // End Method
+
+    /**
+     * @description array_search with partial matches
+     *
+     * @param string $needle
+     * @param $haystack
+     * @return bool|string
+     */
+    private function check_for_property(string $needle, $haystack)
+    {
+        foreach ($haystack as $key => $item) {
+            if (isset($item) && strpos($item, $needle) !== false) {
+                return $item;
             }
         }
+
+        return false;
     }
 }
 
-new BootstrapClasses();
+if (class_exists('PASCAL_NAME\BootstrapClasses')) {
+    new BootstrapClasses();
+}

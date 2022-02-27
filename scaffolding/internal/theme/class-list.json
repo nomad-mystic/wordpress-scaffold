@@ -1,8 +1,46 @@
 [
     {
-        "namespace": "ScaffoldProjectBase",
+        "namespace": "PASCAL_NAME",
+        "classes": [
+            "BootstrapClasses"
+        ]
+    },
+    {
+        "namespace": "PASCAL_NAMEBase",
         "classes": [
             "EnqueueScriptsAndStyles"
         ]
+    },
+    {
+        "namespace": "PASCAL_NAMETraits",
+        "classes": []
+    },
+    {
+        "namespace": "PASCAL_NAMEUtils",
+        "classes": []
+    },
+    {
+        "namespace": "PASCAL_NAMEInterfaces",
+        "classes": []
+    },
+    {
+        "namespace": "PASCAL_NAMEShortcodes",
+        "classes": []
+    },
+    {
+        "namespace": "PASCAL_NAMEPostTypes",
+        "classes": []
+    },
+    {
+        "namespace": "PASCAL_NAMETaxonomies",
+        "classes": []
+    },
+    {
+        "namespace": "PASCAL_NAMEPostTypesAdmin",
+        "classes": []
+    },
+    {
+        "namespace": "PASCAL_NAMERest",
+        "classes": []
     }
 ]
