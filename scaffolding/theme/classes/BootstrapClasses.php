@@ -11,8 +11,6 @@ if (!defined('ABSPATH')) {
 
 /**
  * Class BootstrapClasses
- * @todo Add priority docBlock property?
- *
  * @package ScaffoldProject
  */
 class BootstrapClasses
@@ -116,33 +114,39 @@ class BootstrapClasses
                     // Perform the regular expression on the string provided
                     preg_match_all($pattern, $doc_blocks, $matches, PREG_PATTERN_ORDER);
 
+                    // Make sure we have match with @ in the docBlock
                     if (isset($matches[0]) && !empty($matches[0])) {
+                        // Check for our desired properties
                         foreach ($matches[0] as $block_property) {
                             if (isset($block_property) && !empty($block_property)) {
+                                $priority = 10;
 
                                 // Check for filter or action
                                 preg_match('/@add_action/', $block_property, $action_found);
                                 preg_match('/@add_filter/', $block_property, $filter_found);
+                                preg_match('/@priority/', $block_property, $priority_found);
+
+//                                if (isset($priority_found) && !empty($priority_found)) {
+//
+//                                }
 
                                 // Here we go
                                 if (isset($action_found) && !empty($action_found)) {
 
                                     // Grab the hook name
-                                    $keywords = preg_split("/[\s,]+/", $block_property);
+                                    $actions_name = preg_split("/[\s,]+/", $block_property);
 
                                     // Do the action
-                                    add_action($keywords[1], [$class, $method_name]);
+                                    add_action($actions_name[1], [$class, $method_name], $priority);
                                 }
 
                                 // Here we go
                                 if (isset($filter_found) && !empty($filter_found)) {
-                                    //  var_dump($filter_found);
-
                                     // Grab the hook name
-                                    $keywords = preg_split("/[\s,]+/", $block_property);
+                                    $filter_name = preg_split("/[\s,]+/", $block_property);
 
                                     // Do the filter
-                                    add_filter($keywords[1], [$class, $method_name]);
+                                    add_filter($filter_name[1], [$class, $method_name], $priority);
                                 }
                             }
                         }

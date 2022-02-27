@@ -17,7 +17,7 @@ const {
 } = require('./utils/rest-utils');
 
 const {
-    whereAmI,
+    whereAmI, isWordpressInstall,
 } = require('./utils/path-utils');
 
 const {
@@ -53,8 +53,21 @@ if (!shell.which('wp')) {
 inquirer
 .prompt(projectOptions)
 .then(async (answers) => {
-    // Build the core files
-    shell.exec('wp core download');
+    // Enable debug mode?
+    const isDebugMode = !!process.env?.DEBUG;
+    const wordPressDebugPath = !!process.env?.WORDPRESS_PATH;
+
+    // Change the path for download to our "WordPress" working directory
+    if (isDebugMode && wordPressDebugPath) {
+
+        // Build the core files
+        shell.exec(`wp core download --path=${process.env.WORDPRESS_PATH}`);
+
+    } else {
+        // Build the core files
+        shell.exec('wp core download');
+    }
+
 
     const filePath = `${whereAmI()}/internal/project/project-config.json`;
 
@@ -78,7 +91,10 @@ inquirer
 
     // Init a git repo if we don't have one already
     if (shell.which('git') && !fs.existsSync('.git')) {
-        shell.exec('git init');
+        // We don't want to create a git repo if we are debugging
+        if (!isDebugMode && !wordPressDebugPath) {
+            shell.exec('git init');
+        }
     }
 
     // Let the user know it has been created

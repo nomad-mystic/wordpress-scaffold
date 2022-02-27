@@ -8,6 +8,7 @@ const { random } = require('lodash');
 
 // Enable debug mode?
 const isDebugMode = !!process.env?.DEBUG;
+const wordPressDebugPath = !!process.env?.WORDPRESS_PATH;
 
 /**
  * @description Gets the current path
@@ -16,7 +17,7 @@ const isDebugMode = !!process.env?.DEBUG;
  */
 const whereAmI = function() {
 
-    if (isDebugMode) {
+    if (isDebugMode && wordPressDebugPath) {
 
         return path.resolve(process.env.WORDPRESS_PATH);
 

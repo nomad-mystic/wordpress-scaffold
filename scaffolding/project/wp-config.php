@@ -61,6 +61,7 @@ define( 'DB_COLLATE', '');
  */
 $table_prefix = 'wp_';
 
+
 /**
  * For our local environments
  */

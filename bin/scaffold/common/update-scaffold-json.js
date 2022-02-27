@@ -57,7 +57,11 @@ const updateScaffoldJson = (filePath, json) => {
             }
 
             // Update the values
-            if (typeof json[property] !== 'undefined' && dashedValues.includes(dashedProperty)) {
+            if (json[property] &&
+                typeof json[property] !== 'undefined' &&
+                typeof json[property] === 'string' &&
+                dashedValues.includes(dashedProperty)
+            ) {
                 jsonFileParsed[`${dashedProperty}`] = addDashesToString(json[property].trim());
 
                 // Pretty specific maybe refactor and abstract this out?
