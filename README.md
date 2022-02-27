@@ -21,9 +21,71 @@ and initializes a git repo if not one already.
 
 `$ ws-scaffold-theme-add` (Future Release)
 
+### Bootstrap Class and hook reflection
+
+In both the plugin and theme scaffolding I include a BootstrapClasses class which auto 
+instantiates classes it finds in the class-list.json files.
+
+This uses reflection to hook directly into the WordPress hook system. 
+
+#### Doc Properties:
+```PHP
+@add_action 
+@add_filter
+@priority (optional, defaults to 10)
+```
+
+#### Examples: 
+##### Filter:
+```PHP
+/**
+ * @description This filters the content
+ * @add_filter the_content 
+ * 
+ * @param string $content
+ * @return string
+ */
+public function some_filter_method(string $content): string
+{
+    // Do something with content
+    
+    return $content;
+}
+```
+
+##### Filter:
+```PHP
+/**
+ * @description This enqueues scripts
+ * @add_action wp_enqueue_scripts
+ * 
+ * @return void
+ */
+public function some_action_method(): void
+{
+    // Enqueue some scripts
+}
+```
+
+##### With Priority:
+```PHP
+/**
+ * @description This enqueues scripts
+ * @add_action wp_enqueue_scripts
+ * @priority 100
+ * 
+ * @return void
+ */
+public function some_action_method(): void
+{
+    // Enqueue some scripts
+}
+```
+
 ## Setup
-### Create WordPress Project (apache, hosts)
-@todo maybe create command for this?
+### Create WordPress Project
+    User will need to take care of setting up hosts and DNS. Not going to scaffold this because of 
+    varying local setups. i.e. apache/Nginx bare-metal, Docker e.t.c
 
 #### DB Setup 
 ```shell
@@ -42,27 +104,23 @@ $ cd YOUR_PROJECT_NAME
 $ ws-scaffold-project-init
 ```
 
-### Scaffold todos 
-* Create constants 
-* Create inputs
+#### Theme Setup
+```shell
+$ cd YOUR_PROJECT_NAME
+$ ws-scaffold-theme
+```
+
+### Scaffold todos
 * Mention manual config updates
 * Add class creation 
 * Update WebPack, maybe vanilla JS, Vue, React configs?
-* Variables 
-  * Theme
-    * Theme name
-    * NameSpaces for classes 
-    * name for npm 
-    * name for composer
 * Theme
   * Update screenshot 
   * Update favicon.ico? 
 * Classes
   * Initialize with JSON config (theme-root/config)
   * Add base on init and append while adding classes
-  * PROJECT_NAME for composer and JSON config (PascalCase)
-* NPM does not publish .gitignore fix this when you generate
-  
+
 ### Development
 * Mention .env creation
 
