@@ -9,7 +9,7 @@ const colors = require('colors');
 const themeOptions = require('./config/theme-options');
 const scaffoldTheme = require('./scaffold/theme/scaffold-theme');
 const scaffoldThemeRoot = require('./scaffold/theme/scaffold-root');
-const scaffoldClasses = require('./scaffold/theme/scaffold-classes');
+const updateScaffoldClasses = require('./scaffold/theme/scaffold-classes');
 const updateScaffoldJson = require('./scaffold/common/update-scaffold-json');
 
 const {
@@ -62,7 +62,6 @@ inquirer
 
     // Create our string modification
     const capAndSnakeCaseTheme = capAndSnakeCaseString(safeThemeName);
-    const pascalThemeName = pascalCaseString(safeThemeName);
 
     let configUpdates = {
         'active-theme': safeThemeName,
@@ -83,30 +82,30 @@ inquirer
     // Update our config before we scaffold theme, so we can use it in our scaffold functions
     const projectConfig = updateScaffoldJson(configFilePath, configUpdates);
 
-    // Build the theme
-    scaffoldTheme(answers, {
-        themeName,
-        themesPath,
-        newThemePath,
-        themeDescription,
-        frontEndFramework,
-        safeThemeName,
-        capAndSnakeCaseTheme,
-    });
+    // // Build the theme
+    // scaffoldTheme(answers, {
+    //     themeName,
+    //     themesPath,
+    //     newThemePath,
+    //     themeDescription,
+    //     frontEndFramework,
+    //     safeThemeName,
+    //     capAndSnakeCaseTheme,
+    // });
+    //
+    // scaffoldThemeRoot(answers, {
+    //     themeName,
+    //     themesPath,
+    //     newThemePath,
+    //     themeDescription,
+    //     frontEndFramework,
+    //     safeThemeName,
+    //     capAndSnakeCaseTheme,
+    //     projectName: projectConfig['project-name'],
+    //     projectNamespace: projectConfig['project-namespace'],
+    // });
 
-    scaffoldThemeRoot(answers, {
-        themeName,
-        themesPath,
-        newThemePath,
-        themeDescription,
-        frontEndFramework,
-        safeThemeName,
-        capAndSnakeCaseTheme,
-        projectName: projectConfig['project-name'],
-        projectNamespace: projectConfig['project-namespace'],
-    });
-
-    scaffoldClasses(answers, {
+    updateScaffoldClasses(answers, {
         themeName,
         themesPath,
         newThemePath,

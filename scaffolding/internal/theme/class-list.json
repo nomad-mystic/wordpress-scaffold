@@ -1,46 +1,58 @@
 [
     {
         "namespace": "PASCAL_NAME",
+        "path": "",
         "classes": [
             "BootstrapClasses"
         ]
     },
     {
         "namespace": "PASCAL_NAMEBase",
+        "path": "",
         "classes": [
             "EnqueueScriptsAndStyles"
         ]
     },
     {
         "namespace": "PASCAL_NAMETraits",
+        "path": "",
         "classes": []
     },
     {
         "namespace": "PASCAL_NAMEUtils",
-        "classes": []
+        "path": "",
+        "classes": [
+            "TestingHooks"
+        ]
     },
     {
         "namespace": "PASCAL_NAMEInterfaces",
+        "path": "",
         "classes": []
     },
     {
         "namespace": "PASCAL_NAMEShortcodes",
+        "path": "",
         "classes": []
     },
     {
         "namespace": "PASCAL_NAMEPostTypes",
+        "path": "",
         "classes": []
     },
     {
         "namespace": "PASCAL_NAMETaxonomies",
+        "path": "",
         "classes": []
     },
     {
         "namespace": "PASCAL_NAMEPostTypesAdmin",
+        "path": "",
         "classes": []
     },
     {
         "namespace": "PASCAL_NAMERest",
+        "path": "",
         "classes": []
     }
 ]

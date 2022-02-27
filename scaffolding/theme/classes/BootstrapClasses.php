@@ -50,7 +50,12 @@ class BootstrapClasses
                             // var_dump($theme_config[$namespace]->namespace);
                             // var_dump($theme_config[$namespace]->classes[$class]);
 
-                            $this->instantiate_class($theme_config[$namespace]->namespace . "\\" .$theme_config[$namespace]->classes[$class]);
+                            // Don't call this over and over again, no need to create an infinite loop here
+                            if ($theme_config[$namespace]->classes[$class] !== 'BootstrapClasses') {
+
+                                $this->instantiate_class($theme_config[$namespace]->namespace . "\\" . $theme_config[$namespace]->classes[$class]);
+
+                            }
                         }
 
                     } // End for

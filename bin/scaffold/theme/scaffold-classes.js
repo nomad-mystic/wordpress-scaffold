@@ -34,7 +34,7 @@ const {
  *
  * @return void
  */
-const scaffoldClasses = (answers, {
+const updateScaffoldClasses = (answers, {
     themeName,
     themesPath,
     newThemePath,
@@ -50,90 +50,31 @@ const scaffoldClasses = (answers, {
 
         // Create our checks before we start the copy process
         const composerExists = fse.pathExistsSync(`${whereAmI()}/composer.json`);
-        const packageExists = fse.pathExistsSync(`${whereAmI()}/package.json`);
+        const themeClassListExists = fse.pathExistsSync(`${whereAmI()}/internal/theme/class-list.json`);
 
-        // Default to scaffold /theme-root/root
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/root')}`, whereAmI(), {overwrite: false});
-
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/front-end-scaffolding')}`, whereAmI(), {overwrite: false});
-
-        // Our common root files
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/common/root')}`, whereAmI(), {overwrite: false});
-
-        // NPM doesn't like to publish the .gitignore file, so handle that here
-        if (fs.existsSync(`${whereAmI()}/.gitignores`)) {
-            const oldPath = path.join(whereAmI(), '/.gitignores');
-            const newPath = path.join(whereAmI(), '/.gitignore');
-
-            fs.renameSync(oldPath, newPath);
-        }
-
-        // Check if the composer.json exists and let the user know
-        if (composerExists) {
-
-            console.log(colors.red('Looks like you already have a composer.json file, so this will not be scaffolded'));
-            console.log(colors.yellow('See documentation on how to autoload classes with psr-4'));
-            console.log("\n");
-
-        } else {
-
-            const composerObjects = [
+        // Let the user know?
+        if (themeClassListExists) {
+            const classListObjects = [
                 {
-                    fileName: 'composer.json',
-                    stringToUpdate: 'THEME_NAME',
-                    updateString: safeThemeName,
-                },
-                {
-                    fileName: 'composer.json',
+                    updatePath: `${whereAmI()}/internal/theme`,
+                    fileName: 'class-list.json',
                     stringToUpdate: 'PASCAL_NAME',
                     updateString: projectNamespace,
-                },
-                {
-                    fileName: 'composer.json',
-                    stringToUpdate: 'THEME_DESCRIPTION',
-                    updateString: themeDescription,
-                },
+                }
             ];
 
-            updateObjectsArray.push(...composerObjects);
+            updateObjectsArray.push(...classListObjects);
         }
 
-        if (packageExists) {
-
-            console.log(colors.red('Looks like you already have a package.json file, so this will not be scaffolded'));
-            console.log(colors.yellow('See documentation on Node.js'));
-            console.log("\n");
-
-        } else {
-            const npmObjects = [
-                {
-                    fileName: 'package.json',
-                    stringToUpdate: 'THEME_NAME',
-                    updateString: safeThemeName,
-                },
-                {
-                    fileName: 'package.json',
-                    stringToUpdate: 'THEME_DESCRIPTION',
-                    updateString: themeDescription,
-                },
-                {
-                    fileName: 'webpack.config.js',
-                    stringToUpdate: 'PROJECT_NAME',
-                    updateString: projectName,
-                },
-            ];
-
-            updateObjectsArray.push(...npmObjects);
-        }
+        // console.log(themeClassListExists);
+        // console.log(updateObjectsArray);
 
         // Update our files based on object properties
         for (let update = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
-                // console.log(updateObjectsArray[update].fileName);
-
                 updateScaffoldFile(
-                    whereAmI(),
+                    updateObjectsArray[update].updatePath,
                     updateObjectsArray[update].fileName,
                     {
                         stringToUpdate: updateObjectsArray[update].stringToUpdate,
@@ -143,22 +84,6 @@ const scaffoldClasses = (answers, {
 
             }
         }
-
-        // Check if we scaffolded ether of these files
-        if (!composerExists || !packageExists) {
-            // User messaging
-            console.log(colors.yellow(`Don\'t forget to run these commands in the root of the project`));
-
-            if (!composerExists) {
-                console.log(colors.green('$ composer run-script auto-load-classes'));
-            }
-
-            if (!packageExists) {
-                console.log(colors.green('$ nvm use && npm install'));
-            }
-
-            console.log("\n");
-        }
     } catch (err) {
 
         console.error(err);
@@ -166,4 +91,4 @@ const scaffoldClasses = (answers, {
     }
 };
 
-module.exports = scaffoldClasses;
+module.exports = updateScaffoldClasses;

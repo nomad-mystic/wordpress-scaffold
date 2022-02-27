@@ -14,8 +14,9 @@
             "PASCAL_NAMEInterfaces\\": ["wp-content/themes/THEME_NAME/classes/interfaces/"],
             "PASCAL_NAMEShortcodes\\": ["wp-content/themes/THEME_NAME/classes/shortcodes/"],
             "PASCAL_NAMEPostTypes\\": ["wp-content/themes/THEME_NAME/classes/post-types/"],
-            "PASCAL_NAMETaxonomies\\": ["wp-content/themes/THEME_NAME/classes/post-types/taxonomies"],
+            "PASCAL_NAMEPostTypesTaxonomies\\": ["wp-content/themes/THEME_NAME/classes/post-types/taxonomies"],
             "PASCAL_NAMEPostTypesAdmin\\": ["wp-content/themes/THEME_NAME/classes/post-types/admin"],
+            "PASCAL_NAMEPostTypesUtils\\": ["wp-content/themes/THEME_NAME/classes/post-types/utils"],
             "PASCAL_NAMERest\\": ["wp-content/themes/THEME_NAME/classes/rest/"]
         }
     },
