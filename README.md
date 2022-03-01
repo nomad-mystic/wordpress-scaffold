@@ -115,7 +115,6 @@ $ ws-scaffold-theme
 * Add class creation 
 * Update WebPack, maybe vanilla JS, Vue, React configs?
 * Theme
-  * Update screenshot 
   * Update favicon.ico? 
 * Classes
   * Initialize with JSON config (theme-root/config)
