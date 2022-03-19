@@ -47,8 +47,6 @@ class BootstrapClasses
 
                         // Name sure things don't blow up here
                         if (class_exists($theme_config[$namespace]->namespace . "\\" . $theme_config[$namespace]->classes[$class])) {
-                            // var_dump($theme_config[$namespace]->namespace);
-                            // var_dump($theme_config[$namespace]->classes[$class]);
 
                             // Don't call this over and over again, no need to create an infinite loop here
                             if ($theme_config[$namespace]->classes[$class] !== 'BootstrapClasses') {
@@ -99,7 +97,6 @@ class BootstrapClasses
         $reflector = new ReflectionClass($namespace_and_class);
 
         $methods = $reflector->getMethods();
-        //  var_dump($methods);
 
         // Sanity check and bail early if there aren't any methods
         if (is_array($methods) && !empty($methods)) {

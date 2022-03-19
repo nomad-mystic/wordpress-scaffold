@@ -7,13 +7,15 @@ const {
 /**
  * @description
  *
- * @param {string} string
+ * @param {string} replaceString
  * @return {string}
  */
-const addDashesToString = (string) => {
+const addDashesToString = (replaceString) => {
+    if (typeof replaceString !== 'string' || replaceString === '') {
+        return '';
+    }
 
-    return string.replaceAll(' ', '-').toLowerCase();
-
+    return replaceString.replaceAll(' ', '-').toLowerCase();
 };
 
 /**

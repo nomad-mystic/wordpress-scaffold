@@ -33,7 +33,7 @@ const {
  * @param {string} newThemePath
  * @param {string} themeDescription
  * @param {boolean} addFrontEndBuildTools
- * @param {boolean} frontEndFramework
+ * @param {string} frontEndFramework
  * @param {string} safeThemeName
  * @param {string} capAndSnakeCaseTheme
  *
@@ -55,8 +55,26 @@ const scaffoldTheme = (answers, {
             process.exit(0);
         }
 
+        const scaffoldingDir = '../../../../scaffolding';
+
         // Copy our files over to the themes folder
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme')}`, newThemePath, {overwrite: false});
+        fse.copySync(`${path.join(__dirname + `${scaffoldingDir}/theme`)}`, newThemePath, {overwrite: false});
+
+        // Copy our files over the JS files into the theme
+        fse.copySync(`${path.join(__dirname + `${scaffoldingDir}/theme-root/front-end-scaffolding/${frontEndFramework.toLowerCase()}/js`)}`,
+            `${newThemePath}/src/js`,
+            {
+                overwrite: false
+            }
+        );
+
+        // Copy our files over the theme root files into the theme
+        fse.copySync(`${path.join(__dirname + `${scaffoldingDir}/theme-root/front-end-scaffolding/${frontEndFramework.toLowerCase()}/theme-root`)}`,
+            newThemePath,
+            {
+                overwrite: false
+            }
+        );
 
         // Our updates
         const updateObjectsArray = [
@@ -85,8 +103,6 @@ const scaffoldTheme = (answers, {
         // Update our files based on object properties
         for (let update = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
-
-                // console.log(updateObjectsArray[update].fileName);
 
                 updateScaffoldFile(
                     newThemePath,

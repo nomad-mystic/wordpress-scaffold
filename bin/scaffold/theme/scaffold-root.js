@@ -52,13 +52,16 @@ const scaffoldThemeRoot = (answers, {
         const composerExists = fse.pathExistsSync(`${whereAmI()}/composer.json`);
         const packageExists = fse.pathExistsSync(`${whereAmI()}/package.json`);
 
-        // Default to scaffold /theme-root/root
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/root')}`, whereAmI(), {overwrite: false});
+        const scaffoldingDir = '../../../../scaffolding';
 
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/theme-root/front-end-scaffolding')}`, whereAmI(), {overwrite: false});
+        // Default to scaffold /theme-root/project-root
+        fse.copySync(`${path.join(__dirname + `${scaffoldingDir}/theme-root/project-root`)}`, whereAmI(), {overwrite: false});
 
-        // Our common root files
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/common/root')}`, whereAmI(), {overwrite: false});
+        // Based on which front-end setting they choose scaffold the project root
+        fse.copySync(`${path.join(__dirname + `${scaffoldingDir}/theme-root/front-end-scaffolding/${frontEndFramework.toLowerCase()}/project-root`)}`, whereAmI(), {overwrite: false});
+
+        // Our common root files for project and theme
+        fse.copySync(`${path.join(__dirname + `${scaffoldingDir}/common/root`)}`, whereAmI(), {overwrite: false});
 
         // NPM doesn't like to publish the .gitignore file, so handle that here
         if (fs.existsSync(`${whereAmI()}/.gitignores`)) {

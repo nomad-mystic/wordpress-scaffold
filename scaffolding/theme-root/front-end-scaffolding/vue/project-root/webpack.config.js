@@ -1,9 +1,12 @@
 const path = require('path');
+const fs = require('fs');
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackNotifier = require('webpack-notifier');
-const babelConfig = require('./babel.config.json');
 const TerserPlugin = require('terser-webpack-plugin');
-const fs = require('fs');
+const { VueLoaderPlugin } = require('vue-loader');
+
+const babelConfig = require('./babel.config.json');
 
 const config =  JSON.parse(fs.readFileSync(path.resolve(__dirname, 'internal/project/project-config.json'), 'utf-8'));
 const activeTheme = config['active-theme'];
@@ -68,6 +71,10 @@ module.exports = () => {
                     ],
                 },
                 {
+                    test: /\.vue$/,
+                    loader: 'vue-loader'
+                },
+                {
                     test: /\.js$/,
                     exclude: /(node_modules)/,
                     loader: 'babel-loader',
@@ -86,6 +93,7 @@ module.exports = () => {
                 chunkFilename: '[id].css',
                 ignoreOrder: false, // Enable to remove warnings about conflicting order
             }),
+            new VueLoaderPlugin(),
             new WebpackNotifier({
                 title: 'PROJECT_NAME Build',
                 contentImage: path.join(__dirname, 'webpack-build-icon.png'),

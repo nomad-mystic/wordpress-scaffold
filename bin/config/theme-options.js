@@ -26,7 +26,7 @@ const themeOptions = [
         type: 'list',
         name: 'frontEndFramework',
         message: 'What front-end framework would you like to add?',
-        choices: ['None', 'Vue', 'React'],
+        choices: ['None', 'Vue'],
         default: 'None',
     },
 ];
