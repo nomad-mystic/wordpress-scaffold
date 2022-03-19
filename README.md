@@ -112,14 +112,12 @@ $ ws-scaffold-theme
 
 ### Scaffold todos
 * Mention manual config updates
-* Add class creation 
-* Update WebPack, maybe vanilla JS, Vue, React configs?
+* Add class creation
 * Theme
-  * Update favicon.ico? 
+  * Add includes autoload
 * Classes
-  * Initialize with JSON config (theme-root/config)
   * Add base on init and append while adding classes
-
+  
 ### Development
 * Mention .env creation
 
@@ -129,3 +127,4 @@ $ ws-scaffold-theme
 * https://getcomposer.org/doc/
 * https://vuejs.org/
 * https://sass-lang.com/
+* https://webpack.js.org/
