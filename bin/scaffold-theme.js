@@ -81,29 +81,29 @@ inquirer
 
     // // Update our config before we scaffold theme, so we can use it in our scaffold functions
     const projectConfig = updateScaffoldJson(configFilePath, configUpdates);
-    //
-    // // // Build the theme
-    // scaffoldTheme(answers, {
-    //     themeName,
-    //     themesPath,
-    //     newThemePath,
-    //     themeDescription,
-    //     frontEndFramework,
-    //     safeThemeName,
-    //     capAndSnakeCaseTheme,
-    // });
-    //
-    // scaffoldThemeRoot(answers, {
-    //     themeName,
-    //     themesPath,
-    //     newThemePath,
-    //     themeDescription,
-    //     frontEndFramework,
-    //     safeThemeName,
-    //     capAndSnakeCaseTheme,
-    //     projectName: projectConfig['project-name'],
-    //     projectNamespace: projectConfig['project-namespace'],
-    // });
+
+    // Build the theme
+    scaffoldTheme(answers, {
+        themeName,
+        themesPath,
+        newThemePath,
+        themeDescription,
+        frontEndFramework,
+        safeThemeName,
+        capAndSnakeCaseTheme,
+    });
+
+    scaffoldThemeRoot(answers, {
+        themeName,
+        themesPath,
+        newThemePath,
+        themeDescription,
+        frontEndFramework,
+        safeThemeName,
+        capAndSnakeCaseTheme,
+        projectName: projectConfig['project-name'],
+        projectNamespace: projectConfig['project-namespace'],
+    });
 
     updateScaffoldClasses(answers, {
         themeName,
