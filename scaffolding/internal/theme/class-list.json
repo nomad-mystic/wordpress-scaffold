@@ -2,9 +2,7 @@
     {
         "namespace": "PASCAL_NAME",
         "path": "",
-        "classes": [
-            "BootstrapClasses"
-        ]
+        "classes": []
     },
     {
         "namespace": "PASCAL_NAMEBase",

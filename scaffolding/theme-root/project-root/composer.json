@@ -7,17 +7,17 @@
     },
     "autoload": {
         "psr-4": {
-            "PASCAL_NAME\\": ["wp-content/themes/THEME_NAME/classes/"],
-            "PASCAL_NAMEBase\\": ["wp-content/themes/THEME_NAME/classes/base/"],
-            "PASCAL_NAMETraits\\": ["wp-content/themes/THEME_NAME/classes/traits/"],
-            "PASCAL_NAMEUtils\\": ["wp-content/themes/THEME_NAME/classes/utils/"],
-            "PASCAL_NAMEInterfaces\\": ["wp-content/themes/THEME_NAME/classes/interfaces/"],
-            "PASCAL_NAMEShortcodes\\": ["wp-content/themes/THEME_NAME/classes/shortcodes/"],
-            "PASCAL_NAMEPostTypes\\": ["wp-content/themes/THEME_NAME/classes/post-types/"],
+            "PASCAL_NAME\\": ["wp-content/themes/THEME_NAME/classes"],
+            "PASCAL_NAMEBase\\": ["wp-content/themes/THEME_NAME/classes/base"],
+            "PASCAL_NAMETraits\\": ["wp-content/themes/THEME_NAME/classes/traits"],
+            "PASCAL_NAMEUtils\\": ["wp-content/themes/THEME_NAME/classes/utils"],
+            "PASCAL_NAMEInterfaces\\": ["wp-content/themes/THEME_NAME/classes/interfaces"],
+            "PASCAL_NAMEShortcodes\\": ["wp-content/themes/THEME_NAME/classes/shortcodes"],
+            "PASCAL_NAMEPostTypes\\": ["wp-content/themes/THEME_NAME/classes/post-types"],
             "PASCAL_NAMEPostTypesTaxonomies\\": ["wp-content/themes/THEME_NAME/classes/post-types/taxonomies"],
             "PASCAL_NAMEPostTypesAdmin\\": ["wp-content/themes/THEME_NAME/classes/post-types/admin"],
             "PASCAL_NAMEPostTypesUtils\\": ["wp-content/themes/THEME_NAME/classes/post-types/utils"],
-            "PASCAL_NAMERest\\": ["wp-content/themes/THEME_NAME/classes/rest/"]
+            "PASCAL_NAMERest\\": ["wp-content/themes/THEME_NAME/classes/rest"]
         }
     },
     "require": {}

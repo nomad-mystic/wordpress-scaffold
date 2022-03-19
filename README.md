@@ -21,6 +21,10 @@ and initializes a git repo if not one already.
 
 `$ ws-scaffold-theme-add` (Future Release)
 
+`$ ws-scaffold-heal` (Future Release)
+
+`$ ws-scaffold-eject` (Future Release)
+
 ### Bootstrap Class and hook reflection
 
 In both the plugin and theme scaffolding I include a BootstrapClasses class which auto 
