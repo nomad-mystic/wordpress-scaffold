@@ -4,6 +4,7 @@ const fs = require('fs');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackNotifier = require('webpack-notifier');
 const TerserPlugin = require('terser-webpack-plugin');
+const globImporter = require('node-sass-glob-importer');
 const { VueLoaderPlugin } = require('vue-loader');
 
 const babelConfig = require('./babel.config.json');
@@ -66,6 +67,10 @@ module.exports = () => {
                                 sourceMap: process.env.NODE_ENV !== 'production',
                                 // Prefer `dart-sass`
                                 implementation: require('sass'),
+                                sassOptions: {
+                                    importer: globImporter(),
+                                    precision: 10,
+                                },
                             },
                         },
                     ],

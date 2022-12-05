@@ -1,9 +1,12 @@
 const path = require('path');
+const fs = require('fs');
+
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackNotifier = require('webpack-notifier');
-const babelConfig = require('./babel.config.json');
+const globImporter = require('node-sass-glob-importer');
 const TerserPlugin = require('terser-webpack-plugin');
-const fs = require('fs');
+
+const babelConfig = require('./babel.config.json');
 
 const config = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'internal/project/project-config.json'), 'utf-8'));
 const activeTheme = config['active-theme'];
@@ -63,6 +66,10 @@ module.exports = () => {
                                 sourceMap: process.env.NODE_ENV !== 'production',
                                 // Prefer `dart-sass`
                                 implementation: require('sass'),
+                                sassOptions: {
+                                    importer: globImporter(),
+                                    precision: 10,
+                                },
                             },
                         },
                     ],
