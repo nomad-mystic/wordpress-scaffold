@@ -1,18 +1,23 @@
 <?php
 
+// Extract values from config
+$active_theme = 'scaffold-theme';
+
+// Build our constants
 define('THEME_NAME_THEME_DIR', get_stylesheet_directory());
+define('THEME_NAME_DOMAIN', $active_theme);
 
 // Get out theme config
 $project_config = file_get_contents(ABSPATH . 'internal/project/project-config.json');
 
-// Extract values from config
-$active_theme = 'scaffold-theme';
 
 if (empty($project_config)) {
     // Let the user know there was an issue with a WordPress alert!!!
-    exit;
-} else {
+    add_action('admin_notices', function() {
+        printf( '<div class="notice notice-error"><p>Warning: %s</p></div>', 'Config missing from the project, please add!');
+    });
 
+} else {
     // Build our values
     $project_config = json_decode($project_config);
 
@@ -33,8 +38,7 @@ if (file_exists(ABSPATH . "wp-content/themes/{$active_theme}/classes/BootstrapCl
     require_once(ABSPATH . "wp-content/themes/{$active_theme}/classes/BootstrapClasses.php");
 }
 
-// Build our constants
-define('THEME_NAME_DOMAIN', $active_theme);
+
 
 // Auto require includes PHP files
 if (is_dir(get_stylesheet_directory() . '/includes/')) {

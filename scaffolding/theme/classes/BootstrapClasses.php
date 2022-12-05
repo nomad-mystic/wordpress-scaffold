@@ -28,7 +28,11 @@ class BootstrapClasses
 
         if (empty($theme_config)) {
             // Let the user know there was an issue with a WordPress alert!!!
-            exit;
+            add_action( 'admin_notices', function() {
+                printf( '<div class="notice notice-error"><p>Warning: %s</p></div>', 'Config missing from the project, please add!');
+            });
+
+            return;
         }
 
         // Get our classes and namespaces from the config file
@@ -69,7 +73,7 @@ class BootstrapClasses
      * @param string $config_file
      * @return array|mixed
      */
-    private function get_config_file(string $config_file)
+    private function get_config_file(string $config_file): mixed
     {
         $raw_file = file_get_contents(ABSPATH . 'internal/' . $config_file);
 
