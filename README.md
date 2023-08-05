@@ -3,7 +3,7 @@
 # Installation 
 `$ npm i -g @nomadmystic/wordpress-scaffold-cli`
 
-    NOTE: This packages uses node version 16.x
+    NOTE: This packages uses node version 18.x
 
 ## Commands
 `$ ws-scaffold-project-init`
