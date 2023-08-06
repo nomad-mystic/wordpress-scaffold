@@ -8,21 +8,21 @@ const shell = require('shelljs');
 const fs = require('fs');
 
 // Package modules
-const projectOptions = require('./config/project-options');
-const scaffoldProject = require('./scaffold/project/scaffold-project');
-const updateScaffoldJson = require('./scaffold/common/update-scaffold-json');
+const projectOptions = require('../src/config/project-options');
+const scaffoldProject = require('../src/scaffold/project/scaffold-project');
+const updateScaffoldJson = require('../src/scaffold/common/update-scaffold-json');
 
 const {
     apiGetText,
-} = require('./utils/rest-utils');
+} = require('../src/utils/rest-utils');
 
 const {
     whereAmI, isWordpressInstall,
-} = require('./utils/path-utils');
+} = require('../src/utils/path-utils');
 
 const {
     camelCaseToDash,
-} = require('./utils/string-utils');
+} = require('../src/utils/string-utils');
 
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI

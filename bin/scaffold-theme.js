@@ -6,23 +6,23 @@ const inquirer = require('inquirer');
 const colors = require('colors');
 
 // Package modules
-const themeOptions = require('./config/theme-options');
-const scaffoldTheme = require('./scaffold/theme/scaffold-theme');
-const scaffoldThemeRoot = require('./scaffold/theme/scaffold-root');
-const updateScaffoldClasses = require('./scaffold/theme/scaffold-classes');
-const updateScaffoldJson = require('./scaffold/common/update-scaffold-json');
+const themeOptions = require('../src/config/theme-options');
+const scaffoldTheme = require('../src/scaffold/theme/scaffold-theme');
+const scaffoldThemeRoot = require('../src/scaffold/theme/scaffold-root');
+const updateScaffoldClasses = require('../src/scaffold/theme/scaffold-classes');
+const updateScaffoldJson = require('../src/scaffold/common/update-scaffold-json');
 
 const {
     whereAmI,
     isWordpressInstall,
     getThemesFolderPath,
-} = require('./utils/path-utils');
+} = require('../src/utils/path-utils');
 
 const {
     addDashesToString,
     capAndSnakeCaseString,
     pascalCaseString
-} = require('./utils/string-utils');
+} = require('../src/utils/string-utils');
 
 // Enable debug mode?
 const isDebugMode = !!process.env?.DEBUG;
