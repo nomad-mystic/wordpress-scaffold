@@ -1,5 +1,4 @@
 "use strict";
-var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 // Community Modules
 require('dotenv').config();
@@ -9,8 +8,8 @@ const fuzzy = require('fuzzy');
 const { readdirSync } = require('fs');
 const { random } = require('lodash');
 // Enable debug mode?
-const isDebugMode = !!((_a = process.env) === null || _a === void 0 ? void 0 : _a.DEBUG);
-const wordPressDebugPath = !!((_b = process.env) === null || _b === void 0 ? void 0 : _b.WORDPRESS_PATH);
+const isDebugMode = !!process.env?.DEBUG;
+const wordPressDebugPath = !!process.env?.WORDPRESS_PATH;
 class PathUtils {
     /**
      * @description Gets the current path

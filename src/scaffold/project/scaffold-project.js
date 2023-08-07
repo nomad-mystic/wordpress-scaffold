@@ -34,7 +34,7 @@ const scaffoldProject = (answers, config, salts) => {
             const newPath = path.join(whereAmI(), '/.gitignore');
             fs.renameSync(oldPath, newPath);
         }
-        if ((answers === null || answers === void 0 ? void 0 : answers.databaseSetup) && typeof (answers === null || answers === void 0 ? void 0 : answers.databaseSetup) !== 'undefined') {
+        if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
             const configDatabaseObjects = [
                 {
                     fileName: 'wp-config.php',

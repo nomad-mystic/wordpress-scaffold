@@ -18,6 +18,7 @@ import InitAnswers from '../src/interfaces/project/interface-init-answers';
 // Utils
 import CheckDepends from '../src/utils/check-depends';
 import RestUtils from '../src/utils/rest-utils';
+import DebugUtils from '../src/utils/debug-utils';
 
 const { whereAmI } = require('../src/utils/path-utils');
 
@@ -35,18 +36,17 @@ CheckDepends.dependencyInstalled('wp', 'Sorry, this script requires the WP-CLI')
  * @param {InitAnswers} InitAnswers.databaseName
  * @param {InitAnswers} InitAnswers.databasePassword
  * @param {InitAnswers} InitAnswers.databaseUsername
- * @return void
+ * @return Promise<void>
  */
 inquirer
 .prompt(projectOptions)
-.then(async (answers: InitAnswers) => {
+.then(async (answers: InitAnswers): Promise<void> => {
     try {
         // Enable debug mode?
-        const isDebugMode: boolean = !!process.env?.DEBUG;
-        const wordPressDebugPath: boolean = !!process.env?.WORDPRESS_PATH;
+        const isDebugFullMode: boolean = await DebugUtils.isDebugFullMode();
 
         // Change the path for download to our "WordPress" working directory
-        if (isDebugMode && wordPressDebugPath) {
+        if (isDebugFullMode) {
 
             // Build the core files
             shell.exec(`wp core download --path=${process.env.WORDPRESS_PATH}`);
@@ -79,7 +79,7 @@ inquirer
         // Init a git repo if we don't have one already
         if (CheckDepends.dependencyInstalled('git', '', false) && !fs.existsSync('.git')) {
             // We don't want to create a git repo if we are debugging
-            if (!isDebugMode && !wordPressDebugPath) {
+            if (!isDebugFullMode) {
                 shell.exec('git init');
             }
         }

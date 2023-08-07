@@ -48,7 +48,7 @@ const scaffoldProject = (answers: InitAnswers, config: ProjectConfig, salts: str
             const oldPath = path.join(whereAmI(), '/.gitignores');
             const newPath = path.join(whereAmI(), '/.gitignore');
 
-            fs.renameSync(oldPath, newPath)
+            fs.renameSync(oldPath, newPath);
         }
 
         if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
