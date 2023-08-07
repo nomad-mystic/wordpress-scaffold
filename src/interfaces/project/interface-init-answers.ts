@@ -1,4 +1,4 @@
-interface InitAnswers {
+export default interface InitAnswers {
     databaseSetup: boolean;
     databaseName: string;
     databasePassword: string;
@@ -11,6 +11,3 @@ interface InitAnswers {
     siteUrl: string;
     devSiteUrl: string;
 }
-
-
-export default InitAnswers;
