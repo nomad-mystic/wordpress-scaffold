@@ -23,10 +23,10 @@ const fs = require('fs');
 const projectOptions = require('../src/config/project-options');
 const scaffoldProject = require('../src/scaffold/project/scaffold-project');
 const updateScaffoldJson = require('../src/scaffold/common/update-scaffold-json');
+// Utils
 const check_depends_1 = __importDefault(require("../src/utils/check-depends"));
-const { apiGetText, } = require('../src/utils/rest-utils');
-const { whereAmI, isWordpressInstall, } = require('../src/utils/path-utils');
-const { camelCaseToDash, } = require('../src/utils/string-utils');
+const rest_utils_1 = __importDefault(require("../src/utils/rest-utils"));
+const { whereAmI } = require('../src/utils/path-utils');
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI
 check_depends_1.default.dependencyInstalled('php', 'Sorry, this script requires the PHP CLI');
@@ -65,7 +65,7 @@ inquirer
         'absolute-project-folder': whereAmI(),
     });
     // Hit the WordPress API for our site's salts
-    let salts = yield apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
+    let salts = yield rest_utils_1.default.apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
     // Update our files
     scaffoldProject(answers, config, salts);
     // If we didn't set up the wp-config.php we can't install WordPress

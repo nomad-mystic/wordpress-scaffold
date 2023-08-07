@@ -1,9 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const shell = require('shelljs');
-class checkDepends {
+/**
+ * @description Utils for checking system level functions
+ * @class CheckDepends
+ */
+class CheckDepends {
     /**
      * @description Check for system dependency, if it doesn't exist exit
+     * @public
      *
      * @param {string} dependency Which dependency to check for
      * @param {string} message Display a message to the user
@@ -25,4 +30,4 @@ class checkDepends {
     }
     ;
 }
-exports.default = checkDepends;
+exports.default = CheckDepends;

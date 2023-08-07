@@ -11,26 +11,20 @@ const fs = require('fs');
 const projectOptions = require('../src/config/project-options');
 const scaffoldProject = require('../src/scaffold/project/scaffold-project');
 const updateScaffoldJson = require('../src/scaffold/common/update-scaffold-json');
-import checkDepends from '../src/utils/check-depends';
 
+// Interfaces
 import InitAnswers from '../src/interfaces/init-answers';
 
-const {
-    apiGetText,
-} = require('../src/utils/rest-utils');
+// Utils
+import CheckDepends from '../src/utils/check-depends';
+import RestUtils from '../src/utils/rest-utils';
 
-const {
-    whereAmI, isWordpressInstall,
-} = require('../src/utils/path-utils');
-
-const {
-    camelCaseToDash,
-} = require('../src/utils/string-utils');
+const { whereAmI } = require('../src/utils/path-utils');
 
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI
-checkDepends.dependencyInstalled('php', 'Sorry, this script requires the PHP CLI');
-checkDepends.dependencyInstalled('wp', 'Sorry, this script requires the WP-CLI');
+CheckDepends.dependencyInstalled('php', 'Sorry, this script requires the PHP CLI');
+CheckDepends.dependencyInstalled('wp', 'Sorry, this script requires the WP-CLI');
 
 /**
  * @description Starting point for scaffolding the WordPress core files and DB
@@ -71,7 +65,7 @@ inquirer
     });
 
     // Hit the WordPress API for our site's salts
-    let salts = await apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
+    let salts: string | void = await RestUtils.apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
 
     // Update our files
     scaffoldProject(answers, config, salts);
@@ -82,7 +76,7 @@ inquirer
     }
 
     // Init a git repo if we don't have one already
-    if (checkDepends.dependencyInstalled('git', '', false) && !fs.existsSync('.git')) {
+    if (CheckDepends.dependencyInstalled('git', '', false) && !fs.existsSync('.git')) {
         // We don't want to create a git repo if we are debugging
         if (!isDebugMode && !wordPressDebugPath) {
             shell.exec('git init');

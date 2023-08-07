@@ -1,8 +1,13 @@
 const shell = require('shelljs');
 
-export default class checkDepends {
+/**
+ * @description Utils for checking system level functions
+ * @class CheckDepends
+ */
+export default class CheckDepends {
     /**
      * @description Check for system dependency, if it doesn't exist exit
+     * @public
      *
      * @param {string} dependency Which dependency to check for
      * @param {string} message Display a message to the user
