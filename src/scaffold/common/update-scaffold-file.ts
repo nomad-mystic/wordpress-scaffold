@@ -1,5 +1,6 @@
 // Community
 import fs from 'fs';
+
 /**
  * @description This will update the content of a newly scaffold file with users inputs
  *
@@ -10,15 +11,24 @@ import fs from 'fs';
  * @param {string} updateString
  * @return void
  */
-export const updateScaffoldFile = (updatePath, fileName, stringToUpdate, updateString) => {
+export const updateScaffoldFile = (
+    updatePath: string | undefined,
+    fileName: string | undefined,
+    stringToUpdate: any,
+    updateString: any
+) => {
     let updatedContent = '';
+
     // MAke sure the files exists before we start updating them
     if (fs.existsSync(`${updatePath}/${fileName}`)) {
         // Get our file in memory
         let fileContents = fs.readFileSync(`${updatePath}/${fileName}`, 'utf8');
+
         // Replace our file with user input values
-        let reg = new RegExp(stringToUpdate, 'gm');
+        let reg: RegExp = new RegExp(stringToUpdate, 'gm');
+
         updatedContent = fileContents.replaceAll(reg, updateString);
+
         // Write our updated values
         fs.writeFileSync(`${updatePath}/${fileName}`, updatedContent);
     }

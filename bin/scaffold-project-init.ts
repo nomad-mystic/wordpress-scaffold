@@ -148,10 +148,10 @@ class ProjectInit {
             });
 
             // Hit the WordPress API for our site's salts
-            let salts: string | void = await RestUtils.apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
+            let salts: string | void | undefined = await RestUtils.apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
 
             // Update our files
-            scaffoldProject(answers, config, salts);
+            await scaffoldProject(answers, config, salts);
 
             return config;
 
@@ -161,8 +161,6 @@ class ProjectInit {
 
         }
     }
-
-
 }
 
 ProjectInit.performScaffolding().catch(err => console.error(err));

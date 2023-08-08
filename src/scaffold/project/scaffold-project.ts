@@ -7,7 +7,7 @@ import path from 'path';
 // Package modules
 import PathUtils from '../../utils/path-utils.js';
 
-const { updateScaffoldFile } = require('../common/update-scaffold-file.js');
+import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 
 // Interfaces
 import InitAnswers from '../../interfaces/project/interface-init-answers.js';
@@ -17,15 +17,20 @@ import ProjectConfig from '../../interfaces/project/interface-project-config.js'
 /**
  * @description
  *
- * @param {InitAnswers} answers
+ * @param {InitAnswers | void} answers
  * @param {ProjectConfig} config
  * @param {string} salts
- * @return void
+ * @return Promise<void>
  */
-const scaffoldProject = async (answers: InitAnswers | void, config: ProjectConfig, salts: string | void): Promise<void> => {
+const scaffoldProject = async (
+    answers: InitAnswers | void,
+    config: ProjectConfig,
+    salts: string | void | undefined
+): Promise<void> => {
     try {
-        const configFile = `${await PathUtils.whereAmI()}/wp-config.php`
-        let updateObjectsArray = [];
+
+        const configFile: string = `${await PathUtils.whereAmI()}/wp-config.php`
+        let updateObjectsArray: Array<ProjectWpConfig> = [];
 
         if (fs.existsSync(configFile)) {
             console.log(colors.red('There is already a wp-config.php file.'));
@@ -42,8 +47,8 @@ const scaffoldProject = async (answers: InitAnswers | void, config: ProjectConfi
 
             // NPM doesn't like to publish the .gitignore file, so handle that here
             if (fs.existsSync(`${await PathUtils.whereAmI()}/.gitignores`)) {
-                const oldPath = path.join(await PathUtils.whereAmI(), '/.gitignores');
-                const newPath = path.join(await PathUtils.whereAmI(), '/.gitignore');
+                const oldPath: string = path.join(await PathUtils.whereAmI(), '/.gitignores');
+                const newPath: string = path.join(await PathUtils.whereAmI(), '/.gitignore');
 
                 fs.renameSync(oldPath, newPath);
             }
@@ -95,10 +100,8 @@ const scaffoldProject = async (answers: InitAnswers | void, config: ProjectConfi
                 updateScaffoldFile(
                     await PathUtils.whereAmI(),
                     updateObjectsArray[update].fileName,
-                    {
-                        stringToUpdate: updateObjectsArray[update].stringToUpdate,
-                        updateString: updateObjectsArray[update].updateString,
-                    }
+                    updateObjectsArray[update].stringToUpdate,
+                    updateObjectsArray[update].updateString
                 );
 
             }

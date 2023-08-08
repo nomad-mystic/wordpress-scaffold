@@ -1,5 +1,5 @@
 export default interface ProjectWpConfig {
     fileName?: string;
     stringToUpdate?: string;
-    updateString?: string | void;
+    updateString?: string | void | undefined;
 }

@@ -19,7 +19,7 @@ const {
 
 const {
     updateScaffoldFile,
-} = require('../common/update-scaffold-file');
+} = require('../common/update-scaffold-file.ts');
 
 /**
  * @description Based on user input scaffold our theme

@@ -73,6 +73,18 @@ export default class PathUtils {
 
     };
 
+    public static checkFileExists = async (path: string, exit = false): Promise<void> => {
+        try {
+
+
+
+        } catch (err) {
+
+            console.error(err);
+
+        }
+    }
+
     /**
      * @description Get all folder names in the theme directory
      *

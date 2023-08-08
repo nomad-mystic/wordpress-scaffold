@@ -14,7 +14,7 @@ const {
 
 const {
     updateScaffoldFile,
-} = require('../common/update-scaffold-file');
+} = require('../common/update-scaffold-file.ts');
 
 const {
     getComposerPropertyInfo,

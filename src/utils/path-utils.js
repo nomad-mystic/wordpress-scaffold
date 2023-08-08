@@ -52,6 +52,13 @@ export default class PathUtils {
             return;
         }
     };
+    static checkFileExists = async (path, exit = false) => {
+        try {
+        }
+        catch (err) {
+            console.error(err);
+        }
+    };
 }
 // /**
 //  * @description Get all folder names in the theme directory

@@ -5,14 +5,14 @@ import fse from 'fs-extra';
 import path from 'path';
 // Package modules
 import PathUtils from '../../utils/path-utils.js';
-const { updateScaffoldFile } = require('../common/update-scaffold-file.js');
+import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 /**
  * @description
  *
- * @param {InitAnswers} answers
+ * @param {InitAnswers | void} answers
  * @param {ProjectConfig} config
  * @param {string} salts
- * @return void
+ * @return Promise<void>
  */
 const scaffoldProject = async (answers, config, salts) => {
     try {
@@ -71,10 +71,7 @@ const scaffoldProject = async (answers, config, salts) => {
         for (let update = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
                 // console.log(updateObjectsArray[update].fileName);
-                updateScaffoldFile(await PathUtils.whereAmI(), updateObjectsArray[update].fileName, {
-                    stringToUpdate: updateObjectsArray[update].stringToUpdate,
-                    updateString: updateObjectsArray[update].updateString,
-                });
+                updateScaffoldFile(await PathUtils.whereAmI(), updateObjectsArray[update].fileName, updateObjectsArray[update].stringToUpdate, updateObjectsArray[update].updateString);
             }
         }
     }

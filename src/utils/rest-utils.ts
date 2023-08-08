@@ -10,9 +10,9 @@ export default class RestUtils {
      * @public
      *
      * @param {string} url The url to get the text from
-     * @return Promise<string|void>
+     * @return Promise<string|undefined>
      */
-    static apiGetText(url: string): Promise<string | void> {
+    static apiGetText(url: string): Promise<string | void | undefined> {
         return fetch(url)
             .then((response) => {
 
