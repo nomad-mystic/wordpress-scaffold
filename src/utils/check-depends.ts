@@ -14,7 +14,7 @@ export default class CheckDepends {
      * @param {boolean} exit Should we exit the process?
      * @return {string|void}
      */
-    static dependencyInstalled(dependency: string, message: string, exit: boolean = true): string | void {
+    public static dependencyInstalled(dependency: string, message: string, exit: boolean = true): string | void {
         const check = shell.which(dependency);
 
         // Display message
