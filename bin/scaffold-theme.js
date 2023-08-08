@@ -6,7 +6,8 @@ const inquirer = require('inquirer');
 const colors = require('colors');
 
 // Package modules
-const themeOptions = require('../src/config/theme-options');
+const themeOptions = require('../src/config/theme-options.js');
+
 const scaffoldTheme = require('../src/scaffold/theme/scaffold-theme');
 const scaffoldThemeRoot = require('../src/scaffold/theme/scaffold-root');
 const updateScaffoldClasses = require('../src/scaffold/theme/scaffold-classes');

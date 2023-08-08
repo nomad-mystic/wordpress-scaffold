@@ -1,7 +1,7 @@
 // interfaces
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
 import ProjectConfig from '../interfaces/project/interface-project-config.js';
-import ProjectOptions from '../interfaces/project/interface-project-options.js';
+import InquirerCliOptions from "../interfaces/cli/interface-options-inquirer-cli.js";
 
 // Utils
 import { getInternalConfig } from '../utils/get-config.js';
@@ -9,7 +9,7 @@ import { getInternalConfig } from '../utils/get-config.js';
 // Common
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
 
-const projectOptions: Array<ProjectOptions> = [
+const projectOptions: Array<InquirerCliOptions> = [
     {
         type: 'confirm',
         name: 'databaseSetup',
@@ -113,7 +113,7 @@ const getProjectOptions = async (): Promise<Array<any> | undefined> => {
 
         // Gather the information we need if the user didn't use the init command
         if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['project-name'] === '') {
-            const projectNameOption: ProjectOptions = {
+            const projectNameOption: InquirerCliOptions = {
                 type: 'input',
                 name: 'projectName',
                 message: 'What is the name of your WordPress site?',
@@ -124,14 +124,14 @@ const getProjectOptions = async (): Promise<Array<any> | undefined> => {
         }
 
         if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['site-url'] === '' || jsonFileParsed['dev-site-url'] === '') {
-            const siteUrlOption: ProjectOptions = {
+            const siteUrlOption: InquirerCliOptions = {
                 type: 'input',
                 name: 'siteUrl',
                 message: 'What is the URL of your WordPress site?',
                 default: 'https://example.com',
             };
 
-            const devSiteUrl: ProjectOptions = {
+            const devSiteUrl: InquirerCliOptions = {
                 type: 'input',
                 name: 'devSiteUrl',
                 message: 'What is the development URL of your WordPress site?',
