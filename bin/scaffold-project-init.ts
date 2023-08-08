@@ -18,10 +18,11 @@ import InitAnswers from '../src/interfaces/project/interface-init-answers.js';
 
 // Utils
 import CheckDepends from '../src/utils/check-depends.js';
-
 import RestUtils from '../src/utils/rest-utils.js';
 import DebugUtils from '../src/utils/debug-utils.js';
 import PathUtils from '../src/utils/path-utils.js';
+
+import InquirerCli from "../src/cli/inquirer-cli.js";
 
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI
@@ -32,155 +33,136 @@ CheckDepends.dependencyInstalled('wp', 'Sorry, this script requires the WP-CLI')
  * @class ProjectInit
  */
 class ProjectInit {
+    private static isDebugFullMode: boolean = false;
+    private static whereAmI: string = '';
+
     /**
-     * @description Starting point for building in the initial WordPress site
+     * @description Starting point for scaffolding the WordPress core files and DB
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
      * @return Promise<void>
      */
-    public static performAllTasks = async (): Promise<void> => {
+    public static performScaffolding = async (): Promise<void> => {
         try {
-            const inquirer = await this.getInquirer();
+            const answers: InitAnswers | void = await InquirerCli.performPromptsTasks(await getProjectOptions()).catch((err) => console.error(err));
 
-            const prompt: InitAnswers | void = await this.performPrompt(inquirer);
+            // Gather our location
+            this.whereAmI = await PathUtils.whereAmI();
 
-            // await this.performScaffolding(prompt);
+            // Enable debug mode?
+            this.isDebugFullMode = await DebugUtils.isDebugFullMode();
+
+            // Download WP Code
+            await this.downloadWPCoreCode();
+
+            // Update and install or install files
+            const config = await this.scaffoldFiles(answers);
+
+            // Install WP DB
+            await this.installWPCoreDB(answers);
+
+            // Install .git
+            await this.installGit();
+
+            // Let the user know it has been created
+            console.log(colors.green(`Your ${config['project-name']} project has been scaffold.`));
+
+        } catch (err: any) {
+
+            console.error(err);
+
+        }
+    };
+
+    /**
+     * @description Download WP core code using the wp-cli
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     * @link https://developer.wordpress.org/cli/commands/core/download/
+     *
+     * @return Promise<void>
+     */
+    private static downloadWPCoreCode = async (): Promise<void> => {
+        // Change the path for download to our "WordPress" working directory
+        if (this.isDebugFullMode) {
+
+            // Build the core files
+            shell.exec(`wp core download --path=${process.env.WORDPRESS_PATH}`);
+
+        } else {
+            // Build the core files
+            shell.exec('wp core download');
+        }
+    };
+
+    /**
+     * @description Install WordPress core DB
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     * @link https://developer.wordpress.org/cli/commands/core/install/
+     *
+     * @param {InitAnswers | void} answers These are the user input options form the CLI
+     * @return Promise<void>
+     */
+    private static installWPCoreDB = async (answers: InitAnswers | void): Promise<void> => {
+        // If we didn't set up the wp-config.php we can't install WordPress
+        if (answers?.databaseSetup) {
+            shell.exec(`wp core install --url="${answers.siteUrl}" --title="${answers.siteTitle}" --admin_user="${answers.siteAdminUser}" --admin_password="${answers.siteAdminPassword}" --admin_email="${answers.adminEmail}" --skip-email`);
+        }
+    };
+
+    /**
+     * @description Install a git repository if it doesn't exist and we not in debug mode
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return Promise<void>
+     */
+    private static installGit = async (): Promise<void> => {
+        // Init a git repo if we don't have one already
+        if (CheckDepends.dependencyInstalled('git', '', false) && !fs.existsSync('.git')) {
+            // We don't want to create a git repo if we are debugging
+            if (!this.isDebugFullMode) {
+                shell.exec('git init');
+            }
+        }
+    };
+
+    /**
+     * @description Perform our scaffolding
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return Promise<void>
+     */
+    private static scaffoldFiles = async (answers: InitAnswers | void): Promise<string | any> => {
+        try {
+            const filePath: string = `${this.whereAmI}/internal/project/project-config.json`;
+
+            const config = updateScaffoldJson(filePath, answers);
+
+            // Manually update these properties
+            updateScaffoldJson(filePath, {
+                'absolute-project-folder': this.whereAmI,
+            });
+
+            // Hit the WordPress API for our site's salts
+            let salts: string | void = await RestUtils.apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
+
+            // Update our files
+            scaffoldProject(answers, config, salts);
+
+            return config;
 
         } catch (err) {
 
-            console.log(colors.red('ProjectInit.performAllTasks()'));
             console.error(err);
 
         }
     }
 
-    /**
-     * @description Get our inquirer object
-     * @private
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @return Promise<any>
-     */
-    private static getInquirer = async (): Promise<any> => {
-        try {
 
-            return inquirer;
-
-        } catch (err: any) {
-
-            console.log(colors.red('ProjectInit.getInquirer()'));
-            console.error(err);
-        }
-    }
-
-    /**
-     * @description Display and gather our prompts from the user
-     * @private
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @return Promise<InitAnswers | void>
-     */
-    private static performPrompt = async (inquirer: any): Promise<InitAnswers | void> => {
-        try {
-            const options = await getProjectOptions();
-
-            return inquirer.prompt(options)
-                .catch((error: any): void => {
-                    if (error.isTtyError) {
-
-                        console.error('Prompt couldn\'t be rendered in the current environment.');
-
-                    } else {
-
-                        console.log(colors.red('ProjectInit.performPrompt().prompt()'));
-                        console.error(error);
-
-                    }
-                });
-
-        } catch (err: any) {
-
-            console.log(colors.red('ProjectInit.performPrompt()'));
-            console.error(err);
-
-        }
-    };
-
-    /**
-     * @description Starting point for scaffolding the WordPress core files and DB
-     * @private
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @param {InitAnswers} answers.projectName
-     * @param {InitAnswers} answers.databaseSetup
-     * @param {InitAnswers} answers.databaseName
-     * @param {InitAnswers} answers.databasePassword
-     * @param {InitAnswers} answers.databaseUsername
-     * @return Promise<void>
-     */
-    private static performScaffolding = async (answers: InitAnswers | void): Promise<void> => {
-        try {
-
-            console.log(answers);
-
-
-            // // Gather our location
-            // const whereAmI = await PathUtils.whereAmI();
-            //
-            // // Enable debug mode?
-            // const isDebugFullMode: boolean = await DebugUtils.isDebugFullMode();
-            //
-            // // Change the path for download to our "WordPress" working directory
-            // if (isDebugFullMode) {
-            //
-            //     // Build the core files
-            //     shell.exec(`wp core download --path=${process.env.WORDPRESS_PATH}`);
-            //
-            // } else {
-            //     // Build the core files
-            //     shell.exec('wp core download');
-            // }
-            //
-            // const filePath: string = `${whereAmI}/internal/project/project-config.json`;
-            //
-            // const config = updateScaffoldJson(filePath, answers);
-            //
-            // // Manually update these properties
-            // updateScaffoldJson(filePath, {
-            //     'absolute-project-folder': whereAmI,
-            // });
-            //
-            // // Hit the WordPress API for our site's salts
-            // let salts: string | void = await RestUtils.apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
-            //
-            // // Update our files
-            // scaffoldProject(answers, config, salts);
-            //
-            // // If we didn't set up the wp-config.php we can't install WordPress
-            // if (answers?.databaseSetup) {
-            //     shell.exec(`wp core install --url="${answers.siteUrl}" --title="${answers.siteTitle}" --admin_user="${answers.siteAdminUser}" --admin_password="${answers.siteAdminPassword}" --admin_email="${answers.adminEmail}" --skip-email`);
-            // }
-            //
-            // // Init a git repo if we don't have one already
-            // if (CheckDepends.dependencyInstalled('git', '', false) && !fs.existsSync('.git')) {
-            //     // We don't want to create a git repo if we are debugging
-            //     if (!isDebugFullMode) {
-            //         shell.exec('git init');
-            //     }
-            // }
-            //
-            // // Let the user know it has been created
-            // console.log(colors.green(`Your ${config['project-name']} project has been scaffold.`));
-
-        } catch (err: any) {
-
-            console.error(err);
-
-        }
-    };
 }
 
-// console.log('testing 1');
-
-ProjectInit.performAllTasks().catch((err) => console.error(err));
+ProjectInit.performScaffolding().catch(err => console.error(err));

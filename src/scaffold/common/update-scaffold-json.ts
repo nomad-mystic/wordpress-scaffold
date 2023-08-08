@@ -19,7 +19,7 @@ const {
  * @param {any} json
  * @return {string}
  */
-const updateScaffoldJson = (filePath: string, json: any) => {
+const updateScaffoldJson = (filePath: string, json: any): string | any => {
     require('./scaffold-internal').scaffoldInternal();
 
     // Setup our arrays for json update logic

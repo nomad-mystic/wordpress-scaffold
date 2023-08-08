@@ -13,6 +13,7 @@ import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
 
 // Interfaces
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
+import ThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
 
 // Utils
 import CheckDepends from '../utils/check-depends.js';
@@ -20,12 +21,13 @@ import CheckDepends from '../utils/check-depends.js';
 import RestUtils from '../utils/rest-utils.js';
 import DebugUtils from '../utils/debug-utils.js';
 import PathUtils from '../utils/path-utils.js';
+import InquirerCliOptions from "../interfaces/cli/interface-options-inquirer-cli.js";
 
 
 /**
  * @class ProjectInit
  */
-class ProjectInit {
+class InquirerCli {
     /**
      * @description Starting point for building in the initial WordPress site
      * @public
@@ -33,13 +35,16 @@ class ProjectInit {
      *
      * @return Promise<void>
      */
-    public static performAllTasks = async (): Promise<void> => {
+    public static performPromptsTasks = async (options: Array<any> | undefined): Promise<InitAnswers | ThemeAnswers | void> => {
         try {
+
+            console.log(options);
+
             const inquirer = await this.getInquirer();
 
-            const prompt: InitAnswers | void = await this.performPrompt(inquirer);
+            const answers: InitAnswers | ThemeAnswers | void = await this.performPrompt(inquirer, options);
 
-            // await this.performScaffolding(prompt);
+            return answers;
 
         } catch (err) {
 
@@ -47,7 +52,7 @@ class ProjectInit {
             console.error(err);
 
         }
-    }
+    };
 
     /**
      * @description Get our inquirer object
@@ -73,11 +78,13 @@ class ProjectInit {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
+     * @param {any} inquirer
+     * @param {Promise<Array<any> | undefined>} options
      * @return Promise<InitAnswers | void>
      */
-    private static performPrompt = async (inquirer: any): Promise<InitAnswers | void> => {
+    private static performPrompt = async (inquirer: any, options: Array<any> | undefined): Promise<InitAnswers | void> => {
         try {
-            const options = await getProjectOptions();
+            // const options = await getProjectOptions();
 
             return inquirer.prompt(options)
                 .catch((error: any): void => {
@@ -100,77 +107,6 @@ class ProjectInit {
 
         }
     };
-
-    /**
-     * @description Starting point for scaffolding the WordPress core files and DB
-     * @private
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @param {InitAnswers} answers.projectName
-     * @param {InitAnswers} answers.databaseSetup
-     * @param {InitAnswers} answers.databaseName
-     * @param {InitAnswers} answers.databasePassword
-     * @param {InitAnswers} answers.databaseUsername
-     * @return Promise<void>
-     */
-    private static performScaffolding = async (answers: InitAnswers | void): Promise<void> => {
-        try {
-
-            console.log(answers);
-
-
-            // // Gather our location
-            // const whereAmI = await PathUtils.whereAmI();
-            //
-            // // Enable debug mode?
-            // const isDebugFullMode: boolean = await DebugUtils.isDebugFullMode();
-            //
-            // // Change the path for download to our "WordPress" working directory
-            // if (isDebugFullMode) {
-            //
-            //     // Build the core files
-            //     shell.exec(`wp core download --path=${process.env.WORDPRESS_PATH}`);
-            //
-            // } else {
-            //     // Build the core files
-            //     shell.exec('wp core download');
-            // }
-            //
-            // const filePath: string = `${whereAmI}/internal/project/project-config.json`;
-            //
-            // const config = updateScaffoldJson(filePath, answers);
-            //
-            // // Manually update these properties
-            // updateScaffoldJson(filePath, {
-            //     'absolute-project-folder': whereAmI,
-            // });
-            //
-            // // Hit the WordPress API for our site's salts
-            // let salts: string | void = await RestUtils.apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');
-            //
-            // // Update our files
-            // scaffoldProject(answers, config, salts);
-            //
-            // // If we didn't set up the wp-config.php we can't install WordPress
-            // if (answers?.databaseSetup) {
-            //     shell.exec(`wp core install --url="${answers.siteUrl}" --title="${answers.siteTitle}" --admin_user="${answers.siteAdminUser}" --admin_password="${answers.siteAdminPassword}" --admin_email="${answers.adminEmail}" --skip-email`);
-            // }
-            //
-            // // Init a git repo if we don't have one already
-            // if (CheckDepends.dependencyInstalled('git', '', false) && !fs.existsSync('.git')) {
-            //     // We don't want to create a git repo if we are debugging
-            //     if (!isDebugFullMode) {
-            //         shell.exec('git init');
-            //     }
-            // }
-            //
-            // // Let the user know it has been created
-            // console.log(colors.green(`Your ${config['project-name']} project has been scaffold.`));
-
-        } catch (err: any) {
-
-            console.error(err);
-
-        }
-    };
 }
+
+export default InquirerCli;

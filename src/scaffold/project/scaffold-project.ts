@@ -1,13 +1,13 @@
 // Community modules
-const fs = require('fs');
-const colors = require('colors');
-const fse = require('fs-extra');
-const path = require('path');
+import fs from 'fs';
+import colors from 'colors';
+import fse from 'fs-extra';
+import path from 'path';
 
 // Package modules
-const { whereAmI } = require('../../utils/path-utils');
+import PathUtils from '../../utils/path-utils.js';
 
-const { updateScaffoldFile } = require('../common/update-scaffold-file');
+const { updateScaffoldFile } = require('../common/update-scaffold-file.js');
 
 // Interfaces
 import InitAnswers from '../../interfaces/project/interface-init-answers.js';
@@ -22,85 +22,89 @@ import ProjectConfig from '../../interfaces/project/interface-project-config.js'
  * @param {string} salts
  * @return void
  */
-const scaffoldProject = (answers: InitAnswers, config: ProjectConfig, salts: string) => {
-    const configFile = `${whereAmI()}/wp-config.php`
-    let updateObjectsArray = [];
+const scaffoldProject = async (answers: InitAnswers | void, config: ProjectConfig, salts: string | void): Promise<void> => {
+    try {
+        const configFile = `${await PathUtils.whereAmI()}/wp-config.php`
+        let updateObjectsArray = [];
 
-    if (fs.existsSync(configFile)) {
-        console.log(colors.red('There is already a wp-config.php file.'));
+        if (fs.existsSync(configFile)) {
+            console.log(colors.red('There is already a wp-config.php file.'));
 
-        process.exit(0);
+            process.exit(0);
 
-    } else {
+        } else {
 
-        // Copy over and updates our values
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/project')}`, whereAmI(), { overwrite: false });
+            // Copy over and updates our values
+            fse.copySync(`${path.join(__dirname + '../../../../scaffolding/project')}`, await PathUtils.whereAmI(), { overwrite: false });
 
-        // Our common root files
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/common/root')}`, whereAmI(), { overwrite: false });
+            // Our common root files
+            fse.copySync(`${path.join(__dirname + '../../../../scaffolding/common/root')}`, await PathUtils.whereAmI(), { overwrite: false });
 
-        // NPM doesn't like to publish the .gitignore file, so handle that here
-        if (fs.existsSync(`${whereAmI()}/.gitignores`)) {
-            const oldPath = path.join(whereAmI(), '/.gitignores');
-            const newPath = path.join(whereAmI(), '/.gitignore');
+            // NPM doesn't like to publish the .gitignore file, so handle that here
+            if (fs.existsSync(`${await PathUtils.whereAmI()}/.gitignores`)) {
+                const oldPath = path.join(await PathUtils.whereAmI(), '/.gitignores');
+                const newPath = path.join(await PathUtils.whereAmI(), '/.gitignore');
 
-            fs.renameSync(oldPath, newPath);
-        }
+                fs.renameSync(oldPath, newPath);
+            }
 
-        if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
-            const configDatabaseObjects: Array<ProjectWpConfig> = [
+            if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
+                const configDatabaseObjects: Array<ProjectWpConfig> = [
+                    {
+                        fileName: 'wp-config.php',
+                        stringToUpdate: 'DATABASE_NAME_HERE',
+                        updateString: answers.databaseName,
+                    },
+                    {
+                        fileName: 'wp-config.php',
+                        stringToUpdate: 'USERNAME_HERE',
+                        updateString: answers.databasePassword,
+                    },
+                    {
+                        fileName: 'wp-config.php',
+                        stringToUpdate: 'PASSWORD_HERE',
+                        updateString: answers.databaseUsername,
+                    },
+                ];
+
+                updateObjectsArray.push(...configDatabaseObjects);
+            }
+
+            const configObjects: Array<ProjectWpConfig>  = [
                 {
                     fileName: 'wp-config.php',
-                    stringToUpdate: 'DATABASE_NAME_HERE',
-                    updateString: answers.databaseName,
+                    stringToUpdate: '// ADD_OUR_SALTS_HERE',
+                    updateString: salts,
                 },
                 {
-                    fileName: 'wp-config.php',
-                    stringToUpdate: 'USERNAME_HERE',
-                    updateString: answers.databasePassword,
-                },
-                {
-                    fileName: 'wp-config.php',
-                    stringToUpdate: 'PASSWORD_HERE',
-                    updateString: answers.databaseUsername,
+                    fileName: 'wp-config-local.php',
+                    stringToUpdate: 'DEV_SITE_URL',
+                    updateString: config['dev-site-url'],
                 },
             ];
 
-            updateObjectsArray.push(...configDatabaseObjects);
+            updateObjectsArray.push(...configObjects);
         }
 
-        const configObjects: Array<ProjectWpConfig>  = [
-            {
-                fileName: 'wp-config.php',
-                stringToUpdate: '// ADD_OUR_SALTS_HERE',
-                updateString: salts,
-            },
-            {
-                fileName: 'wp-config-local.php',
-                stringToUpdate: 'DEV_SITE_URL',
-                updateString: config['dev-site-url'],
-            },
-        ];
+        // Update our files based on object properties
+        for (let update: number = 0; update < updateObjectsArray.length; update++) {
+            if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
-        updateObjectsArray.push(...configObjects);
-    }
+                // console.log(updateObjectsArray[update].fileName);
 
-    // Update our files based on object properties
-    for (let update: number = 0; update < updateObjectsArray.length; update++) {
-        if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
+                updateScaffoldFile(
+                    await PathUtils.whereAmI(),
+                    updateObjectsArray[update].fileName,
+                    {
+                        stringToUpdate: updateObjectsArray[update].stringToUpdate,
+                        updateString: updateObjectsArray[update].updateString,
+                    }
+                );
 
-            // console.log(updateObjectsArray[update].fileName);
-
-            updateScaffoldFile(
-                whereAmI(),
-                updateObjectsArray[update].fileName,
-                {
-                    stringToUpdate: updateObjectsArray[update].stringToUpdate,
-                    updateString: updateObjectsArray[update].updateString,
-                }
-            );
-
+            }
         }
+    } catch (err) {
+        console.error(err);
     }
 };
 

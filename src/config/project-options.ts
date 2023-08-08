@@ -21,7 +21,7 @@ const projectOptions: Array<InquirerCliOptions> = [
         name: 'databaseName',
         message: 'What is the DB name for the site?',
         default: '',
-        when(answers: InitAnswers): boolean {
+        when(answers: InitAnswers): boolean | undefined {
             return answers.databaseSetup;
         },
         validate(value: string): true | string {
