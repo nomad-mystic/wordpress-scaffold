@@ -1,13 +1,11 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // Community modules
 const fs = require('fs');
 const colors = require('colors');
 const fse = require('fs-extra');
 const path = require('path');
 // Package modules
-const { whereAmI, } = require('../../utils/path-utils');
-const { updateScaffoldFile, } = require('../common/update-scaffold-file');
+const { whereAmI } = require('../../utils/path-utils');
+const { updateScaffoldFile } = require('../common/update-scaffold-file');
 /**
  * @description
  *
@@ -79,4 +77,4 @@ const scaffoldProject = (answers, config, salts) => {
         }
     }
 };
-module.exports = scaffoldProject;
+export default scaffoldProject;

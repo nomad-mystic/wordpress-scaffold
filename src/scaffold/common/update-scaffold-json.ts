@@ -94,4 +94,4 @@ const updateScaffoldJson = (filePath: string, json: any) => {
     return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 };
 
-module.exports = updateScaffoldJson;
+export default updateScaffoldJson;

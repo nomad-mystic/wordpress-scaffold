@@ -1,14 +1,9 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-const cross_fetch_1 = __importDefault(require("cross-fetch"));
+import fetch from 'cross-fetch';
 /**
  * @description Utils class for REST functions
  * @class RestUtils
  */
-class RestUtils {
+export default class RestUtils {
     /**
      * @description Pass this a url and get the response as text
      * @public
@@ -17,7 +12,7 @@ class RestUtils {
      * @return Promise<string|void>
      */
     static apiGetText(url) {
-        return (0, cross_fetch_1.default)(url)
+        return fetch(url)
             .then((response) => {
             return response.text();
         })
@@ -25,4 +20,3 @@ class RestUtils {
             .catch((err) => console.error(err));
     }
 }
-exports.default = RestUtils;

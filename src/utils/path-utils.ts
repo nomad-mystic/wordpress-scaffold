@@ -1,17 +1,16 @@
-
-require('dotenv').config();
+import 'dotenv/config';
 
 // Core Modules
-const path = require('path');
+import path from 'path';
 import {PathLike, readdirSync} from 'fs';
 
 // Community Modules
 import fs from 'fs-extra';
-const fuzzy = require('fuzzy');
-const { random } = require('lodash');
+import fuzzy from 'fuzzy';
+// import { random } from 'lodash';
 
 // Package modules
-import DebugUtils from './debug-utils';
+import DebugUtils from './debug-utils.js';
 
 export default class PathUtils {
     /**
@@ -26,7 +25,7 @@ export default class PathUtils {
         // Enabled debug mode?
         if (isDebugFullMode) {
 
-            return path.resolve(process.env.WORDPRESS_PATH);
+            return path.resolve(process.env?.WORDPRESS_PATH);
 
         } else {
 
@@ -84,12 +83,13 @@ export default class PathUtils {
     //
     //     // Just get the top level folder names
     //     const getDirectories = readdirSync(themePath, { withFileTypes: true })
-    //         .filter((dirent) => dirent.isDirectory())
+    //         .filter((dirent: any) => dirent.isDirectory())
     //         .map(dirent => dirent?.name);
     //
     //     return getDirectories;
     // };
 }
+
 
 /**
  * @description Gets the current path
@@ -110,27 +110,27 @@ export default class PathUtils {
 //
 // };
 
-/**
- * @description  Check if the users is the root of the project or another folder
- *
- * @return bool
- */
-const isWordpressInstall = function() {
+// /**
+//  * @description  Check if the users is the root of the project or another folder
+//  *
+//  * @return bool
+//  */
+// const isWordpressInstall = function() {
+//
+//     return fs.pathExistsSync(`${whereAmI()}/wp-admin/admin-ajax.php`);
+//
+// };
 
-    return fs.pathExistsSync(`${whereAmI()}/wp-admin/admin-ajax.php`);
-
-};
-
-/**
- * @description
- *
- * @return string
- */
-const getThemesFolderPath = function() {
-
-    return path.resolve(`${whereAmI()}/wp-content/themes`);
-
-};
+// /**
+//  * @description
+//  *
+//  * @return string
+//  */
+// const getThemesFolderPath = function() {
+//
+//     return path.resolve(`${whereAmI()}/wp-content/themes`);
+//
+// };
 
 // /**
 //  * @description Get all folder names in the theme directory

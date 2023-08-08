@@ -1,5 +1,5 @@
 // Community modules
-require('dotenv').config();
+import 'dotenv/config';
 
 /**
  * @class DebugUtils

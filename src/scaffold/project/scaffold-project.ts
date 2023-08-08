@@ -5,18 +5,14 @@ const fse = require('fs-extra');
 const path = require('path');
 
 // Package modules
-const {
-    whereAmI,
-} = require('../../utils/path-utils');
+const { whereAmI } = require('../../utils/path-utils');
 
-const {
-    updateScaffoldFile,
-} = require('../common/update-scaffold-file');
+const { updateScaffoldFile } = require('../common/update-scaffold-file');
 
 // Interfaces
-import InitAnswers from '../../interfaces/project/interface-init-answers';
-import ProjectWpConfig from '../../interfaces/project/interface-wp-config';
-import ProjectConfig from '../../interfaces/project/interface-project-config';
+import InitAnswers from '../../interfaces/project/interface-init-answers.js';
+import ProjectWpConfig from '../../interfaces/project/interface-wp-config.js';
+import ProjectConfig from '../../interfaces/project/interface-project-config.js';
 
 /**
  * @description
@@ -108,4 +104,4 @@ const scaffoldProject = (answers: InitAnswers, config: ProjectConfig, salts: str
     }
 };
 
-module.exports = scaffoldProject;
+export default scaffoldProject;

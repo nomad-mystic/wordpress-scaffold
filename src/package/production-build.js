@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // Core Modules
 const fs = require('fs');
 // Community modules
@@ -11,7 +9,7 @@ const packageRoot = require('../../package-root.js');
  * @todo Maybe do this?
  * @class ProductionBuild
  */
-class ProductionBuild {
+export default class ProductionBuild {
     /**
      * @description
      * @public
@@ -33,5 +31,4 @@ class ProductionBuild {
         }
     };
 }
-exports.default = ProductionBuild;
 ProductionBuild.minifyProduction();

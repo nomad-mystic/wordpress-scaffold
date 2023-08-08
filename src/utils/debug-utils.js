@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 // Community modules
-require('dotenv').config();
+import 'dotenv/config';
 /**
  * @class DebugUtils
  */
-class DebugUtils {
+export default class DebugUtils {
     /**
      * @description Check if local DEBUG and WORDPRESS_PATH .env variables are set
      * @public
@@ -41,4 +39,3 @@ class DebugUtils {
         return wordPressDebugPath;
     };
 }
-exports.default = DebugUtils;

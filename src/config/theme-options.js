@@ -1,6 +1,4 @@
-const {
-    getInternalConfig,
-} = require('../utils/get-config');
+import { getInternalConfig } from '../utils/get-config.js';
 
 require('../scaffold/common/scaffold-internal').scaffoldInternal();
 

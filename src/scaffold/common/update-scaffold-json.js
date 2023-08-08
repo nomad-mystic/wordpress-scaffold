@@ -1,4 +1,3 @@
-"use strict";
 // Community modules
 const fs = require('fs');
 // Package modules
@@ -68,4 +67,4 @@ const updateScaffoldJson = (filePath, json) => {
     fs.writeFileSync(filePath, JSON.stringify(jsonFileParsed));
     return JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 };
-module.exports = updateScaffoldJson;
+export default updateScaffoldJson;

@@ -1,7 +1,15 @@
+// interfaces
+import InitAnswers from '../interfaces/project/interface-init-answers.js';
+import ProjectConfig from '../interfaces/project/interface-project-config.js';
+import ProjectOptions from '../interfaces/project/interface-project-options.js';
+
 import { getInternalConfig } from '../utils/get-config.js';
+
+
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
 await scaffoldInternal();
-const projectOptions = [
+
+const projectOptions: Array<ProjectOptions> = [
     {
         type: 'confirm',
         name: 'databaseSetup',
@@ -13,13 +21,15 @@ const projectOptions = [
         name: 'databaseName',
         message: 'What is the DB name for the site?',
         default: '',
-        when(answers) {
+        when(answers: InitAnswers): boolean {
             return answers.databaseSetup;
         },
-        validate(value) {
+        validate(value: string): true | string {
+
             if (value !== '') {
                 return true;
             }
+
             return 'Please enter a database name.';
         },
     },
@@ -28,13 +38,14 @@ const projectOptions = [
         name: 'databasePassword',
         message: 'What is the DB password for the site?',
         default: '',
-        when(answers) {
+        when(answers: InitAnswers) {
             return answers.databaseSetup;
         },
-        validate(value) {
+        validate(value: string) {
             if (value !== '') {
                 return true;
             }
+
             return 'Please enter a database password.';
         },
     },
@@ -43,13 +54,14 @@ const projectOptions = [
         name: 'databaseUsername',
         message: 'What is the DB username for the site?',
         default: '',
-        when(answers) {
+        when(answers: InitAnswers) {
             return answers.databaseSetup;
         },
-        validate(value) {
+        validate(value: string) {
             if (value !== '') {
                 return true;
             }
+
             return 'Please enter a database username.';
         },
     },
@@ -76,14 +88,16 @@ const projectOptions = [
         name: 'siteAdminPassword',
         message: 'What is the admin user\'s password for the site?',
         default: '',
-        validate(value) {
+        validate(value: string) {
             if (value !== '') {
                 return true;
             }
+
             return 'Please enter your admin user\'s password.';
         },
     },
 ];
+
 /**
  * @description Gather the needed options for use in the CLI
  * @public
@@ -91,39 +105,47 @@ const projectOptions = [
  *
  * @return Promise<void>
  */
-const getProjectOptions = async () => {
+const getProjectOptions = async (): Promise<Array<any> | undefined> => {
     try {
-        let jsonFileParsed = await getInternalConfig('project/project-config.json');
+        let jsonFileParsed: ProjectConfig = await getInternalConfig('project/project-config.json');
+
         // Gather the information we need if the user didn't use the init command
         if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['project-name'] === '') {
-            const projectNameOption = {
+            const projectNameOption: ProjectOptions = {
                 type: 'input',
                 name: 'projectName',
                 message: 'What is the name of your WordPress site?',
                 default: 'scaffold-project',
             };
+
             projectOptions.unshift(projectNameOption);
         }
+
         if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['site-url'] === '' || jsonFileParsed['dev-site-url'] === '') {
-            const siteUrlOption = {
+            const siteUrlOption: ProjectOptions = {
                 type: 'input',
                 name: 'siteUrl',
                 message: 'What is the URL of your WordPress site?',
                 default: 'https://example.com',
             };
-            const devSiteUrl = {
+
+            const devSiteUrl: ProjectOptions = {
                 type: 'input',
                 name: 'devSiteUrl',
                 message: 'What is the development URL of your WordPress site?',
                 default: 'https://example.com.test',
             };
+
             projectOptions.push(siteUrlOption);
             projectOptions.push(devSiteUrl);
         }
+
         return projectOptions;
-    }
-    catch (err) {
+    } catch (err) {
+
         console.error(err);
+
     }
 };
+
 export default getProjectOptions;

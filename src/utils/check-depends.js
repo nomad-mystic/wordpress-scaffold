@@ -1,11 +1,9 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const shell = require('shelljs');
+import shell from 'shelljs';
 /**
  * @description Utils for checking system level functions
  * @class CheckDepends
  */
-class CheckDepends {
+export default class CheckDepends {
     /**
      * @description Check for system dependency, if it doesn't exist exit
      * @public
@@ -18,16 +16,15 @@ class CheckDepends {
     static dependencyInstalled(dependency, message, exit = true) {
         const check = shell.which(dependency);
         // Display message
-        if (!check) {
+        if (!check || check.code !== 0) {
             shell.echo(message);
-        }
-        // Should we end the process?
-        if (exit) {
-            shell.exit(1);
+            // Should we end the process?
+            if (exit) {
+                shell.exit(1);
+            }
         }
         // string or Null
         return check;
     }
     ;
 }
-exports.default = CheckDepends;
