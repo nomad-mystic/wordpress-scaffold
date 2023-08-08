@@ -1,6 +1,7 @@
+// Utils
 import { getInternalConfig } from '../utils/get-config.js';
+// Common
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
-await scaffoldInternal();
 const projectOptions = [
     {
         type: 'confirm',
@@ -93,6 +94,7 @@ const projectOptions = [
  */
 const getProjectOptions = async () => {
     try {
+        await scaffoldInternal();
         let jsonFileParsed = await getInternalConfig('project/project-config.json');
         // Gather the information we need if the user didn't use the init command
         if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['project-name'] === '') {

@@ -3,11 +3,11 @@ import InitAnswers from '../interfaces/project/interface-init-answers.js';
 import ProjectConfig from '../interfaces/project/interface-project-config.js';
 import ProjectOptions from '../interfaces/project/interface-project-options.js';
 
+// Utils
 import { getInternalConfig } from '../utils/get-config.js';
 
-
+// Common
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
-await scaffoldInternal();
 
 const projectOptions: Array<ProjectOptions> = [
     {
@@ -107,6 +107,8 @@ const projectOptions: Array<ProjectOptions> = [
  */
 const getProjectOptions = async (): Promise<Array<any> | undefined> => {
     try {
+        await scaffoldInternal();
+
         let jsonFileParsed: ProjectConfig = await getInternalConfig('project/project-config.json');
 
         // Gather the information we need if the user didn't use the init command

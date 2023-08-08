@@ -24,8 +24,9 @@ export default class PathUtils {
 
         // Enabled debug mode?
         if (isDebugFullMode) {
+            const wordPressDebugPath: string = process.env?.WORDPRESS_PATH ?? '';
 
-            return path.resolve(process.env?.WORDPRESS_PATH);
+            return path.resolve(wordPressDebugPath);
 
         } else {
 
@@ -90,48 +91,6 @@ export default class PathUtils {
     // };
 }
 
-
-/**
- * @description Gets the current path
- *
- * @return string
- */
-// const whereAmI = function() {
-//
-//     if (isDebugMode && wordPressDebugPath) {
-//
-//         return path.resolve(process.env.WORDPRESS_PATH);
-//
-//     } else {
-//
-//         return path.resolve(process.cwd());
-//
-//     }
-//
-// };
-
-// /**
-//  * @description  Check if the users is the root of the project or another folder
-//  *
-//  * @return bool
-//  */
-// const isWordpressInstall = function() {
-//
-//     return fs.pathExistsSync(`${whereAmI()}/wp-admin/admin-ajax.php`);
-//
-// };
-
-// /**
-//  * @description
-//  *
-//  * @return string
-//  */
-// const getThemesFolderPath = function() {
-//
-//     return path.resolve(`${whereAmI()}/wp-content/themes`);
-//
-// };
-
 // /**
 //  * @description Get all folder names in the theme directory
 //  *
@@ -174,11 +133,3 @@ export default class PathUtils {
 //         }, random(30, 500));
 //     });
 // }
-
-// module.exports = {
-//     whereAmI,
-//     isWordpressInstall,
-//     getThemesFolderPath,
-//     getThemeFolderNames,
-//     searchFolderNames,
-// };

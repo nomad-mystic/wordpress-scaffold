@@ -5,6 +5,8 @@ import path from 'path';
 import fse from 'fs-extra';
 // Utils
 import PathUtils from '../../utils/path-utils.js';
+// Root
+import { packageRootDir } from '../../../package-root.js';
 /**
  * @description Make sure we have our internal folder, if not copy it over
  *
@@ -12,6 +14,6 @@ import PathUtils from '../../utils/path-utils.js';
  */
 export const scaffoldInternal = async () => {
     if (!fs.existsSync(`${await PathUtils.whereAmI()}/internal`)) {
-        fse.copySync(`${path.join(__dirname + '../../../../scaffolding/internal')}`, `${await PathUtils.whereAmI()}/internal`, { overwrite: false });
+        fse.copySync(`${path.join(packageRootDir + '/scaffolding/internal')}`, `${await PathUtils.whereAmI()}/internal`, { overwrite: false });
     }
 };
