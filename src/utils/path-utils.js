@@ -1,15 +1,17 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-// Community Modules
 require('dotenv').config();
-const fs = require('fs-extra');
+// Core Modules
 const path = require('path');
+// Community Modules
+const fs_extra_1 = __importDefault(require("fs-extra"));
 const fuzzy = require('fuzzy');
-const { readdirSync } = require('fs');
 const { random } = require('lodash');
-// Enable debug mode?
-const isDebugMode = !!process.env?.DEBUG;
-const wordPressDebugPath = !!process.env?.WORDPRESS_PATH;
+// Package modules
+const debug_utils_1 = __importDefault(require("./debug-utils"));
 class PathUtils {
     /**
      * @description Gets the current path
@@ -17,47 +19,44 @@ class PathUtils {
      *
      * @return string
      */
-    static whereAmI() {
-        if (isDebugMode && wordPressDebugPath) {
+    static whereAmI = async () => {
+        const isDebugFullMode = await debug_utils_1.default.isDebugFullMode();
+        // Enabled debug mode?
+        if (isDebugFullMode) {
             return path.resolve(process.env.WORDPRESS_PATH);
         }
         else {
             return path.resolve(process.cwd());
         }
-    }
+    };
     /**
      * @description  Check if the users is the root of the project or another folder
      * @public
      *
      * @return bool
      */
-    static isWordpressInstall() {
-        return fs.pathExistsSync(`${this.whereAmI()}/wp-admin/admin-ajax.php`);
-    }
+    static isWordpressInstall = async () => {
+        try {
+            return fs_extra_1.default.pathExistsSync(`${await this.whereAmI()}/wp-admin/admin-ajax.php`);
+        }
+        catch (err) {
+            console.error(err);
+        }
+    };
     /**
-     * @description
+     * @description Get the current WP themes folder
      *
      * @return string
      */
-    static getThemesFolderPath() {
-        return path.resolve(`${this.whereAmI()}/wp-content/themes`);
-    }
-    ;
-    /**
-     * @description Get all folder names in the theme directory
-     *
-     * @return array
-     */
-    static getThemeFolderNames() {
-        // Theme path
-        const themePath = this.getThemesFolderPath();
-        // Just get the top level folder names
-        const getDirectories = readdirSync(themePath, { withFileTypes: true })
-            .filter(dirent => dirent.isDirectory())
-            .map(dirent => dirent.name);
-        return getDirectories;
-    }
-    ;
+    static getThemesFolderPath = async () => {
+        try {
+            return path.resolve(`${await this.whereAmI()}/wp-content/themes`);
+        }
+        catch (err) {
+            console.error(err);
+            return;
+        }
+    };
 }
 exports.default = PathUtils;
 /**
@@ -65,21 +64,26 @@ exports.default = PathUtils;
  *
  * @return string
  */
-const whereAmI = function () {
-    if (isDebugMode && wordPressDebugPath) {
-        return path.resolve(process.env.WORDPRESS_PATH);
-    }
-    else {
-        return path.resolve(process.cwd());
-    }
-};
+// const whereAmI = function() {
+//
+//     if (isDebugMode && wordPressDebugPath) {
+//
+//         return path.resolve(process.env.WORDPRESS_PATH);
+//
+//     } else {
+//
+//         return path.resolve(process.cwd());
+//
+//     }
+//
+// };
 /**
  * @description  Check if the users is the root of the project or another folder
  *
  * @return bool
  */
 const isWordpressInstall = function () {
-    return fs.pathExistsSync(`${whereAmI()}/wp-admin/admin-ajax.php`);
+    return fs_extra_1.default.pathExistsSync(`${whereAmI()}/wp-admin/admin-ajax.php`);
 };
 /**
  * @description

@@ -18,7 +18,8 @@ const updateScaffoldJson = require('../src/scaffold/common/update-scaffold-json'
 const check_depends_1 = __importDefault(require("../src/utils/check-depends"));
 const rest_utils_1 = __importDefault(require("../src/utils/rest-utils"));
 const debug_utils_1 = __importDefault(require("../src/utils/debug-utils"));
-const { whereAmI } = require('../src/utils/path-utils');
+// const { whereAmI } = require('../src/utils/path-utils');
+const path_utils_1 = __importDefault(require("../src/utils/path-utils"));
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI
 check_depends_1.default.dependencyInstalled('php', 'Sorry, this script requires the PHP CLI');
@@ -38,6 +39,8 @@ inquirer
     .prompt(projectOptions)
     .then(async (answers) => {
     try {
+        // Gather our location
+        const whereAmi = await path_utils_1.default.whereAmI();
         // Enable debug mode?
         const isDebugFullMode = await debug_utils_1.default.isDebugFullMode();
         // Change the path for download to our "WordPress" working directory
@@ -49,11 +52,11 @@ inquirer
             // Build the core files
             shell.exec('wp core download');
         }
-        const filePath = `${whereAmI()}/internal/project/project-config.json`;
+        const filePath = `${whereAmi}/internal/project/project-config.json`;
         const config = updateScaffoldJson(filePath, answers);
         // Manually update these properties
         updateScaffoldJson(filePath, {
-            'absolute-project-folder': whereAmI(),
+            'absolute-project-folder': whereAmi,
         });
         // Hit the WordPress API for our site's salts
         let salts = await rest_utils_1.default.apiGetText('https://api.wordpress.org/secret-key/1.1/salt/');

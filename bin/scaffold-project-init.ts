@@ -20,7 +20,8 @@ import CheckDepends from '../src/utils/check-depends';
 import RestUtils from '../src/utils/rest-utils';
 import DebugUtils from '../src/utils/debug-utils';
 
-const { whereAmI } = require('../src/utils/path-utils');
+// const { whereAmI } = require('../src/utils/path-utils');
+import PathUtils from '../src/utils/path-utils';
 
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI
@@ -42,6 +43,9 @@ inquirer
 .prompt(projectOptions)
 .then(async (answers: InitAnswers): Promise<void> => {
     try {
+        // Gather our location
+        const whereAmi = await PathUtils.whereAmI();
+
         // Enable debug mode?
         const isDebugFullMode: boolean = await DebugUtils.isDebugFullMode();
 
@@ -56,13 +60,13 @@ inquirer
             shell.exec('wp core download');
         }
 
-        const filePath: string = `${whereAmI()}/internal/project/project-config.json`;
+        const filePath: string = `${whereAmi}/internal/project/project-config.json`;
 
         const config = updateScaffoldJson(filePath, answers);
 
         // Manually update these properties
         updateScaffoldJson(filePath, {
-            'absolute-project-folder': whereAmI(),
+            'absolute-project-folder': whereAmi,
         });
 
         // Hit the WordPress API for our site's salts

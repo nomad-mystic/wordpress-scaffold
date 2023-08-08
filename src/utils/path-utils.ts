@@ -1,14 +1,17 @@
-// Community Modules
+
 require('dotenv').config();
-const fs = require('fs-extra');
+
+// Core Modules
 const path = require('path');
+import {PathLike, readdirSync} from 'fs';
+
+// Community Modules
+import fs from 'fs-extra';
 const fuzzy = require('fuzzy');
-const { readdirSync } = require('fs');
 const { random } = require('lodash');
 
-// Enable debug mode?
-const isDebugMode = !!process.env?.DEBUG;
-const wordPressDebugPath = !!process.env?.WORDPRESS_PATH;
+// Package modules
+import DebugUtils from './debug-utils';
 
 export default class PathUtils {
     /**
@@ -17,9 +20,11 @@ export default class PathUtils {
      *
      * @return string
      */
-    static whereAmI(): string {
+    public static whereAmI = async (): Promise<string> => {
+        const isDebugFullMode: boolean = await DebugUtils.isDebugFullMode();
 
-        if (isDebugMode && wordPressDebugPath) {
+        // Enabled debug mode?
+        if (isDebugFullMode) {
 
             return path.resolve(process.env.WORDPRESS_PATH);
 
@@ -36,39 +41,54 @@ export default class PathUtils {
      *
      * @return bool
      */
-    static isWordpressInstall(): boolean {
+    public static isWordpressInstall = async (): Promise<boolean | undefined> => {
+        try {
 
-        return fs.pathExistsSync(`${this.whereAmI()}/wp-admin/admin-ajax.php`);
+            return fs.pathExistsSync(`${await this.whereAmI()}/wp-admin/admin-ajax.php`);
 
+        } catch (err) {
+
+            console.error(err);
+
+        }
     }
 
     /**
-     * @description
+     * @description Get the current WP themes folder
      *
      * @return string
      */
-    static getThemesFolderPath(): string {
+    public static getThemesFolderPath = async (): Promise<string | void> => {
+        try {
 
-        return path.resolve(`${this.whereAmI()}/wp-content/themes`);
+            return path.resolve(`${await this.whereAmI()}/wp-content/themes`);
+
+        } catch (err) {
+
+            console.error(err);
+
+            return;
+
+        }
 
     };
 
     /**
      * @description Get all folder names in the theme directory
      *
-     * @return array
+     * @return Promise<Array<string>>
      */
-    static getThemeFolderNames(): Array<string> {
-        // Theme path
-        const themePath = this.getThemesFolderPath();
-
-        // Just get the top level folder names
-        const getDirectories = readdirSync(themePath, { withFileTypes: true })
-            .filter(dirent => dirent.isDirectory())
-            .map(dirent => dirent.name);
-
-        return getDirectories;
-    };
+    // public static getThemeFolderNames = async (): Promise<Array<string>> => {
+    //     // Theme path
+    //     const themePath: string | void = await this.getThemesFolderPath();
+    //
+    //     // Just get the top level folder names
+    //     const getDirectories = readdirSync(themePath, { withFileTypes: true })
+    //         .filter((dirent) => dirent.isDirectory())
+    //         .map(dirent => dirent?.name);
+    //
+    //     return getDirectories;
+    // };
 }
 
 /**
@@ -76,19 +96,19 @@ export default class PathUtils {
  *
  * @return string
  */
-const whereAmI = function() {
-
-    if (isDebugMode && wordPressDebugPath) {
-
-        return path.resolve(process.env.WORDPRESS_PATH);
-
-    } else {
-
-        return path.resolve(process.cwd());
-
-    }
-
-};
+// const whereAmI = function() {
+//
+//     if (isDebugMode && wordPressDebugPath) {
+//
+//         return path.resolve(process.env.WORDPRESS_PATH);
+//
+//     } else {
+//
+//         return path.resolve(process.cwd());
+//
+//     }
+//
+// };
 
 /**
  * @description  Check if the users is the root of the project or another folder
