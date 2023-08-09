@@ -51,14 +51,14 @@ const updateScaffoldJson = async (filePath, json) => {
                     typeof json[property] === 'string' &&
                     dashedValues.includes(dashedProperty)) {
                     jsonFileParsed[`${dashedProperty}`] = await StringUtils.addDashesToString(json[property].trim());
-                    // Pretty specific maybe refactor and abstract this out?
+                    // @todo Pretty specific maybe refactor and abstract this out?
                     if (dashedProperty === 'project-name') {
                         jsonFileParsed['project-namespace'] = await StringUtils.pascalCaseString(jsonFileParsed['project-name']);
                         continue;
                     }
                     continue;
                 }
-                // Same information we don't want to save, so do that here
+                // Some information we don't want to save, so do that here
                 if (typeof json[property] !== 'undefined' && !disallowedKeys.includes(dashedProperty)) {
                     jsonFileParsed[`${dashedProperty}`] = json[property];
                 }

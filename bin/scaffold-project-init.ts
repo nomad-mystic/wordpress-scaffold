@@ -140,10 +140,10 @@ class ProjectInit {
         try {
             const filePath: string = `${this.whereAmI}/internal/project/project-config.json`;
 
-            const config = updateScaffoldJson(filePath, answers);
+            await updateScaffoldJson(filePath, answers);
 
             // Manually update these properties
-            updateScaffoldJson(filePath, {
+            const config = await updateScaffoldJson(filePath, {
                 'absolute-project-folder': this.whereAmI,
             });
 

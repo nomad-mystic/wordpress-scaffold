@@ -113,9 +113,9 @@ class ProjectInit {
     static scaffoldFiles = async (answers) => {
         try {
             const filePath = `${this.whereAmI}/internal/project/project-config.json`;
-            const config = updateScaffoldJson(filePath, answers);
+            await updateScaffoldJson(filePath, answers);
             // Manually update these properties
-            updateScaffoldJson(filePath, {
+            const config = await updateScaffoldJson(filePath, {
                 'absolute-project-folder': this.whereAmI,
             });
             // Hit the WordPress API for our site's salts
