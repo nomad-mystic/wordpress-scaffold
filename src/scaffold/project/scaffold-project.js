@@ -6,6 +6,7 @@ import path from 'path';
 // Package modules
 import PathUtils from '../../utils/path-utils.js';
 import { updateScaffoldFile } from '../common/update-scaffold-file.js';
+import { packageRootDir } from '../../../package-root.js';
 /**
  * @description
  *
@@ -24,9 +25,9 @@ const scaffoldProject = async (answers, config, salts) => {
         }
         else {
             // Copy over and updates our values
-            fse.copySync(`${path.join(__dirname + '../../../../scaffolding/project')}`, await PathUtils.whereAmI(), { overwrite: false });
+            fse.copySync(`${path.join(packageRootDir + '/scaffolding/project')}`, await PathUtils.whereAmI(), { overwrite: false });
             // Our common root files
-            fse.copySync(`${path.join(__dirname + '../../../../scaffolding/common/root')}`, await PathUtils.whereAmI(), { overwrite: false });
+            fse.copySync(`${path.join(packageRootDir + '/scaffolding/common/root')}`, await PathUtils.whereAmI(), { overwrite: false });
             // NPM doesn't like to publish the .gitignore file, so handle that here
             if (fs.existsSync(`${await PathUtils.whereAmI()}/.gitignores`)) {
                 const oldPath = path.join(await PathUtils.whereAmI(), '/.gitignores');

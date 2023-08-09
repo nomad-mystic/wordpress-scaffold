@@ -11,11 +11,11 @@ class InquirerCli {
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @return Promise<void>
+     * @param {Array<any> | undefined} options
+     * @return {Promise<InitAnswers | ThemeAnswers | void>}
      */
     static performPromptsTasks = async (options) => {
         try {
-            console.log(options);
             const inquirer = await this.getInquirer();
             const answers = await this.performPrompt(inquirer, options);
             return answers;
@@ -48,11 +48,10 @@ class InquirerCli {
      *
      * @param {any} inquirer
      * @param {Promise<Array<any> | undefined>} options
-     * @return Promise<InitAnswers | void>
+     * @return {Promise<InitAnswers | ThemeAnswers | void>}
      */
     static performPrompt = async (inquirer, options) => {
         try {
-            // const options = await getProjectOptions();
             return inquirer.prompt(options)
                 .catch((error) => {
                 if (error.isTtyError) {
