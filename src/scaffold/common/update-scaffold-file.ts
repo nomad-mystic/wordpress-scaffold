@@ -17,12 +17,12 @@ export const updateScaffoldFile = (
     stringToUpdate: any,
     updateString: any
 ) => {
-    let updatedContent = '';
+    let updatedContent: string = '';
 
     // MAke sure the files exists before we start updating them
     if (fs.existsSync(`${updatePath}/${fileName}`)) {
         // Get our file in memory
-        let fileContents = fs.readFileSync(`${updatePath}/${fileName}`, 'utf8');
+        let fileContents: string = fs.readFileSync(`${updatePath}/${fileName}`, 'utf8');
 
         // Replace our file with user input values
         let reg: RegExp = new RegExp(stringToUpdate, 'gm');

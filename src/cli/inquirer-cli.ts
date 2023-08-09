@@ -3,26 +3,10 @@ import 'dotenv/config';
 
 import inquirer from 'inquirer';
 import colors from 'colors';
-import shell from 'shelljs';
-import fs from 'fs';
-
-// Package modules
-import getProjectOptions from '../config/project-options.js';
-import scaffoldProject from '../scaffold/project/scaffold-project.js';
-import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
 
 // Interfaces
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
 import ThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
-
-// Utils
-import CheckDepends from '../utils/check-depends.js';
-
-import RestUtils from '../utils/rest-utils.js';
-import DebugUtils from '../utils/debug-utils.js';
-import PathUtils from '../utils/path-utils.js';
-import InquirerCliOptions from "../interfaces/cli/interface-options-inquirer-cli.js";
-
 
 /**
  * @class ProjectInit

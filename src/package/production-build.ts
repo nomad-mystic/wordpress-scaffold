@@ -11,6 +11,7 @@ const packageRoot = require('../../package-root.js');
 
 /**
  * @todo Maybe do this?
+ * @see https://github.com/1Password/op-js/blob/main/tsconfig.release.json
  * @class ProductionBuild
  */
 export default class ProductionBuild {

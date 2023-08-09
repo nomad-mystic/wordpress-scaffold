@@ -119,10 +119,8 @@ const updateScaffoldClasses = (answers, {
                 updateScaffoldFile(
                     updateObjectsArray[update].updatePath,
                     updateObjectsArray[update].fileName,
-                    {
-                        stringToUpdate: updateObjectsArray[update].stringToUpdate,
-                        updateString: updateObjectsArray[update].updateString,
-                    }
+                    updateObjectsArray[update].stringToUpdate,
+                    updateObjectsArray[update].updateString,
                 );
 
             }
