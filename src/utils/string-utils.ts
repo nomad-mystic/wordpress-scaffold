@@ -1,5 +1,6 @@
 // Community modules
 import { pascalCase, pascalCaseTransformMerge } from 'pascal-case';
+
 /**
  * @class StringUtils
  */
@@ -12,12 +13,14 @@ export default class StringUtils {
      * @param {string} replaceString
      * @return {Promise<string>}
      */
-    static addDashesToString = async (replaceString) => {
+    public static addDashesToString = async (replaceString: string): Promise<string> => {
         if (replaceString === '') {
             return '';
         }
+
         return replaceString.replaceAll(' ', '-').toLowerCase();
-    };
+    }
+
     /**
      * @description Replace dashes in a string with underscores
      * @public
@@ -26,10 +29,12 @@ export default class StringUtils {
      * @param {string} replaceString
      * @return {Promise<string>}
      */
-    static capAndSnakeCaseString = async (replaceString) => {
-        let snakeCaseString = replaceString.replaceAll('-', '_');
+    public static capAndSnakeCaseString = async (replaceString: string): Promise<string> => {
+        let snakeCaseString: string = replaceString.replaceAll('-', '_');
+
         return snakeCaseString.toUpperCase();
     };
+
     /**
      * @description Transform a string into pascal case
      * @public
@@ -39,11 +44,12 @@ export default class StringUtils {
      * @param {string} transformString
      * @return {Promise<string>}
      */
-    static pascalCaseString = async (transformString) => {
-        return pascalCase(transformString, {
+    public static pascalCaseString = async (transformString: string): Promise<string> => {
+        return pascalCase(transformString,{
             transform: pascalCaseTransformMerge,
         });
     };
+
     /**
      * @description Transform a camel case string into a dashed one
      * @public
@@ -53,7 +59,7 @@ export default class StringUtils {
      * @param {string} replaceString: string
      * @returns {string}
      */
-    static camelCaseToDash = async (replaceString) => {
+    public static camelCaseToDash = async (replaceString: string): Promise<string> => {
         return replaceString.replace(/([a-zA-Z])(?=[A-Z])/g, '$1-').toLowerCase();
-    };
+    }
 }

@@ -15,7 +15,7 @@ const {
     addDashesToString,
     capAndSnakeCaseString,
     pascalCaseString,
-} = require('../../utils/string-utils');
+} = require('../../utils/string-utils.js');
 
 const {
     updateScaffoldFile,

@@ -23,7 +23,7 @@ const {
     addDashesToString,
     capAndSnakeCaseString,
     pascalCaseString
-} = require('../src/utils/string-utils');
+} = require('../src/utils/string-utils.js');
 
 // Enable debug mode?
 const isDebugMode = !!process.env?.DEBUG;

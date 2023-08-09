@@ -70,7 +70,6 @@ const scaffoldProject = async (answers, config, salts) => {
         // Update our files based on object properties
         for (let update = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
-                // console.log(updateObjectsArray[update].fileName);
                 updateScaffoldFile(await PathUtils.whereAmI(), updateObjectsArray[update].fileName, updateObjectsArray[update].stringToUpdate, updateObjectsArray[update].updateString);
             }
         }

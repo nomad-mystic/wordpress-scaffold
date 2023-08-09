@@ -95,8 +95,6 @@ const scaffoldProject = async (
         for (let update: number = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
-                // console.log(updateObjectsArray[update].fileName);
-
                 updateScaffoldFile(
                     await PathUtils.whereAmI(),
                     updateObjectsArray[update].fileName,
