@@ -1,134 +1,136 @@
 #! /usr/bin/env node
-
-// Community modules
-require('dotenv').config();
-const inquirer = require('inquirer');
-const colors = require('colors');
-
-// Package modules
-const themeOptions = require('./config/theme-options');
-const scaffoldTheme = require('./scaffold/theme/scaffold-theme');
-const scaffoldThemeRoot = require('./scaffold/theme/scaffold-root');
-const updateScaffoldClasses = require('./scaffold/theme/scaffold-classes');
-const updateScaffoldJson = require('./scaffold/common/update-scaffold-json');
-
-const {
-    whereAmI,
-    isWordpressInstall,
-    getThemesFolderPath,
-} = require('./utils/path-utils');
-
-const {
-    addDashesToString,
-    capAndSnakeCaseString,
-    pascalCaseString
-} = require('./utils/string-utils');
-
-// Enable debug mode?
-const isDebugMode = !!process.env?.DEBUG;
-
-// Let the user know they need to be in the root of the project and bail early
-if (!isWordpressInstall() && !isDebugMode) {
-
-    console.log(colors.yellow('Your path is not at the root of your WordPress install.'));
-    console.log(colors.yellow(`You are located at ${whereAmI()}`));
-    console.log(colors.yellow('Please move to the root WordPress install folder.'));
-
-    process.exit();
-}
-
-// Starting point for scaffolding a theme
-inquirer
-.prompt(themeOptions)
-.then((answers) => {
-    const configFilePath = `${whereAmI()}/internal/project/project-config.json`;
-
-    // Absolute path of the themes folder
-    const themesPath = getThemesFolderPath();
-
-    // User inputs
-    const projectName = answers?.projectName;
-    const themeName = answers?.themeName.trim();
-    const themeDescription = answers?.themeDescription.trim();
-    const frontEndFramework = answers?.frontEndFramework;
-    const siteUrl = answers?.siteUrl;
-    const devSiteUrl = answers?.devSiteUrl;
-
-    // Make folder "safe" if there are spaces
-    const safeThemeName = addDashesToString(themeName);
-
-    // Create the finalized path for the scaffolded theme
-    const newThemePath = `${themesPath}/${safeThemeName}`;
-
-    // Create our string modification
-    const capAndSnakeCaseTheme = capAndSnakeCaseString(safeThemeName);
-
-    let configUpdates = {
-        'active-theme': safeThemeName,
-        'active-theme-path': newThemePath,
-        'absolute-project-folder': whereAmI(),
-        'absolute-themes-folder': themesPath,
-        'theme-description': themeDescription,
-        'front-end-framework': frontEndFramework,
-        'site-url': siteUrl,
-        'dev-site-url': devSiteUrl,
+import 'dotenv/config';
+import colors from 'colors';
+import InquirerCli from '../src/cli/inquirer-cli.js';
+import AbstractScaffold from '../src/abstract/AbstractScaffold.js';
+import PathUtils from '../src/utils/path-utils.js';
+import DebugUtils from '../src/utils/debug-utils.js';
+import StringUtils from '../src/utils/string-utils.js';
+import updateScaffoldJson from '../src/scaffold/common/update-scaffold-json.js';
+import getThemeOptions from '../src/config/theme-options.js';
+import scaffoldTheme from '../src/scaffold/theme/scaffold-theme.js';
+import scaffoldThemeRoot from '../src/scaffold/theme/scaffold-root.js';
+import updateScaffoldClasses from '../src/scaffold/theme/scaffold-classes.js';
+class ScaffoldTheme extends AbstractScaffold {
+    static isDebugFullMode = false;
+    static whereAmI = '';
+    static performScaffolding = async () => {
+        try {
+            this.whereAmI = await PathUtils.whereAmI();
+            this.isDebugFullMode = await DebugUtils.isDebugFullMode();
+            await this.checkForWordPressInstall();
+            const answers = await InquirerCli.performPromptsTasks(await getThemeOptions()).catch((err) => console.error(err));
+            console.log(answers);
+            await this.scaffoldFiles(answers);
+        }
+        catch (err) {
+            console.log('ScaffoldTheme.performScaffolding()');
+            console.error(err);
+        }
     };
-
-    if (projectName && typeof projectName !== 'undefined') {
-        configUpdates['project-name'] = projectName;
-        configUpdates['project-namespace'] = pascalCaseString(projectName);
-    }
-
-    // // Update our config before we scaffold theme, so we can use it in our scaffold functions
-    const projectConfig = updateScaffoldJson(configFilePath, configUpdates);
-
-    // Build the theme
-    scaffoldTheme(answers, {
-        themeName,
-        themesPath,
-        newThemePath,
-        themeDescription,
-        frontEndFramework,
-        safeThemeName,
-        capAndSnakeCaseTheme,
-    });
-
-    scaffoldThemeRoot(answers, {
-        themeName,
-        themesPath,
-        newThemePath,
-        themeDescription,
-        frontEndFramework,
-        safeThemeName,
-        capAndSnakeCaseTheme,
-        projectName: projectConfig['project-name'],
-        projectNamespace: projectConfig['project-namespace'],
-    });
-
-    updateScaffoldClasses(answers, {
-        themeName,
-        themesPath,
-        newThemePath,
-        themeDescription,
-        frontEndFramework,
-        safeThemeName,
-        capAndSnakeCaseTheme,
-        projectName: projectConfig['project-name'],
-        projectNamespace: projectConfig['project-namespace'],
-    });
-
-    // Let the user know it has been created
-    console.log(colors.green(`Your ${themeName} theme has been scaffold.`));
-    console.log(colors.yellow(`Check: ${themesPath}/${safeThemeName}`));
-})
-.catch((error) => {
-    if (error.isTtyError) {
-
-        console.error('Prompt couldn\'t be rendered in the current environment.');
-
-    } else {
-        console.log(colors.red('Something else went wrong!'));
-
-        console.error(error);
-    }
-});
+    static checkForWordPressInstall = async () => {
+        try {
+            const isDebugMode = await DebugUtils.isDebugMode();
+            const isInstalled = await PathUtils.isWordpressInstall();
+            if (!isInstalled && !isDebugMode) {
+                console.log(colors.yellow('Your path is not at the root of your WordPress install.'));
+                console.log(colors.yellow(`You are located at ${this.whereAmI}`));
+                console.log(colors.yellow('Please move to the root WordPress install folder.'));
+                process.exit(1);
+            }
+        }
+        catch (err) {
+            console.log('ScaffoldTheme.checkForWordPressInstall()');
+            console.error(err);
+        }
+    };
+    static scaffoldFiles = async (answers) => {
+        try {
+            const themeValues = await this.buildValueObject(answers);
+            await this.scaffoldTheme(themeValues);
+            await this.scaffoldThemeRoot(themeValues);
+            await this.updateScaffoldClasses(themeValues);
+            console.log(colors.green(`Your ${themeValues.themeName} theme has been scaffold.`));
+            console.log(colors.yellow(`Check: ${themeValues.themesPath}/${themeValues.safeThemeName}`));
+        }
+        catch (err) {
+            console.log('ScaffoldTheme.scaffoldFiles()');
+            console.error(err);
+        }
+    };
+    static buildValueObject = async (answers) => {
+        try {
+            const configFilePath = `${this.whereAmI}/internal/project/project-config.json`;
+            const themesPath = await PathUtils.getThemesFolderPath();
+            const projectName = answers.projectName ? answers.projectName : '';
+            const themeName = answers.themeName ? answers.themeName.trim() : '';
+            const themeDescription = answers.themeDescription ? answers.themeDescription.trim() : '';
+            const frontEndFramework = answers.frontEndFramework ? answers.frontEndFramework : '';
+            const siteUrl = answers.siteUrl ? answers.siteUrl : '';
+            const devSiteUrl = answers.devSiteUrl ? answers.devSiteUrl : '';
+            const safeThemeName = await StringUtils.addDashesToString(themeName);
+            const newThemePath = `${themesPath}/${safeThemeName}`;
+            const capAndSnakeCaseTheme = await StringUtils.capAndSnakeCaseString(safeThemeName);
+            let configUpdates = {
+                'active-theme': safeThemeName,
+                'active-theme-path': newThemePath,
+                'absolute-project-folder': this.whereAmI,
+                'absolute-themes-folder': themesPath,
+                'theme-description': themeDescription,
+                'front-end-framework': frontEndFramework,
+                'site-url': siteUrl,
+                'dev-site-url': devSiteUrl,
+            };
+            if (projectName && typeof projectName !== 'undefined') {
+                configUpdates['project-name'] = projectName;
+                configUpdates['project-namespace'] = await StringUtils.pascalCaseString(projectName);
+            }
+            await updateScaffoldJson(configFilePath, configUpdates);
+            return {
+                projectName: projectName,
+                themeName: themeName,
+                themesPath: themesPath,
+                newThemePath: newThemePath,
+                themeDescription: themeDescription,
+                frontEndFramework: frontEndFramework,
+                siteUrl: siteUrl,
+                devSiteUrl: devSiteUrl,
+                safeThemeName: safeThemeName,
+                capAndSnakeCaseTheme: capAndSnakeCaseTheme,
+                projectNamespace: configUpdates['project-namespace'],
+            };
+        }
+        catch (err) {
+            console.log('ScaffoldTheme.buildValueObject()');
+            console.error(err);
+        }
+    };
+    static scaffoldTheme = async (themeValues) => {
+        try {
+            await scaffoldTheme(themeValues);
+        }
+        catch (err) {
+            console.log('ScaffoldTheme.scaffoldTheme()');
+            console.error(err);
+        }
+    };
+    static scaffoldThemeRoot = async (themeValues) => {
+        try {
+            await scaffoldThemeRoot(themeValues);
+        }
+        catch (err) {
+            console.log('ScaffoldTheme.scaffoldThemeRoot()');
+            console.error(err);
+        }
+    };
+    static updateScaffoldClasses = async (themeValues) => {
+        try {
+            await updateScaffoldClasses(themeValues);
+        }
+        catch (err) {
+            console.log('ScaffoldTheme.updateScaffoldClasses()');
+            console.error(err);
+        }
+    };
+}
+ScaffoldTheme.performScaffolding().catch(err => console.error(err));
