@@ -8,7 +8,7 @@ import DebugUtils from '../src/utils/debug-utils.js';
 import StringUtils from '../src/utils/string-utils.js';
 import updateScaffoldJson from '../src/scaffold/common/update-scaffold-json.js';
 import getThemeOptions from '../src/config/theme-options.js';
-import scaffoldTheme from "../src/scaffold/theme/scaffold-theme.js";
+import scaffoldTheme from '../src/scaffold/theme/scaffold-theme.js';
 class ScaffoldTheme extends AbstractScaffold {
     static isDebugFullMode = false;
     static whereAmI = '';
@@ -19,7 +19,7 @@ class ScaffoldTheme extends AbstractScaffold {
             await this.checkForWordPressInstall();
             const answers = await InquirerCli.performPromptsTasks(await getThemeOptions()).catch((err) => console.error(err));
             console.log(answers);
-            const config = await this.scaffoldFiles(answers);
+            await this.scaffoldFiles(answers);
         }
         catch (err) {
             console.log('performScaffolding()');
@@ -38,6 +38,7 @@ class ScaffoldTheme extends AbstractScaffold {
             }
         }
         catch (err) {
+            console.log('checkForWordPressInstall()');
             console.error(err);
         }
     };
@@ -51,6 +52,7 @@ class ScaffoldTheme extends AbstractScaffold {
             console.log(colors.yellow(`Check: ${themeValues.themesPath}/${themeValues.safeThemeName}`));
         }
         catch (err) {
+            console.log('scaffoldFiles()');
             console.error(err);
         }
     };
