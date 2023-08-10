@@ -1,10 +1,6 @@
 // Community modules
-
 import fse from 'fs-extra';
-import path from 'path';
-import fs from 'fs';
-import colors from 'colors';
-import {glob} from 'glob';
+import { glob } from 'glob';
 
 // Package Modules
 
@@ -16,12 +12,12 @@ import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json
 import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
 
 // Functions
-import {updateScaffoldFile} from '../common/update-scaffold-file.js';
-import {getComposerPropertyInfo} from '../../utils/composer-utils.js';
-import {updateClassListPaths} from '../../utils/class-list-utils.js';
+import { updateScaffoldFile } from '../common/update-scaffold-file.js';
+import { getComposerPropertyInfo } from '../../utils/composer-utils.js';
+import { updateClassListPaths } from '../../utils/class-list-utils.js';
 
 /**
- * @description
+ * @description For each of the PHP classes scaffolded update the "namespace" value
  * @public
  * @author Keith Murphy | nomadmystics@gmail.com
  *
