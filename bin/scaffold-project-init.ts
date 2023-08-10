@@ -106,10 +106,16 @@ class ScaffoldProject extends AbstractScaffold {
      * @param {InitAnswers | void} answers These are the user input options form the CLI
      * @return Promise<void>
      */
-    private static installWPCoreDB = async (answers: InitAnswers | void): Promise<void> => {
+    private static installWPCoreDB = async (answers: InitAnswers): Promise<void> => {
+        let installCommand = `wp core install --url="${answers.siteUrl}" --title="${answers.siteTitle}" --admin_user="${answers.siteAdminUser}" --admin_password="${answers.siteAdminPassword}" --admin_email="${answers.adminEmail}" --skip-email`;
+
+        if (this.isDebugFullMode) {
+            installCommand += `${installCommand} --path="${process.env.WORDPRESS_PATH}"`;
+        }
+
         // If we didn't set up the wp-config.php we can't install WordPress
         if (answers?.databaseSetup) {
-            shell.exec(`wp core install --url="${answers.siteUrl}" --title="${answers.siteTitle}" --admin_user="${answers.siteAdminUser}" --admin_password="${answers.siteAdminPassword}" --admin_email="${answers.adminEmail}" --skip-email`);
+            shell.exec(`wp core install ${installCommand}`);
         }
     };
 
