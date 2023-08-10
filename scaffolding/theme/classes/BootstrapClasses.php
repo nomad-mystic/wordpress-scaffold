@@ -38,7 +38,7 @@ class BootstrapClasses
         // Get our classes and namespaces from the config file
         for ($namespace = 0; $namespace < count($theme_config); $namespace++) {
             // Sanity check
-            if (isset($theme_config[$namespace]) && !empty($theme_config[$namespace])) {
+            if (!empty($theme_config[$namespace])) {
 
                 // For each of the classes check if we have hooks and build
                 if (isset($theme_config[$namespace]->namespace) &&
@@ -103,10 +103,10 @@ class BootstrapClasses
         $methods = $reflector->getMethods();
 
         // Sanity check and bail early if there aren't any methods
-        if (is_array($methods) && !empty($methods)) {
+        if (!empty($methods)) {
 
             foreach ($methods as $method) {
-                if (isset($method) && !empty($method)) {
+                if (!empty($method)) {
                     $method_name = $method->getName();
 
                     // Get method docBlocks string
@@ -120,7 +120,7 @@ class BootstrapClasses
                     preg_match_all($pattern, $doc_blocks, $matches, PREG_PATTERN_ORDER);
 
                     // Make sure we have match with @ in the docBlock
-                    if (isset($matches[0]) && !empty($matches[0]) && is_array($matches[0])) {
+                    if (!empty($matches[0]) && is_array($matches[0])) {
 
                         // We need to check for priority in the doc blocks first then apply theme to the action or filter
                         $priority = 10;
@@ -134,27 +134,27 @@ class BootstrapClasses
 
                         // Check for our desired properties
                         foreach ($matches[0] as $block_property) {
-                            if (isset($block_property) && !empty($block_property)) {
+                            if (!empty($block_property)) {
                                 // Check for filter or action
-                                preg_match('/@add_action/', $block_property, $action_found);
-                                preg_match('/@add_filter/', $block_property, $filter_found);
+                                preg_match('/@add_action*(.*)$/m', $block_property, $action_found);
+                                preg_match('/@add_filter*(.*)$/m', $block_property, $filter_found);
 
                                 // Here we go
-                                if (isset($action_found) && !empty($action_found)) {
+                                if(!empty($action_found)) {
                                     // Grab the hook name
-                                    $actions_name = preg_split("/[\s,]+/", $block_property);
+                                    $action = trim($action_found[1], ' ');
 
                                     // Do the action
-                                    add_action($actions_name[1], [$class, $method_name], $priority);
+                                    add_action($action, [$class, $method_name], $priority);
                                 }
 
                                 // Here we go
-                                if (isset($filter_found) && !empty($filter_found)) {
+                                if(!empty($filter_found)) {
                                     // Grab the hook name
-                                    $filter_name = preg_split("/[\s,]+/", $block_property);
+                                    $filter = trim($filter_found[1], ' ');
 
                                     // Do the filter
-                                    add_filter($filter_name[1], [$class, $method_name], $priority);
+                                    add_filter($filter, [$class, $method_name], $priority);
                                 }
                             } // End sanity $block_property
                         } // End foreach $block_property
@@ -171,10 +171,10 @@ class BootstrapClasses
      * @param $haystack
      * @return bool|string
      */
-    private function check_for_property(string $needle, $haystack)
+    private function check_for_property(string $needle, $haystack): bool | string
     {
         foreach ($haystack as $key => $item) {
-            if (isset($item) && strpos($item, $needle) !== false) {
+            if (isset($item) && str_contains($item, $needle)) {
                 return $item;
             }
         }
