@@ -1,10 +1,5 @@
 import { getInternalConfig } from '../utils/get-config.js';
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
-/**
- * @description Interactive CLI options for building the theme
- *
- * @type {[{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string, choices: string[]}]}
- */
 const themeOptions = [
     {
         type: 'input',
@@ -26,18 +21,10 @@ const themeOptions = [
         default: 'None',
     },
 ];
-/**
- * @description Gather the needed options for use in the CLI
- * @public
- * @author Keith Murphy | nomadmystics@gmail.com
- *
- * @return Promise<void>
- */
 const getThemeOptions = async () => {
     try {
         await scaffoldInternal();
         let jsonFileParsed = await getInternalConfig('project/project-config.json');
-        // Gather the information we need if the user didn't use the init command
         if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['project-name'] === '') {
             const projectNameOption = {
                 type: 'input',

@@ -21,6 +21,7 @@ import StringUtils from '../src/utils/string-utils.js';
 // Interfaces
 import ThemeAnswers from '../src/interfaces/theme/interface-theme-answers.js';
 import ThemeConfig from '../src/interfaces/theme/interface-theme-config.js';
+import ThemeAnswerValues from '../src/interfaces/theme/interface-theme-answer-values.js';
 
 // Functions
 import updateScaffoldJson from '../src/scaffold/common/update-scaffold-json.js';
@@ -56,9 +57,6 @@ class ScaffoldTheme extends AbstractScaffold {
             console.log(answers);
 
             const config = await this.scaffoldFiles(answers);
-
-
-
 
         } catch (err: any) {
 
@@ -102,6 +100,51 @@ class ScaffoldTheme extends AbstractScaffold {
      */
     protected static scaffoldFiles = async (answers: ThemeAnswers | any): Promise<void> => {
         try {
+            const themeValues: ThemeAnswerValues  = await this.buildValueObject(answers);
+
+            // Build the theme
+            await this.scaffoldTheme(themeValues);
+
+
+            //
+            // scaffoldThemeRoot(answers, {
+            //     themeName,
+            //     themesPath,
+            //     newThemePath,
+            //     themeDescription,
+            //     frontEndFramework,
+            //     safeThemeName,
+            //     capAndSnakeCaseTheme,
+            //     projectName: projectConfig['project-name'],
+            //     projectNamespace: projectConfig['project-namespace'],
+            // });
+            //
+            // updateScaffoldClasses(answers, {
+            //     themeName,
+            //     themesPath,
+            //     newThemePath,
+            //     themeDescription,
+            //     frontEndFramework,
+            //     safeThemeName,
+            //     capAndSnakeCaseTheme,
+            //     projectName: projectConfig['project-name'],
+            //     projectNamespace: projectConfig['project-namespace'],
+            // });
+
+            // Let the user know it has been created
+            console.log(colors.green(`Your ${themeValues.themeName} theme has been scaffold.`));
+            console.log(colors.yellow(`Check: ${themeValues.themesPath}/${themeValues.safeThemeName}`));
+
+
+        } catch (err) {
+
+            console.error(err);
+
+        }
+    }
+
+    private static buildValueObject = async (answers: ThemeAnswers | any): Promise<ThemeAnswerValues | any> => {
+        try {
             const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
 
             // Absolute path of the themes folder
@@ -141,151 +184,41 @@ class ScaffoldTheme extends AbstractScaffold {
             }
 
             // // Update our config before we scaffold theme, so we can use it in our scaffold functions
-            const projectConfig: string | any = await updateScaffoldJson(configFilePath, configUpdates);
+            await updateScaffoldJson(configFilePath, configUpdates);
 
-            // Build the theme
-            await scaffoldTheme({
-                themeName,
-                themesPath,
-                newThemePath,
-                themeDescription,
-                frontEndFramework,
-                safeThemeName,
-                capAndSnakeCaseTheme,
-            });
-            //
-            // scaffoldThemeRoot(answers, {
-            //     themeName,
-            //     themesPath,
-            //     newThemePath,
-            //     themeDescription,
-            //     frontEndFramework,
-            //     safeThemeName,
-            //     capAndSnakeCaseTheme,
-            //     projectName: projectConfig['project-name'],
-            //     projectNamespace: projectConfig['project-namespace'],
-            // });
-            //
-            // updateScaffoldClasses(answers, {
-            //     themeName,
-            //     themesPath,
-            //     newThemePath,
-            //     themeDescription,
-            //     frontEndFramework,
-            //     safeThemeName,
-            //     capAndSnakeCaseTheme,
-            //     projectName: projectConfig['project-name'],
-            //     projectNamespace: projectConfig['project-namespace'],
-            // });
+            let themeAnswerValues: ThemeAnswerValues  = {
+                projectName: projectName,
+                themeName: themeName,
+                themesPath: themesPath,
+                newThemePath: newThemePath,
+                themeDescription: themeDescription,
+                frontEndFramework: frontEndFramework,
+                siteUrl: siteUrl,
+                devSiteUrl: devSiteUrl,
+                safeThemeName: safeThemeName,
+                capAndSnakeCaseTheme: capAndSnakeCaseTheme,
+            };
 
-            // Let the user know it has been created
-            console.log(colors.green(`Your ${themeName} theme has been scaffold.`));
-            console.log(colors.yellow(`Check: ${themesPath}/${safeThemeName}`));
-
+            return themeAnswerValues;
 
         } catch (err) {
+            console.log('buildValueObject()');
+            console.error(err);
 
+        }
+    }
+
+    private static scaffoldTheme = async (themeValues: ThemeAnswerValues): Promise<void> => {
+        try {
+
+            await scaffoldTheme(themeValues);
+
+        } catch (err) {
+            console.log('scaffoldTheme()');
             console.error(err);
 
         }
     }
 }
 
-// // Starting point for scaffolding a theme
-// inquirer
-// .prompt(themeOptions)
-// .then((answers) => {
-//     const configFilePath = `${whereAmI()}/internal/project/project-config.json`;
-//
-//     // Absolute path of the themes folder
-//     const themesPath = getThemesFolderPath();
-//
-//     // User inputs
-//     const projectName = answers?.projectName;
-//     const themeName = answers?.themeName.trim();
-//     const themeDescription = answers?.themeDescription.trim();
-//     const frontEndFramework = answers?.frontEndFramework;
-//     const siteUrl = answers?.siteUrl;
-//     const devSiteUrl = answers?.devSiteUrl;
-//
-//     // Make folder "safe" if there are spaces
-//     const safeThemeName = addDashesToString(themeName);
-//
-//     // Create the finalized path for the scaffolded theme
-//     const newThemePath = `${themesPath}/${safeThemeName}`;
-//
-//     // Create our string modification
-//     const capAndSnakeCaseTheme = capAndSnakeCaseString(safeThemeName);
-//
-//     let configUpdates = {
-//         'active-theme': safeThemeName,
-//         'active-theme-path': newThemePath,
-//         'absolute-project-folder': whereAmI(),
-//         'absolute-themes-folder': themesPath,
-//         'theme-description': themeDescription,
-//         'front-end-framework': frontEndFramework,
-//         'site-url': siteUrl,
-//         'dev-site-url': devSiteUrl,
-//     };
-//
-//     if (projectName && typeof projectName !== 'undefined') {
-//         configUpdates['project-name'] = projectName;
-//         configUpdates['project-namespace'] = pascalCaseString(projectName);
-//     }
-//
-//     // // Update our config before we scaffold theme, so we can use it in our scaffold functions
-//     const projectConfig = updateScaffoldJson(configFilePath, configUpdates);
-//
-//     // Build the theme
-//     scaffoldTheme(answers, {
-//         themeName,
-//         themesPath,
-//         newThemePath,
-//         themeDescription,
-//         frontEndFramework,
-//         safeThemeName,
-//         capAndSnakeCaseTheme,
-//     });
-//
-//     scaffoldThemeRoot(answers, {
-//         themeName,
-//         themesPath,
-//         newThemePath,
-//         themeDescription,
-//         frontEndFramework,
-//         safeThemeName,
-//         capAndSnakeCaseTheme,
-//         projectName: projectConfig['project-name'],
-//         projectNamespace: projectConfig['project-namespace'],
-//     });
-//
-//     updateScaffoldClasses(answers, {
-//         themeName,
-//         themesPath,
-//         newThemePath,
-//         themeDescription,
-//         frontEndFramework,
-//         safeThemeName,
-//         capAndSnakeCaseTheme,
-//         projectName: projectConfig['project-name'],
-//         projectNamespace: projectConfig['project-namespace'],
-//     });
-//
-//     // Let the user know it has been created
-//     console.log(colors.green(`Your ${themeName} theme has been scaffold.`));
-//     console.log(colors.yellow(`Check: ${themesPath}/${safeThemeName}`));
-// })
-// .catch((error) => {
-//     if (error.isTtyError) {
-//
-//         console.error('Prompt couldn\'t be rendered in the current environment.');
-//
-//     } else {
-//         console.log(colors.red('Something else went wrong!'));
-//
-//         console.error(error);
-//     }
-// });
-
-new ScaffoldTheme();
 ScaffoldTheme.performScaffolding().catch(err => console.error(err));

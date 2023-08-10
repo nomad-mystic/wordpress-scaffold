@@ -1,6 +1,4 @@
-// Utils
 import { getInternalConfig } from '../utils/get-config.js';
-// Common
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
 const projectOptions = [
     {
@@ -85,18 +83,10 @@ const projectOptions = [
         },
     },
 ];
-/**
- * @description Gather the needed options for use in the CLI
- * @public
- * @author Keith Murphy | nomadmystics@gmail.com
- *
- * @return Promise<void>
- */
 const getProjectOptions = async () => {
     try {
         await scaffoldInternal();
         let jsonFileParsed = await getInternalConfig('project/project-config.json');
-        // Gather the information we need if the user didn't use the init command
         if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['project-name'] === '') {
             const projectNameOption = {
                 type: 'input',

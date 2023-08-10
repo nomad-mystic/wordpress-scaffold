@@ -1,20 +1,10 @@
-// Community modules
 import fs from 'fs';
 import colors from 'colors';
 import fse from 'fs-extra';
 import path from 'path';
-// Package modules
 import PathUtils from '../../utils/path-utils.js';
 import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 import { packageRootDir } from '../../../package-root.js';
-/**
- * @description
- *
- * @param {InitAnswers | void} answers
- * @param {ProjectConfig} config
- * @param {string} salts
- * @return Promise<void>
- */
 const scaffoldProject = async (answers, config, salts) => {
     try {
         const configFile = `${await PathUtils.whereAmI()}/wp-config.php`;
@@ -24,11 +14,8 @@ const scaffoldProject = async (answers, config, salts) => {
             process.exit(0);
         }
         else {
-            // Copy over and updates our values
             fse.copySync(`${path.join(packageRootDir + '/scaffolding/project')}`, await PathUtils.whereAmI(), { overwrite: false });
-            // Our common root files
             fse.copySync(`${path.join(packageRootDir + '/scaffolding/common/root')}`, await PathUtils.whereAmI(), { overwrite: false });
-            // NPM doesn't like to publish the .gitignore file, so handle that here
             if (fs.existsSync(`${await PathUtils.whereAmI()}/.gitignores`)) {
                 const oldPath = path.join(await PathUtils.whereAmI(), '/.gitignores');
                 const newPath = path.join(await PathUtils.whereAmI(), '/.gitignore');
@@ -68,7 +55,6 @@ const scaffoldProject = async (answers, config, salts) => {
             ];
             updateObjectsArray.push(...configObjects);
         }
-        // Update our files based on object properties
         for (let update = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
                 updateScaffoldFile(await PathUtils.whereAmI(), updateObjectsArray[update].fileName, updateObjectsArray[update].stringToUpdate, updateObjectsArray[update].updateString);

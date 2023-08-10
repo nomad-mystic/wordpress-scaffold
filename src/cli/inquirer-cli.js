@@ -1,19 +1,7 @@
-// Community modules
 import 'dotenv/config';
 import inquirer from 'inquirer';
 import colors from 'colors';
-/**
- * @class ProjectInit
- */
 class InquirerCli {
-    /**
-     * @description Starting point for building in the initial WordPress site
-     * @public
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @param {Array<any> | undefined} options
-     * @return {Promise<InitAnswers | ThemeAnswers | void>}
-     */
     static performPromptsTasks = async (options) => {
         try {
             const inquirer = await this.getInquirer();
@@ -25,13 +13,6 @@ class InquirerCli {
             console.error(err);
         }
     };
-    /**
-     * @description Get our inquirer object
-     * @private
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @return Promise<any>
-     */
     static getInquirer = async () => {
         try {
             return inquirer;
@@ -41,15 +22,6 @@ class InquirerCli {
             console.error(err);
         }
     };
-    /**
-     * @description Display and gather our prompts from the user
-     * @private
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @param {any} inquirer
-     * @param {Promise<Array<any> | undefined>} options
-     * @return {Promise<InitAnswers | ThemeAnswers | void>}
-     */
     static performPrompt = async (inquirer, options) => {
         try {
             return inquirer.prompt(options)

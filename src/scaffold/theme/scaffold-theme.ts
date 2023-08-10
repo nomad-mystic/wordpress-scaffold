@@ -11,6 +11,7 @@ import { packageRootDir } from '../../../package-root.js';
 
 // Interfaces
 import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json-updates.js";
+import ThemeAnswerValues from "../../interfaces/theme/interface-theme-answer-values.js";
 
 /**
  * @description Based on user input scaffold our theme
@@ -27,15 +28,7 @@ import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json
  *
  * @return {Promise<void>}
  */
-const scaffoldTheme = async (values: {
-    themeName: string,
-    themesPath: string | undefined,
-    newThemePath: string,
-    themeDescription: string,
-    frontEndFramework: string,
-    safeThemeName: string,
-    capAndSnakeCaseTheme: string
-}): Promise<void> => {
+const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
     try {
         let {
             themeName,
@@ -47,27 +40,29 @@ const scaffoldTheme = async (values: {
             capAndSnakeCaseTheme,
         } = values;
 
+        const newThemePathString: string = newThemePath ? newThemePath : '';
+
         // Bail early
-        if (fs.existsSync(newThemePath)) {
+        if (fs.existsSync(newThemePathString)) {
             console.log(colors.red('There is already a theme with that name. Please use another name.'));
 
             process.exit(0);
         }
 
         // Copy our files over to the themes folder
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/theme`)}`, newThemePath, { overwrite: false });
+        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/theme`)}`, newThemePathString, { overwrite: false });
 
         // Copy our files over the JS files into the theme
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/theme-root/front-end-scaffolding/${frontEndFramework.toLowerCase()}/js`)}`,
-            `${newThemePath}/src/js`,
+        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/theme-root/front-end-scaffolding/${frontEndFramework?.toLowerCase()}/js`)}`,
+            `${newThemePathString}/src/js`,
             {
                 overwrite: false
             }
         );
 
         // Copy our files over the theme root files into the theme
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/theme-root/front-end-scaffolding/${frontEndFramework.toLowerCase()}/theme-root`)}`,
-            newThemePath,
+        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/theme-root/front-end-scaffolding/${frontEndFramework?.toLowerCase()}/theme-root`)}`,
+            newThemePathString,
             {
                 overwrite: false
             }
