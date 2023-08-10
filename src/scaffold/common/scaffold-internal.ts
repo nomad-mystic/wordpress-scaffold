@@ -17,10 +17,11 @@ import { packageRootDir } from '../../../package-root.js';
  * @return void
  */
 export const scaffoldInternal = async (): Promise<void> => {
+    const whereAmI: string = await PathUtils.whereAmI();
 
-    if (!fs.existsSync(`${await PathUtils.whereAmI()}/internal`)) {
+    if (!fs.existsSync(`${whereAmI}/internal`)) {
 
-        fse.copySync(`${path.join(packageRootDir + '/scaffolding/internal')}`, `${await PathUtils.whereAmI()}/internal`, { overwrite: false });
+        fse.copySync(`${path.join(packageRootDir + '/scaffolding/internal')}`, `${whereAmI}/internal`, { overwrite: false });
 
     }
 

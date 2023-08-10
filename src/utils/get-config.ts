@@ -1,11 +1,14 @@
-import PathUtils from './path-utils.js';
+// Core Modules
 import fs from 'fs';
+
+// Package Modules
+import PathUtils from './path-utils.js';
 
 /**
  * @description Grab an internal config file
  *
  * @param  configPath
- * @returns {{}|any}
+ * @returns {Promise<any>}
  */
 export const getInternalConfig = async (configPath: string): Promise<any> => {
     // Check our project config for projects name

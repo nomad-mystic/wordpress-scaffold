@@ -1,5 +1,5 @@
-import PathUtils from './path-utils.js';
 import fs from 'fs';
+import PathUtils from './path-utils.js';
 export const getInternalConfig = async (configPath) => {
     const configFilePath = `${await PathUtils.whereAmI()}/internal/${configPath}`;
     let jsonFile = fs.readFileSync(configFilePath, 'utf-8');
