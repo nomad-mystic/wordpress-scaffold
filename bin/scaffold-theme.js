@@ -22,6 +22,7 @@ class ScaffoldTheme extends AbstractScaffold {
             const config = await this.scaffoldFiles(answers);
         }
         catch (err) {
+            console.log('performScaffolding()');
             console.error(err);
         }
     };
@@ -44,6 +45,8 @@ class ScaffoldTheme extends AbstractScaffold {
         try {
             const themeValues = await this.buildValueObject(answers);
             await this.scaffoldTheme(themeValues);
+            await this.scaffoldThemeRoot(themeValues);
+            await this.updateScaffoldClasses(themeValues);
             console.log(colors.green(`Your ${themeValues.themeName} theme has been scaffold.`));
             console.log(colors.yellow(`Check: ${themeValues.themesPath}/${themeValues.safeThemeName}`));
         }
@@ -79,7 +82,7 @@ class ScaffoldTheme extends AbstractScaffold {
                 configUpdates['project-namespace'] = await StringUtils.pascalCaseString(projectName);
             }
             await updateScaffoldJson(configFilePath, configUpdates);
-            let themeAnswerValues = {
+            return {
                 projectName: projectName,
                 themeName: themeName,
                 themesPath: themesPath,
@@ -91,7 +94,6 @@ class ScaffoldTheme extends AbstractScaffold {
                 safeThemeName: safeThemeName,
                 capAndSnakeCaseTheme: capAndSnakeCaseTheme,
             };
-            return themeAnswerValues;
         }
         catch (err) {
             console.log('buildValueObject()');
@@ -104,6 +106,22 @@ class ScaffoldTheme extends AbstractScaffold {
         }
         catch (err) {
             console.log('scaffoldTheme()');
+            console.error(err);
+        }
+    };
+    static scaffoldThemeRoot = async (themeValues) => {
+        try {
+        }
+        catch (err) {
+            console.log('scaffoldThemeRoot()');
+            console.error(err);
+        }
+    };
+    static updateScaffoldClasses = async (themeValues) => {
+        try {
+        }
+        catch (err) {
+            console.log('updateScaffoldClasses()');
             console.error(err);
         }
     };

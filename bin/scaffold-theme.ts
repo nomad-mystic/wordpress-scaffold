@@ -60,6 +60,7 @@ class ScaffoldTheme extends AbstractScaffold {
 
         } catch (err: any) {
 
+            console.log('performScaffolding()');
             console.error(err);
 
         }
@@ -105,36 +106,13 @@ class ScaffoldTheme extends AbstractScaffold {
             // Build the theme
             await this.scaffoldTheme(themeValues);
 
+            await this.scaffoldThemeRoot(themeValues);
 
-            //
-            // scaffoldThemeRoot(answers, {
-            //     themeName,
-            //     themesPath,
-            //     newThemePath,
-            //     themeDescription,
-            //     frontEndFramework,
-            //     safeThemeName,
-            //     capAndSnakeCaseTheme,
-            //     projectName: projectConfig['project-name'],
-            //     projectNamespace: projectConfig['project-namespace'],
-            // });
-            //
-            // updateScaffoldClasses(answers, {
-            //     themeName,
-            //     themesPath,
-            //     newThemePath,
-            //     themeDescription,
-            //     frontEndFramework,
-            //     safeThemeName,
-            //     capAndSnakeCaseTheme,
-            //     projectName: projectConfig['project-name'],
-            //     projectNamespace: projectConfig['project-namespace'],
-            // });
+            await this.updateScaffoldClasses(themeValues);
 
             // Let the user know it has been created
             console.log(colors.green(`Your ${themeValues.themeName} theme has been scaffold.`));
             console.log(colors.yellow(`Check: ${themeValues.themesPath}/${themeValues.safeThemeName}`));
-
 
         } catch (err) {
 
@@ -143,6 +121,14 @@ class ScaffoldTheme extends AbstractScaffold {
         }
     }
 
+    /**
+     * @description Build our object of values from the user's answers
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {ThemeAnswers | any} answers
+     * @return {Promise<ThemeAnswerValues | any>}
+     */
     private static buildValueObject = async (answers: ThemeAnswers | any): Promise<ThemeAnswerValues | any> => {
         try {
             const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
@@ -186,7 +172,7 @@ class ScaffoldTheme extends AbstractScaffold {
             // // Update our config before we scaffold theme, so we can use it in our scaffold functions
             await updateScaffoldJson(configFilePath, configUpdates);
 
-            let themeAnswerValues: ThemeAnswerValues  = {
+            return {
                 projectName: projectName,
                 themeName: themeName,
                 themesPath: themesPath,
@@ -199,8 +185,6 @@ class ScaffoldTheme extends AbstractScaffold {
                 capAndSnakeCaseTheme: capAndSnakeCaseTheme,
             };
 
-            return themeAnswerValues;
-
         } catch (err) {
             console.log('buildValueObject()');
             console.error(err);
@@ -208,6 +192,14 @@ class ScaffoldTheme extends AbstractScaffold {
         }
     }
 
+    /**
+     * @description Based on a user's answers build our theme files
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {ThemeAnswerValues} themeValues
+     * @return Promise<void>
+     */
     private static scaffoldTheme = async (themeValues: ThemeAnswerValues): Promise<void> => {
         try {
 
@@ -215,6 +207,66 @@ class ScaffoldTheme extends AbstractScaffold {
 
         } catch (err) {
             console.log('scaffoldTheme()');
+            console.error(err);
+
+        }
+    }
+
+    /**
+     * @description Based on a user's answers build our theme root
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {ThemeAnswerValues} themeValues
+     * @return Promise<void>
+     */
+    private static scaffoldThemeRoot = async (themeValues: ThemeAnswerValues): Promise<void> => {
+        try {
+            // scaffoldThemeRoot(answers, {
+            //     themeName,
+            //     themesPath,
+            //     newThemePath,
+            //     themeDescription,
+            //     frontEndFramework,
+            //     safeThemeName,
+            //     capAndSnakeCaseTheme,
+            //     projectName: projectConfig['project-name'],
+            //     projectNamespace: projectConfig['project-namespace'],
+            // });
+        } catch (err) {
+            console.log('scaffoldThemeRoot()');
+            console.error(err);
+
+        }
+    }
+
+    /**
+     * @description Based on a user's answers build our theme classes
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {ThemeAnswerValues} themeValues
+     * @return Promise<void>
+     */
+    private static updateScaffoldClasses = async (themeValues: ThemeAnswerValues): Promise<void> => {
+        try {
+
+            //
+            // updateScaffoldClasses(answers, {
+            //     themeName,
+            //     themesPath,
+            //     newThemePath,
+            //     themeDescription,
+            //     frontEndFramework,
+            //     safeThemeName,
+            //     capAndSnakeCaseTheme,
+            //     projectName: projectConfig['project-name'],
+            //     projectNamespace: projectConfig['project-namespace'],
+            // });
+
+
+        } catch (err) {
+            console.log('updateScaffoldClasses()');
             console.error(err);
 
         }

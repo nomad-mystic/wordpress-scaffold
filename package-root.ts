@@ -10,4 +10,4 @@ const config = {
     packageRootDir: `${path.resolve(dirname)}`,
 };
 
-export let packageRootDir = config.packageRootDir;
+export let packageRootDir: string = config.packageRootDir;
