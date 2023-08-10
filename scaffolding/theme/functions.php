@@ -3,10 +3,6 @@
 // Extract values from config
 $active_theme = 'scaffold-theme';
 
-// Build our constants
-define('THEME_NAME_THEME_DIR', get_stylesheet_directory());
-define('THEME_NAME_DOMAIN', $active_theme);
-
 // Get out theme config
 $project_config = file_get_contents(ABSPATH . 'internal/project/project-config.json');
 
@@ -22,6 +18,10 @@ if (empty($project_config)) {
 
     $active_theme = $project_config->{'active-theme'};
 }
+
+// Build our constants
+define('THEME_NAME_THEME_DIR', get_stylesheet_directory());
+define('THEME_NAME_DOMAIN', $active_theme);
 
 /**
  * Load Composer
