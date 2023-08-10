@@ -11,7 +11,7 @@ export const getComposerPropertyInfo = async () => {
         if (composerJson && typeof composerJson.autoload !== 'undefined' && typeof composerJson.autoload['psr-4'] !== 'undefined') {
             const Psr4 = composerJson.autoload['psr-4'];
             for (let namespaceValue in Psr4) {
-                if (Psr4.hasOwn(Psr4, namespaceValue)) {
+                if (Object.hasOwn(Psr4, namespaceValue)) {
                     let namespaceName = namespaceValue;
                     let namespacePath = Psr4[namespaceValue][0];
                     let namespace = null;

@@ -16,7 +16,7 @@
     "bin": {
         "ws-scaffold-project-init": "./bin/scaffold-project-init.js",
         "ws-scaffold-plugin": "./bin/scaffold-plugin.js",
-        "ws-scaffold-theme": "bin/scaffold-theme.ts",
+        "ws-scaffold-theme": "bin/scaffold-theme.js",
         "ws-scaffold-plugin-add": "./bin/scaffold-plugin-add.js",
         "ws-scaffold-theme-add": "./bin/scaffold-theme-add.js"
     },
@@ -46,7 +46,8 @@
         "lodash": "^4.17.21",
         "node-fetch": "^3.2.0",
         "pascal-case": "^3.1.2",
-        "shelljs": "^0.8.5"
+        "shelljs": "^0.8.5",
+        "glob": "^10.3.3"
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.1",
@@ -54,7 +55,6 @@
         "@types/lodash": "^4.14.196",
         "@types/node": "^20.4.8",
         "@types/shelljs": "^0.8.12",
-        "glob": "^10.3.3",
         "typescript": "^5.1.6",
         "uglify-js": "^3.17.4"
     }

@@ -14,8 +14,8 @@ import PathUtils from '../../utils/path-utils.js';
 import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 
 // Interfaces
-import ThemeAnswerValues from "../../interfaces/theme/interface-theme-answer-values.js";
-import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json-updates.js";
+import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
+import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
 
 /**
  * @description

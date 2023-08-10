@@ -10,7 +10,6 @@ define('THEME_NAME_DOMAIN', $active_theme);
 // Get out theme config
 $project_config = file_get_contents(ABSPATH . 'internal/project/project-config.json');
 
-
 if (empty($project_config)) {
     // Let the user know there was an issue with a WordPress alert!!!
     add_action('admin_notices', function() {
@@ -61,7 +60,7 @@ if (is_dir(get_stylesheet_directory() . '/includes/')) {
     // Require our PHP files
     if (!empty($php_files)) {
         foreach ($php_files as $php_file) {
-            if (isset($php_file) && !empty($php_file)) {
+            if (!empty($php_file) && file_exists($php_file)) {
                 require_once($php_file);
             }
         }

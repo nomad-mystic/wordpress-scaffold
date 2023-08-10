@@ -1,11 +1,10 @@
 // Community modules
-import ThemeAnswerValues from "../../interfaces/theme/interface-theme-answer-values.js";
 
 import fse from 'fs-extra';
 import path from 'path';
 import fs from 'fs';
 import colors from 'colors';
-import  { glob } from 'glob';
+import {glob} from 'glob';
 
 // Package Modules
 
@@ -13,12 +12,13 @@ import  { glob } from 'glob';
 import PathUtils from '../../utils/path-utils.js';
 
 // Interfaces
-import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json-updates.js";
+import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
+import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
 
 // Functions
-import { updateScaffoldFile } from '../common/update-scaffold-file.js';
-import { getComposerPropertyInfo } from '../../utils/composer-utils.js';
-import { updateClassListPaths } from '../../utils/class-list-utils.js';
+import {updateScaffoldFile} from '../common/update-scaffold-file.js';
+import {getComposerPropertyInfo} from '../../utils/composer-utils.js';
+import {updateClassListPaths} from '../../utils/class-list-utils.js';
 
 /**
  * @description
