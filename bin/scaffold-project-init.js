@@ -13,15 +13,15 @@ import CheckDepends from '../src/utils/check-depends.js';
 import RestUtils from '../src/utils/rest-utils.js';
 import DebugUtils from '../src/utils/debug-utils.js';
 import PathUtils from '../src/utils/path-utils.js';
-import InquirerCli from "../src/cli/inquirer-cli.js";
+import InquirerCli from '../src/cli/inquirer-cli.js';
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI
 CheckDepends.dependencyInstalled('php', 'Sorry, this script requires the PHP CLI');
 CheckDepends.dependencyInstalled('wp', 'Sorry, this script requires the WP-CLI');
 /**
- * @class ProjectInit
+ * @class ScaffoldProject
  */
-class ProjectInit {
+class ScaffoldProject {
     static isDebugFullMode = false;
     static whereAmI = '';
     /**
@@ -129,4 +129,4 @@ class ProjectInit {
         }
     };
 }
-ProjectInit.performScaffolding().catch(err => console.error(err));
+ScaffoldProject.performScaffolding().catch(err => console.error(err));
