@@ -1,11 +1,12 @@
 // Community
 import fs from 'fs';
 /**
- * @description This will update the content of a newly scaffold file with users inputs
+ * @description This will update the content of a new scaffold file with users inputs
+ * @public
+ * @author Keith Murphy | nomadmystics@gmail.com
  *
- * @param {string} updatePath
- * @param {string} fileName
- *
+ * @param {string | undefined} updatePath
+ * @param {string | undefined} fileName
  * @param {string} stringToUpdate
  * @param {string} updateString
  * @return void

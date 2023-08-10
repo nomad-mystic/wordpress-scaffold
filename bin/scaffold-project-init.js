@@ -14,6 +14,7 @@ import RestUtils from '../src/utils/rest-utils.js';
 import DebugUtils from '../src/utils/debug-utils.js';
 import PathUtils from '../src/utils/path-utils.js';
 import InquirerCli from '../src/cli/inquirer-cli.js';
+import AbstractScaffold from "../src/abstract/AbstractScaffold.js";
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI
 CheckDepends.dependencyInstalled('php', 'Sorry, this script requires the PHP CLI');
@@ -21,7 +22,7 @@ CheckDepends.dependencyInstalled('wp', 'Sorry, this script requires the WP-CLI')
 /**
  * @class ScaffoldProject
  */
-class ScaffoldProject {
+class ScaffoldProject extends AbstractScaffold {
     static isDebugFullMode = false;
     static whereAmI = '';
     /**

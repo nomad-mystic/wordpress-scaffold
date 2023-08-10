@@ -13,11 +13,11 @@ export default abstract class AbstractScaffold {
     public static performScaffolding = async (): Promise<void> => {}
 
     /**
-     * @description
+     * @description Perform tasks based on the user's answers
      * @protected
      * @author Keith Murphy | nomadmystics@gmail.com
      *
      * @return Promise<void>
      */
-    protected static scaffoldFiles = async (answers: InitAnswers | ThemeAnswers | void):  Promise<void> => {};
+    protected static scaffoldFiles = async (answers: InitAnswers | ThemeAnswers | any):  Promise<void> => {};
 }

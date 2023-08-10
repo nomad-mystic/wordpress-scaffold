@@ -1,4 +1,4 @@
-export default interface ProjectWpConfig {
+export default interface ScaffoldJsonUpdates {
     fileName?: string;
     stringToUpdate?: string;
     updateString?: string | void | undefined;

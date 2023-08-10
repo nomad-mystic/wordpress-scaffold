@@ -23,6 +23,7 @@ import DebugUtils from '../src/utils/debug-utils.js';
 import PathUtils from '../src/utils/path-utils.js';
 
 import InquirerCli from '../src/cli/inquirer-cli.js';
+import AbstractScaffold from "../src/abstract/AbstractScaffold.js";
 
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI
@@ -32,7 +33,7 @@ CheckDepends.dependencyInstalled('wp', 'Sorry, this script requires the WP-CLI')
 /**
  * @class ScaffoldProject
  */
-class ScaffoldProject {
+class ScaffoldProject extends AbstractScaffold {
     private static isDebugFullMode: boolean = false;
     private static whereAmI: string = '';
 
@@ -136,7 +137,7 @@ class ScaffoldProject {
      *
      * @return Promise<void>
      */
-    private static scaffoldFiles = async (answers: InitAnswers | void): Promise<string | any> => {
+    protected static scaffoldFiles = async (answers: InitAnswers | any): Promise<string | any> => {
         try {
             const filePath: string = `${this.whereAmI}/internal/project/project-config.json`;
 

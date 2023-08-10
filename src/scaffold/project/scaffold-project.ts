@@ -11,7 +11,7 @@ import { packageRootDir } from '../../../package-root.js';
 
 // Interfaces
 import InitAnswers from '../../interfaces/project/interface-init-answers.js';
-import ProjectWpConfig from '../../interfaces/project/interface-wp-config.js';
+import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
 import ProjectConfig from '../../interfaces/project/interface-project-config.js';
 
 /**
@@ -30,7 +30,7 @@ const scaffoldProject = async (
     try {
 
         const configFile: string = `${await PathUtils.whereAmI()}/wp-config.php`
-        let updateObjectsArray: Array<ProjectWpConfig> = [];
+        let updateObjectsArray: Array<ScaffoldJsonUpdates> = [];
 
         if (fs.existsSync(configFile)) {
             console.log(colors.red('There is already a wp-config.php file.'));
@@ -54,7 +54,7 @@ const scaffoldProject = async (
             }
 
             if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
-                const configDatabaseObjects: Array<ProjectWpConfig> = [
+                const configDatabaseObjects: Array<ScaffoldJsonUpdates> = [
                     {
                         fileName: 'wp-config.php',
                         stringToUpdate: 'DATABASE_NAME_HERE',
@@ -75,7 +75,7 @@ const scaffoldProject = async (
                 updateObjectsArray.push(...configDatabaseObjects);
             }
 
-            const configObjects: Array<ProjectWpConfig>  = [
+            const configObjects: Array<ScaffoldJsonUpdates>  = [
                 {
                     fileName: 'wp-config.php',
                     stringToUpdate: '// ADD_OUR_SALTS_HERE',

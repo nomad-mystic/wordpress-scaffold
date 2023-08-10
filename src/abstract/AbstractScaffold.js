@@ -8,7 +8,7 @@ export default class AbstractScaffold {
      */
     static performScaffolding = async () => { };
     /**
-     * @description
+     * @description Perform tasks based on the user's answers
      * @protected
      * @author Keith Murphy | nomadmystics@gmail.com
      *

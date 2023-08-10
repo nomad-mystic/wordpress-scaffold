@@ -59,7 +59,7 @@ export default class PathUtils {
      *
      * @return {Promise<string | void>}
      */
-    public static getThemesFolderPath = async (): Promise<string | void> => {
+    public static getThemesFolderPath = async (): Promise<string | undefined> => {
         try {
 
             return path.resolve(`${await this.whereAmI()}/wp-content/themes`);
