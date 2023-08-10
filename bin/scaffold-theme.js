@@ -9,6 +9,7 @@ import StringUtils from '../src/utils/string-utils.js';
 import updateScaffoldJson from '../src/scaffold/common/update-scaffold-json.js';
 import getThemeOptions from '../src/config/theme-options.js';
 import scaffoldTheme from '../src/scaffold/theme/scaffold-theme.js';
+import scaffoldThemeRoot from '../src/scaffold/theme/scaffold-root.js';
 class ScaffoldTheme extends AbstractScaffold {
     static isDebugFullMode = false;
     static whereAmI = '';
@@ -22,7 +23,7 @@ class ScaffoldTheme extends AbstractScaffold {
             await this.scaffoldFiles(answers);
         }
         catch (err) {
-            console.log('performScaffolding()');
+            console.log('ScaffoldTheme.performScaffolding()');
             console.error(err);
         }
     };
@@ -38,7 +39,7 @@ class ScaffoldTheme extends AbstractScaffold {
             }
         }
         catch (err) {
-            console.log('checkForWordPressInstall()');
+            console.log('ScaffoldTheme.checkForWordPressInstall()');
             console.error(err);
         }
     };
@@ -52,7 +53,7 @@ class ScaffoldTheme extends AbstractScaffold {
             console.log(colors.yellow(`Check: ${themeValues.themesPath}/${themeValues.safeThemeName}`));
         }
         catch (err) {
-            console.log('scaffoldFiles()');
+            console.log('ScaffoldTheme.scaffoldFiles()');
             console.error(err);
         }
     };
@@ -95,10 +96,11 @@ class ScaffoldTheme extends AbstractScaffold {
                 devSiteUrl: devSiteUrl,
                 safeThemeName: safeThemeName,
                 capAndSnakeCaseTheme: capAndSnakeCaseTheme,
+                projectNamespace: configUpdates['project-namespace'],
             };
         }
         catch (err) {
-            console.log('buildValueObject()');
+            console.log('ScaffoldTheme.buildValueObject()');
             console.error(err);
         }
     };
@@ -107,15 +109,16 @@ class ScaffoldTheme extends AbstractScaffold {
             await scaffoldTheme(themeValues);
         }
         catch (err) {
-            console.log('scaffoldTheme()');
+            console.log('ScaffoldTheme.scaffoldTheme()');
             console.error(err);
         }
     };
     static scaffoldThemeRoot = async (themeValues) => {
         try {
+            await scaffoldThemeRoot(themeValues);
         }
         catch (err) {
-            console.log('scaffoldThemeRoot()');
+            console.log('ScaffoldTheme.scaffoldThemeRoot()');
             console.error(err);
         }
     };
@@ -123,7 +126,7 @@ class ScaffoldTheme extends AbstractScaffold {
         try {
         }
         catch (err) {
-            console.log('updateScaffoldClasses()');
+            console.log('ScaffoldTheme.updateScaffoldClasses()');
             console.error(err);
         }
     };

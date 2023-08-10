@@ -6,8 +6,11 @@ import path from 'path';
 import fse from 'fs-extra';
 import colors from 'colors';
 
-import { updateScaffoldFile } from '../common/update-scaffold-file.js';
+// Package Modules
 import { packageRootDir } from '../../../package-root.js';
+
+// Functions
+import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 
 // Interfaces
 import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json-updates.js";

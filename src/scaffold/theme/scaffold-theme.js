@@ -2,8 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import fse from 'fs-extra';
 import colors from 'colors';
-import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 import { packageRootDir } from '../../../package-root.js';
+import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 const scaffoldTheme = async (values) => {
     try {
         let { themeName, themesPath, newThemePath, themeDescription, frontEndFramework, safeThemeName, capAndSnakeCaseTheme, } = values;
