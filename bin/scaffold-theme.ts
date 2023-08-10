@@ -25,7 +25,7 @@ import updateScaffoldJson from '../src/scaffold/common/update-scaffold-json.js';
 import getThemeOptions from '../src/config/theme-options.js';
 import scaffoldTheme from '../src/scaffold/theme/scaffold-theme.js';
 import scaffoldThemeRoot from '../src/scaffold/theme/scaffold-root.js';
-// import updateScaffoldClasses from '../src/scaffold/theme/scaffold-classes.js';
+import updateScaffoldClasses from '../src/scaffold/theme/scaffold-classes.js';
 
 /**
  * @classdesc Scaffold a new theme based on user's inputs
@@ -237,19 +237,7 @@ class ScaffoldTheme extends AbstractScaffold {
     private static updateScaffoldClasses = async (themeValues: ThemeAnswerValues): Promise<void> => {
         try {
 
-            //
-            // updateScaffoldClasses(answers, {
-            //     themeName,
-            //     themesPath,
-            //     newThemePath,
-            //     themeDescription,
-            //     frontEndFramework,
-            //     safeThemeName,
-            //     capAndSnakeCaseTheme,
-            //     projectName: projectConfig['project-name'],
-            //     projectNamespace: projectConfig['project-namespace'],
-            // });
-
+            await updateScaffoldClasses(themeValues);
 
         } catch (err: any) {
             console.log('ScaffoldTheme.updateScaffoldClasses()');

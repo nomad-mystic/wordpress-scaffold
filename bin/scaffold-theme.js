@@ -10,6 +10,7 @@ import updateScaffoldJson from '../src/scaffold/common/update-scaffold-json.js';
 import getThemeOptions from '../src/config/theme-options.js';
 import scaffoldTheme from '../src/scaffold/theme/scaffold-theme.js';
 import scaffoldThemeRoot from '../src/scaffold/theme/scaffold-root.js';
+import updateScaffoldClasses from '../src/scaffold/theme/scaffold-classes.js';
 class ScaffoldTheme extends AbstractScaffold {
     static isDebugFullMode = false;
     static whereAmI = '';
@@ -124,6 +125,7 @@ class ScaffoldTheme extends AbstractScaffold {
     };
     static updateScaffoldClasses = async (themeValues) => {
         try {
+            await updateScaffoldClasses(themeValues);
         }
         catch (err) {
             console.log('ScaffoldTheme.updateScaffoldClasses()');
