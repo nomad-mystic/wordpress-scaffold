@@ -33,8 +33,8 @@ if (file_exists(ABSPATH . 'vendor/autoload.php')) {
 /**
  * Starting point for all auto initializing
  */
-if (file_exists(ABSPATH . 'wp-content/themes/{$active_theme}/classes/BootstrapClasses.php')) {
-    require_once(ABSPATH . 'wp-content/themes/{$active_theme}/classes/BootstrapClasses.php');
+if (file_exists(ABSPATH . "wp-content/themes/{$active_theme}/classes/BootstrapClasses.php")) {
+    require_once(ABSPATH . "wp-content/themes/{$active_theme}/classes/BootstrapClasses.php");
 }
 
 
