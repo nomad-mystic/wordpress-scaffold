@@ -53,8 +53,6 @@ class ScaffoldTheme extends AbstractScaffold {
 
             const answers: ThemeAnswers | void = await InquirerCli.performPromptsTasks(await getThemeOptions()).catch((err) => console.error(err));
 
-            console.log(answers);
-
             await this.scaffoldFiles(answers);
 
         } catch (err: any) {
@@ -166,10 +164,10 @@ class ScaffoldTheme extends AbstractScaffold {
             }
 
             // // Update our config before we scaffold theme, so we can use it in our scaffold functions
-            await updateScaffoldJson(configFilePath, configUpdates);
+            configUpdates = await updateScaffoldJson(configFilePath, configUpdates);
 
             return {
-                projectName: projectName,
+                projectName: configUpdates['project-name'],
                 themeName: themeName,
                 themesPath: themesPath,
                 newThemePath: newThemePath,

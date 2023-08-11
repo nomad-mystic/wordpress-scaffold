@@ -41,8 +41,12 @@ class ScaffoldProject extends AbstractScaffold {
         }
     };
     static installWPCoreDB = async (answers) => {
+        let installCommand = `wp core install --url="${answers?.siteUrl}" --title="${answers?.siteTitle}" --admin_user="${answers?.siteAdminUser}" --admin_password="${answers?.siteAdminPassword}" --admin_email="${answers?.adminEmail}" --skip-email`;
+        if (this.isDebugFullMode) {
+            installCommand += ` --path="${process.env.WORDPRESS_PATH}"`;
+        }
         if (answers?.databaseSetup) {
-            shell.exec(`wp core install --url="${answers.siteUrl}" --title="${answers.siteTitle}" --admin_user="${answers.siteAdminUser}" --admin_password="${answers.siteAdminPassword}" --admin_email="${answers.adminEmail}" --skip-email`);
+            shell.exec(`wp core install ${installCommand}`);
         }
     };
     static installGit = async () => {

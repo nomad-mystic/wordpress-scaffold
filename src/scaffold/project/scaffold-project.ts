@@ -28,8 +28,11 @@ const scaffoldProject = async (
     salts: string | void | undefined
 ): Promise<void> => {
     try {
+        // Get our paths
+        const whereAmI: string = await PathUtils.whereAmI();
+        const configFile: string = `${whereAmI}/wp-config.php`;
 
-        const configFile: string = `${await PathUtils.whereAmI()}/wp-config.php`
+        // Array for updates
         let updateObjectsArray: Array<ScaffoldJsonUpdates> = [];
 
         if (fs.existsSync(configFile)) {
@@ -40,15 +43,15 @@ const scaffoldProject = async (
         } else {
 
             // Copy over and updates our values
-            fse.copySync(`${path.join(packageRootDir + '/scaffolding/project')}`, await PathUtils.whereAmI(), { overwrite: false });
+            fse.copySync(`${path.join(`${packageRootDir}/scaffolding/project`)}`, whereAmI, { overwrite: false });
 
             // Our common root files
-            fse.copySync(`${path.join(packageRootDir + '/scaffolding/common/root')}`, await PathUtils.whereAmI(), { overwrite: false });
+            fse.copySync(`${path.join(`${packageRootDir}/scaffolding/common/root`)}`, whereAmI, { overwrite: false });
 
             // NPM doesn't like to publish the .gitignore file, so handle that here
-            if (fs.existsSync(`${await PathUtils.whereAmI()}/.gitignores`)) {
-                const oldPath: string = path.join(await PathUtils.whereAmI(), '/.gitignores');
-                const newPath: string = path.join(await PathUtils.whereAmI(), '/.gitignore');
+            if (fs.existsSync(`${whereAmI}/.gitignores`)) {
+                const oldPath: string = path.join(whereAmI, '/.gitignores');
+                const newPath: string = path.join(whereAmI, '/.gitignore');
 
                 fs.renameSync(oldPath, newPath);
             }
@@ -96,7 +99,7 @@ const scaffoldProject = async (
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
                 updateScaffoldFile(
-                    await PathUtils.whereAmI(),
+                    whereAmI,
                     updateObjectsArray[update].fileName,
                     updateObjectsArray[update].stringToUpdate,
                     updateObjectsArray[update].updateString
@@ -104,7 +107,8 @@ const scaffoldProject = async (
 
             }
         }
-    } catch (err) {
+    } catch (err: any) {
+        console.log('scaffoldProject()');
         console.error(err);
     }
 };

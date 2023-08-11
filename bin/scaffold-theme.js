@@ -20,7 +20,6 @@ class ScaffoldTheme extends AbstractScaffold {
             this.isDebugFullMode = await DebugUtils.isDebugFullMode();
             await this.checkForWordPressInstall();
             const answers = await InquirerCli.performPromptsTasks(await getThemeOptions()).catch((err) => console.error(err));
-            console.log(answers);
             await this.scaffoldFiles(answers);
         }
         catch (err) {
@@ -85,9 +84,9 @@ class ScaffoldTheme extends AbstractScaffold {
                 configUpdates['project-name'] = projectName;
                 configUpdates['project-namespace'] = await StringUtils.pascalCaseString(projectName);
             }
-            await updateScaffoldJson(configFilePath, configUpdates);
+            configUpdates = await updateScaffoldJson(configFilePath, configUpdates);
             return {
-                projectName: projectName,
+                projectName: configUpdates['project-name'],
                 themeName: themeName,
                 themesPath: themesPath,
                 newThemePath: newThemePath,

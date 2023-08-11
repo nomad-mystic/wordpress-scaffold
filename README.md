@@ -132,3 +132,4 @@ $ ws-scaffold-theme
 * https://vuejs.org/
 * https://sass-lang.com/
 * https://webpack.js.org/
+* https://github.com/nvm-sh/nvm

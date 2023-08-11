@@ -7,18 +7,19 @@ import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 import { packageRootDir } from '../../../package-root.js';
 const scaffoldProject = async (answers, config, salts) => {
     try {
-        const configFile = `${await PathUtils.whereAmI()}/wp-config.php`;
+        const whereAmI = await PathUtils.whereAmI();
+        const configFile = `${whereAmI}/wp-config.php`;
         let updateObjectsArray = [];
         if (fs.existsSync(configFile)) {
             console.log(colors.red('There is already a wp-config.php file.'));
             process.exit(0);
         }
         else {
-            fse.copySync(`${path.join(packageRootDir + '/scaffolding/project')}`, await PathUtils.whereAmI(), { overwrite: false });
-            fse.copySync(`${path.join(packageRootDir + '/scaffolding/common/root')}`, await PathUtils.whereAmI(), { overwrite: false });
-            if (fs.existsSync(`${await PathUtils.whereAmI()}/.gitignores`)) {
-                const oldPath = path.join(await PathUtils.whereAmI(), '/.gitignores');
-                const newPath = path.join(await PathUtils.whereAmI(), '/.gitignore');
+            fse.copySync(`${path.join(`${packageRootDir}/scaffolding/project`)}`, whereAmI, { overwrite: false });
+            fse.copySync(`${path.join(`${packageRootDir}/scaffolding/common/root`)}`, whereAmI, { overwrite: false });
+            if (fs.existsSync(`${whereAmI}/.gitignores`)) {
+                const oldPath = path.join(whereAmI, '/.gitignores');
+                const newPath = path.join(whereAmI, '/.gitignore');
                 fs.renameSync(oldPath, newPath);
             }
             if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
@@ -57,11 +58,12 @@ const scaffoldProject = async (answers, config, salts) => {
         }
         for (let update = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
-                updateScaffoldFile(await PathUtils.whereAmI(), updateObjectsArray[update].fileName, updateObjectsArray[update].stringToUpdate, updateObjectsArray[update].updateString);
+                updateScaffoldFile(whereAmI, updateObjectsArray[update].fileName, updateObjectsArray[update].stringToUpdate, updateObjectsArray[update].updateString);
             }
         }
     }
     catch (err) {
+        console.log('scaffoldProject()');
         console.error(err);
     }
 };
