@@ -8,10 +8,22 @@
 ## Commands
 `$ ws-scaffold-project-init`
 
-Uses the WP-CLI to download the core files, 
-creates the config needed for DB if specified, scaffolds internal files/folders,
+Uses the WP-CLI to download the core files, creates the config needed for DB if specified, scaffolds internal files/folders,
 generates/updates JSON configs, adds common development files, installs the core DB and admin user, 
 and initializes a git repo if not one already.
+
+* User Prompts:
+  * `Project Name (String)`, Name of your WordPress site
+  * `Database Setup (Boolean)`, Asks if you have setup a local DB for the site
+    * `Database Name (String)`
+    * `Database Password (String)`
+    * `Database Username (String)`
+  * `Site Title (String)`
+  * `Site Admin User (String)`
+  * `Admin Email (String)`
+  * `Site Admin Password (String)`
+  * `Site Url (String)`
+  * `Dev Site Url (String)`
 
 `$ ws-scaffold-plugin` (Future Release)
 
