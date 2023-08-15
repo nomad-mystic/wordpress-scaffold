@@ -108,7 +108,7 @@ class ScaffoldProject extends AbstractScaffold {
      * @return Promise<void>
      */
     private static installWPCoreDB = async (answers: InitAnswers | void): Promise<void> => {
-        let installCommand: string = `wp core install --url="${answers?.siteUrl}" --title="${answers?.siteTitle}" --admin_user="${answers?.siteAdminUser}" --admin_password="${answers?.siteAdminPassword}" --admin_email="${answers?.adminEmail}" --skip-email`;
+        let installCommand: string = `--url="${answers?.siteUrl}" --title="${answers?.siteTitle}" --admin_user="${answers?.siteAdminUser}" --admin_password="${answers?.siteAdminPassword}" --admin_email="${answers?.adminEmail}" --skip-email`;
 
         if (this.isDebugFullMode) {
             installCommand += ` --path="${process.env.WORDPRESS_PATH}"`;
