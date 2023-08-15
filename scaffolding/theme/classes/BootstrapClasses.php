@@ -11,81 +11,135 @@ if (!defined('ABSPATH')) {
 
 /**
  * Class BootstrapClasses
- * @package PASCAL_NAME
+ * @package KeithTesting1
  */
 class BootstrapClasses
 {
     /**
-     * @description Auto initialize with JSON
+     * @description Auto initialize classes from composer namespaces
+     * @author Keith Murphy | nomadmystics@gmail.com
      * @throws ReflectionException
      *
      * @return void
      */
     public function __construct()
     {
-        // Get out theme config
-        $theme_config = $this->get_config_file('theme/class-list.json');
+        $composer_file = file_get_contents(ABSPATH . 'composer.json');
 
-        if (empty($theme_config)) {
-            // Let the user know there was an issue with a WordPress alert!!!
+        // Let the user know there was an issue with a WordPress alert!!!
+        if (empty($composer_file)) {
             add_action( 'admin_notices', function() {
-                printf( '<div class="notice notice-error"><p>Warning: %s</p></div>', 'Config missing from the project, please add!');
+                printf( '<div class="notice notice-error"><p>Warning: %s</p></div>', 'Composer.json missing from the project, please add!');
             });
 
             return;
         }
 
-        // Get our classes and namespaces from the config file
-        for ($namespace = 0; $namespace < count($theme_config); $namespace++) {
+        $composer_classes = $this->get_composer_classes($composer_file);
+
+        if (!empty($composer_classes)) {
+            $this->perform_bootstrap($composer_classes);
+        }
+    }
+
+    /**
+     * @description Extract our Composer's psr-4 auto classes
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param string|false $composer_file
+     * @return array
+     */
+    private function get_composer_classes(string | false $composer_file): array
+    {
+        $classes = [];
+        $count = 0;
+
+        // Sanity check we have a composer.json
+        if (!$composer_file) {
+            return [];
+        }
+
+        $composer_object = json_decode($composer_file);
+
+        // Sanity check we have composer class namespaces
+        if (empty($composer_object->autoload->{'psr-4'})) {
+            return [];
+        }
+
+        // Extract namespaces
+        $composer_namespace = $composer_object->autoload->{'psr-4'};
+
+        foreach ($composer_namespace as $namespace => $value) {
+            // Sanity check we are looping over a directory
+            if (!empty($namespace) && !empty($value[0]) && is_dir(ABSPATH . $value[0])) {
+                $namespace_slash_removed = rtrim($namespace, "\\");
+
+                // Extract
+                $files = glob(ABSPATH . $value[0] . "/*.{php}", GLOB_BRACE);
+
+                if (!empty($files) && is_array($files)) {
+                    $classes[$count] = (object) [
+                        'namespace' => $namespace_slash_removed,
+                        'classes' => $files,
+                    ];
+
+                    $count++;
+                }
+            }
+        }
+
+        return $classes;
+    }
+
+    /**
+     * @description Based on the classes we extracted from composer.json build our refection classes
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     * @throws ReflectionException
+     *
+     * @param array $composer_classes
+     * @return void
+     */
+    private function perform_bootstrap(array $composer_classes): void
+    {
+        // Get our classes and namespaces from the composer extraction
+        for ($namespace = 0; $namespace < count($composer_classes); $namespace++) {
             // Sanity check
-            if (!empty($theme_config[$namespace])) {
+            if (!empty($composer_classes[$namespace])) {
 
                 // For each of the classes check if we have hooks and build
-                if (isset($theme_config[$namespace]->namespace) &&
-                    !empty($theme_config[$namespace]->namespace) &&
-                    isset($theme_config[$namespace]->classes) &&
-                    !empty($theme_config[$namespace]->classes)
+                if (isset($composer_classes[$namespace]->namespace) &&
+                    !empty($composer_classes[$namespace]->namespace) &&
+                    isset($composer_classes[$namespace]->classes) &&
+                    !empty($composer_classes[$namespace]->classes)
                 ) {
-
-                    for ($class = 0; $class < count($theme_config[$namespace]->classes); $class++) {
+                    for ($class = 0; $class < count($composer_classes[$namespace]->classes); $class++) {
+                        // Store our current needed variables
+                        $class_filename =  basename($composer_classes[$namespace]->classes[$class], '.php');
+                        $current_namespace = $composer_classes[$namespace]->namespace;
 
                         // Name sure things don't blow up here
-                        if (class_exists($theme_config[$namespace]->namespace . "\\" . $theme_config[$namespace]->classes[$class])) {
+                        if (class_exists($current_namespace . "\\" . $class_filename)) {
 
                             // Don't call this over and over again, no need to create an infinite loop here
-                            if ($theme_config[$namespace]->classes[$class] !== 'BootstrapClasses') {
+                            if ($class_filename !== 'BootstrapClasses') {
 
-                                $this->instantiate_class($theme_config[$namespace]->namespace . "\\" . $theme_config[$namespace]->classes[$class]);
+                                $this->instantiate_class($current_namespace . "\\" . $class_filename);
 
                             }
                         }
 
                     } // End for
-
                 } // End if
             } // End if
         } // End for
     }
 
     /**
-     * @description Grab a config
-     *
-     * @param string $config_file
-     * @return array|mixed
-     */
-    private function get_config_file(string $config_file): mixed
-    {
-        $raw_file = file_get_contents(ABSPATH . 'internal/' . $config_file);
-
-        if (!$raw_file) {
-            return [];
-        }
-
-        return json_decode($raw_file);
-    }
-
-    /**
      * @description Bases on our config instantiate our classes and hooks here
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
      * @throws ReflectionException
      *
      * @param string $namespace_and_class
@@ -166,6 +220,8 @@ class BootstrapClasses
 
     /**
      * @description array_search with partial matches
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
      *
      * @param string $needle
      * @param $haystack
