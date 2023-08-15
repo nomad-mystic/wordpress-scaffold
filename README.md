@@ -3,7 +3,7 @@
 # Installation 
 `$ npm i -g @nomadmystic/wordpress-scaffold-cli`
 
-    NOTE: This packages uses node version 18.x
+    NOTE: This packages uses node version >=18.x
 
 ## Commands
 `$ ws-scaffold-project-init`
@@ -13,34 +13,34 @@ generates/updates JSON configs, adds common development files, installs the core
 and initializes a git repo if not one already.
 
 * User Prompts:
-  * `Project Name (String)`, Name of your WordPress site
-  * `Database Setup (Boolean)`, Asks if you have setup a local DB for the site
-    * `Database Name (String)`
-    * `Database Password (String)`
-    * `Database Username (String)`
-  * `Site Title (String)`
-  * `Site Admin User (String)`
-  * `Admin Email (String)`
-  * `Site Admin Password (String)`
-  * `Site Url (String)`
-  * `Dev Site Url (String)`
+  * `Project Name (String)`, Namespace of your WordPress site, used in namespacing PHP classes
+  * `Database Setup (Boolean)`, Asks if you have setup a local DB for the site (NOTE: WILL OVERWRITE DB at the moment)
+    * `Database Name (String)`, DB name
+    * `Database Password (String)`, DB password
+    * `Database Username (String)`, DB Username
+  * `Site Title (String)`, Used in `wp core install` command
+  * `Site Admin User (String)`, Admin user for the site
+  * `Admin Email (String)`, Admin email
+  * `Site Admin Password (String)`, Admin password for the site 
+  * `Site Url (String)`, Production URL for your site
+  * `Dev Site Url (String)`, Development URL for your site
 
 `$ ws-scaffold-plugin` (Future Release)
 
 `$ ws-scaffold-theme` (Building features)
 
-`$ ws-scaffold-plugin-add` (Future Release)
-
-`$ ws-scaffold-theme-add` (Future Release)
-
-`$ ws-scaffold-heal` (Future Release)
-
-`$ ws-scaffold-eject` (Future Release)
+* User Prompts: 
+  * `Project Name (String)`, Namespace of your WordPress site, used in namespacing PHP classes
+  * `Theme Name (String)`, Name of your theme
+  * `Theme Description (String)`, Description for your theme
+  * `FrontEnd Framework (Array['None', 'Vue.js 3'])`, Choose if you want Vue.js added to your project
+  * `Site Url (String)`, Production URL for your site
+  * `Dev Site Url (String)`, Development URL for your site
 
 ### Bootstrap Class and hook reflection
 
 In both the plugin and theme scaffolding I include a BootstrapClasses class which auto 
-instantiates classes it finds in the class-list.json files.
+instantiates classes it finds in the composer.json psr-4 namespaces object.
 
 This uses reflection to hook directly into the WordPress hook system. 
 
@@ -127,10 +127,6 @@ $ ws-scaffold-theme
 ```
 
 ### Scaffold todos
-* Mention manual config updates
-* Add class creation
-* Theme
-  * Add includes autoload
 * Classes
   * Add base on init and append while adding classes
   
