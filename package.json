@@ -1,15 +1,13 @@
 {
     "name": "@nomadmystic/wordpress-scaffold-cli",
-    "version": "0.6.2",
+    "version": "0.6.3",
     "description": "This project is created to speed up WordPress development",
     "main": "index.js",
     "type": "module",
     "scripts": {
         "dev:project-init": "node ./dist/src/bin/scaffold-project-init.js",
         "dev:plugin": "node ./dist/src/bin/scaffold-plugin.js",
-        "dev:plugin:add": "node ./dist/src/bin/scaffold-plugin-add.js",
         "dev:theme": "node ./dist/src/bin/scaffold-theme.js",
-        "dev:theme:add": "node ./dist/src/bin/scaffold-theme-add.js",
         "dev:tsc": "tsc --watch --project ./",
         "production:build": "tsc --project ./",
         "postpack": "tsc --project ./"
@@ -17,9 +15,7 @@
     "bin": {
         "ws-scaffold-project-init": "./dist/src/bin/scaffold-project-init.js",
         "ws-scaffold-plugin": "./dist/src/bin/scaffold-plugin.js",
-        "ws-scaffold-theme": "./dist/src/bin/scaffold-theme.js",
-        "ws-scaffold-plugin-add": "./dist/src/bin/scaffold-plugin-add.js",
-        "ws-scaffold-theme-add": "./dist/src/bin/scaffold-theme-add.js"
+        "ws-scaffold-theme": "./dist/src/bin/scaffold-theme.js"
     },
     "repository": {
         "type": "git",
@@ -56,7 +52,5 @@
         "@types/shelljs": "^0.8.12",
         "typescript": "^5.1.6"
     },
-    "devDependencies": {
-        "uglify-js": "^3.17.4"
-    }
+    "devDependencies": {}
 }
