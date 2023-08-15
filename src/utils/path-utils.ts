@@ -78,55 +78,11 @@ export default class PathUtils {
         try {
 
 
-
         } catch (err) {
 
             console.error(err);
 
         }
     }
-
-    /**
-     * @description Get all folder names in the theme directory
-     *
-     * @return Promise<Array<string>>
-     */
-    // public static getThemeFolderNames = async (): Promise<Array<string>> => {
-    //     // Theme path
-    //     const themePath: string | void = await this.getThemesFolderPath();
-    //
-    //     // Just get the top level folder names
-    //     const getDirectories = readdirSync(themePath, { withFileTypes: true })
-    //         .filter((dirent: any) => dirent.isDirectory())
-    //         .map(dirent => dirent?.name);
-    //
-    //     return getDirectories;
-    // };
-
-    // /**
-    //  * @description Search the custom folder for module names
-    //  *
-    //  * @param {string} answersSoFar
-    //  * @param {string} input
-    //  * @return {Promise<unknown>}
-    //  */
-    // const searchFolderNames = function(answersSoFar, input) {
-    //     const moduleNames = getThemeFolderNames();
-    //
-    //     input = input || '';
-    //
-    //     // Use fuzzy logic to based on the custom folders names and return for usage in adding to our module
-    //     return new Promise(function (resolve) {
-    //         setTimeout(function () {
-    //             let fuzzyResult = fuzzy.filter(input, moduleNames);
-    //
-    //             resolve(
-    //                 fuzzyResult.map(function (el) {
-    //                     return el.original;
-    //                 })
-    //             );
-    //         }, random(30, 500));
-    //     });
-    // }
 }
 

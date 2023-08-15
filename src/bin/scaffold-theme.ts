@@ -7,25 +7,25 @@ import colors from 'colors';
 
 // Package modules
 // Classes
-import InquirerCli from '../src/cli/inquirer-cli.js';
-import AbstractScaffold from '../src/abstract/AbstractScaffold.js';
+import InquirerCli from '../cli/inquirer-cli.js';
+import AbstractScaffold from '../abstract/AbstractScaffold.js';
 
 // Utils
-import PathUtils from '../src/utils/path-utils.js';
-import DebugUtils from '../src/utils/debug-utils.js';
-import StringUtils from '../src/utils/string-utils.js';
+import PathUtils from '../utils/path-utils.js';
+import DebugUtils from '../utils/debug-utils.js';
+import StringUtils from '../utils/string-utils.js';
 
 // Interfaces
-import ThemeAnswers from '../src/interfaces/theme/interface-theme-answers.js';
-import ThemeConfig from '../src/interfaces/theme/interface-theme-config.js';
-import ThemeAnswerValues from '../src/interfaces/theme/interface-theme-answer-values.js';
+import ThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
+import ThemeConfig from '../interfaces/theme/interface-theme-config.js';
+import ThemeAnswerValues from '../interfaces/theme/interface-theme-answer-values.js';
 
 // Functions
-import updateScaffoldJson from '../src/scaffold/common/update-scaffold-json.js';
-import getThemeOptions from '../src/config/theme-options.js';
-import scaffoldTheme from '../src/scaffold/theme/scaffold-theme.js';
-import scaffoldThemeRoot from '../src/scaffold/theme/scaffold-root.js';
-import updateScaffoldClasses from '../src/scaffold/theme/scaffold-classes.js';
+import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
+import getThemeOptions from '../config/theme-options.js';
+import scaffoldTheme from '../scaffold/theme/scaffold-theme.js';
+import scaffoldThemeRoot from '../scaffold/theme/scaffold-root.js';
+import updateScaffoldClasses from '../scaffold/theme/scaffold-classes.js';
 
 /**
  * @classdesc Scaffold a new theme based on user's inputs

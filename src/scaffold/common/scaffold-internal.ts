@@ -9,7 +9,7 @@ import fse from 'fs-extra';
 import PathUtils from '../../utils/path-utils.js';
 
 // Root
-import { packageRootDir } from '../../../package-root.js';
+import { packageRootDir } from '../../utils/package-root.js';
 
 /**
  * @description Make sure we have our internal folder, if not copy it over
