@@ -81,6 +81,7 @@ class ScaffoldProject extends AbstractScaffold {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      * @link https://developer.wordpress.org/cli/commands/core/download/
+     * @todo Add a check with option for not overwriting the DB
      *
      * @return Promise<void>
      */
