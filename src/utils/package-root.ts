@@ -7,7 +7,7 @@ const filename: string = fileURLToPath(import.meta.url);
 const dirname: string = path.dirname(filename);
 
 const config = {
-    packageRootDir: `${path.resolve(dirname)}`,
+    packageRootDir: `${path.join(dirname, '../../../')}`,
 };
 
 export let packageRootDir: string = config.packageRootDir;

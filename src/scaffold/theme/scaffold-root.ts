@@ -5,7 +5,8 @@ import fs from 'fs';
 import colors from 'colors';
 
 // Package Modules
-import { packageRootDir } from '../../../package-root.js';
+// Root
+import { packageRootDir } from '../../utils/package-root.js';
 
 // Utils
 import PathUtils from '../../utils/path-utils.js';

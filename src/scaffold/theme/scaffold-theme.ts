@@ -7,7 +7,8 @@ import fse from 'fs-extra';
 import colors from 'colors';
 
 // Package Modules
-import { packageRootDir } from '../../../package-root.js';
+// Root
+import { packageRootDir } from '../../utils/package-root.js';
 
 // Functions
 import { updateScaffoldFile } from '../common/update-scaffold-file.js';
