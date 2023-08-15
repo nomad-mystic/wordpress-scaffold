@@ -33,9 +33,6 @@ export default class CommanderCli {
             const inputs: Command | undefined = program?.parse()
             const options: object = program?.opts() ? program.opts() : {};
 
-            console.log(inputs)
-            console.log(options)
-
             // Create Array for comparing inputs from the user
             const cliOptions: string[] = Object.keys(CommanderOptions);
             const userInputs: string[] = Object.keys(options);
@@ -46,10 +43,6 @@ export default class CommanderCli {
 
                 process.exit(1);
             }
-
-            console.log(cliOptions);
-            console.log(userInputs);
-            console.log(cliOptions.includes(userInputs[0]));
 
             if (options && typeof options !== 'undefined' && cliOptions.includes(userInputs[0])) {
                 await this.callCommand(userInputs[0]);
@@ -103,6 +96,7 @@ export default class CommanderCli {
             const path: string = CommanderOptions[command].path as string;
             const fullPath: string = `${packageRootDir}dist/${path}`;
 
+            // Bail early
             if (!fs.existsSync(fullPath)) {
                 console.log('Path to command doesn\'t! Contact the maintainer');
 
