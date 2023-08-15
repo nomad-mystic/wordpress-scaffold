@@ -6,7 +6,17 @@
     NOTE: This packages uses node version >=18.x
 
 ## Commands
-`$ ws-scaffold-project-init`
+
+##### Help:
+```shell
+$ wps --help
+```
+
+##### Initialize Project
+```shell 
+$ wps --pi
+$ wps --project-init
+```
 
 Uses the WP-CLI to download the core files, creates the config needed for DB if specified, scaffolds internal files/folders,
 generates/updates JSON configs, adds common development files, installs the core DB and admin user, 
@@ -27,7 +37,11 @@ and initializes a git repo if not one already.
 
 `$ ws-scaffold-plugin` (Future Release)
 
-`$ ws-scaffold-theme` (Building features)
+##### Initialize Theme
+```shell 
+$ wps --t
+$ wps --theme
+```
 
 * User Prompts: 
   * `Project Name (String)`, Namespace of your WordPress site, used in namespacing PHP classes
