@@ -56,7 +56,7 @@ export default class PathUtils {
             console.error(err);
 
         }
-    }
+    };
 
     /**
      * @description Get the current WP themes folder
@@ -72,10 +72,24 @@ export default class PathUtils {
 
             console.error(err);
 
-            return;
+        }
+    };
+
+    /**
+     * @description Get the current WP themes folder
+     *
+     * @return {Promise<string | void>}
+     */
+    public static getPluginsFolderPath = async (): Promise<string | undefined> => {
+        try {
+
+            return path.resolve(`${await this.whereAmI()}/wp-content/plugins`);
+
+        } catch (err) {
+
+            console.error(err);
 
         }
-
     };
 
     /**

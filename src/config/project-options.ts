@@ -8,8 +8,9 @@ import { getInternalConfig } from '../utils/get-config.js';
 
 // Common
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
+import getCommonOptions from "./common-options.js";
 
-const projectOptions: Array<InquirerCliOptions> = [
+let projectOptions: Array<InquirerCliOptions> = [
     {
         type: 'confirm',
         name: 'databaseSetup',
@@ -41,7 +42,7 @@ const projectOptions: Array<InquirerCliOptions> = [
         when(answers: InitAnswers) {
             return answers.databaseSetup;
         },
-        validate(value: string) {
+        validate(value: string): boolean | string {
             if (value !== '') {
                 return true;
             }
@@ -57,7 +58,7 @@ const projectOptions: Array<InquirerCliOptions> = [
         when(answers: InitAnswers) {
             return answers.databaseSetup;
         },
-        validate(value: string) {
+        validate(value: string): boolean | string {
             if (value !== '') {
                 return true;
             }
@@ -111,38 +112,14 @@ const getProjectOptions = async (): Promise<Array<any> | undefined> => {
 
         let jsonFileParsed: ProjectConfig = await getInternalConfig('project/project-config.json');
 
-        // Gather the information we need if the user didn't use the init command
-        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['project-name'] === '') {
-            const projectNameOption: InquirerCliOptions = {
-                type: 'input',
-                name: 'projectName',
-                message: 'What is the name of your WordPress site?',
-                default: 'scaffold-project',
-            };
+        // Check if we need common options
+        const commonOptions: InquirerCliOptions = await getCommonOptions(jsonFileParsed);
 
-            projectOptions.unshift(projectNameOption);
-        }
-
-        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['site-url'] === '' || jsonFileParsed['dev-site-url'] === '') {
-            const siteUrlOption: InquirerCliOptions = {
-                type: 'input',
-                name: 'siteUrl',
-                message: 'What is the URL of your WordPress site?',
-                default: 'https://example.com',
-            };
-
-            const devSiteUrl: InquirerCliOptions = {
-                type: 'input',
-                name: 'devSiteUrl',
-                message: 'What is the development URL of your WordPress site?',
-                default: 'https://example.com.test',
-            };
-
-            projectOptions.push(siteUrlOption);
-            projectOptions.push(devSiteUrl);
-        }
+        // "Merge" our arrays
+        projectOptions = projectOptions.concat(commonOptions);
 
         return projectOptions;
+
     } catch (err) {
 
         console.error(err);

@@ -11,7 +11,7 @@ import getCommonOptions from './common-options.js';
  *
  * @type {[{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string, choices: string[]}]}
  */
-const themeOptions: Array<InquirerCliOptions> = [
+let themeOptions: Array<InquirerCliOptions> = [
     {
         type: 'input',
         name: 'themeName',
@@ -50,14 +50,13 @@ const getThemeOptions = async (): Promise<Array<any> | undefined> => {
         const commonOptions: InquirerCliOptions = await getCommonOptions(jsonFileParsed);
 
         // "Merge" our arrays
-        themeOptions.concat(commonOptions)
+        themeOptions = themeOptions.concat(commonOptions)
 
         return themeOptions;
 
     } catch (err) {
-
+        console.log('getThemeOptions()');
         console.error(err);
-
     }
 }
 

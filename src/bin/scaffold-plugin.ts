@@ -22,6 +22,10 @@ import PluginAnswers from '../interfaces/plugin/interface-plugin-anwsers.js';
 
 // Functions
 import getPluginOptions from '../config/plugin-options.js';
+import scaffoldPlugin from "../scaffold/plugin/scaffold-plugin.js";
+import updateScaffoldJson from "../scaffold/common/update-scaffold-json.js";
+import PluginAnswerValues from "../interfaces/plugin/interface-plugin-answer-values.js";
+import PluginConfig from "../interfaces/plugin/interface-plugin-config.js";
 // import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
 // import scaffoldPlugin from '../scaffold/plugin/scaffold-plugin.js';
 // import scaffoldThemeRoot from '../scaffold/theme/scaffold-root.js';
@@ -66,43 +70,80 @@ class ScaffoldPlugin extends AbstractScaffold {
      */
     protected static scaffoldFiles = async (answers: PluginAnswers | any): Promise<void> => {
         try {
-            console.log(answers);
 
-            // const pluginValues: ThemeAnswerValues  = await this.buildValueObject(answers);
-            //
-            // // Build the theme
-            // await this.scaffoldPlugin(pluginValues);
-            //
-            // // Let the user know it has been created
-            // console.log(colors.green(`Your ${pluginValues.pluginName} theme has been scaffold.`));
-            // console.log(colors.yellow(`Check: ${pluginValues.pluginPath}/${pluginValues.safePluginName}`));
+            const pluginValues: PluginAnswerValues  = await this.buildValueObject(answers);
+
+            await scaffoldPlugin(pluginValues);
+
+            // Let the user know it has been created
+            console.log(colors.green(`Your ${answers.pluginName} plugin has been scaffold.`));
+            console.log(colors.yellow(`Check: ${answers.pluginPath}/${answers.safePluginName}`));
 
         } catch (err: any) {
             console.log('ScaffoldTheme.scaffoldFiles()');
             console.error(err);
         }
-    }
+    };
 
 
-
-    /**
-     * @description Based on a user's answers build our theme files
-     * @private
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @param {ThemeAnswerValues} pluginValues
-     * @return Promise<void>
-     */
-    private static scaffoldPlugin = async (pluginValues: ThemeAnswerValues): Promise<void> => {
+    private static buildValueObject = async (answers: PluginAnswers | any): Promise<PluginAnswerValues | any> => {
         try {
+            const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
 
-            // await scaffoldTheme(pluginValues);
+            // Absolute path of the themes folder
+            const pluginsPath: string | undefined = await PathUtils.getPluginsFolderPath();
+
+            // User inputs
+            const projectName: string = answers.projectName ? answers.projectName : '';
+            const pluginName: string =  answers.pluginName ? answers.pluginName.trim() : '';
+            const pluginDescription: string = answers.pluginDescription ? answers.pluginDescription.trim() : '';
+            const frontEndFramework: string = answers.frontEndFramework ? answers.frontEndFramework : '';
+            const siteUrl: string = answers.siteUrl ? answers.siteUrl : '';
+            const devSiteUrl: string = answers.devSiteUrl ? answers.devSiteUrl : '';
+
+            // Make folder "safe" if there are spaces
+            const safePluginName: string = await StringUtils.addDashesToString(pluginName);
+
+            // Create the finalized path for the scaffolded theme
+            const newPluginPath: string = `${pluginsPath}/${safePluginName}`;
+
+            // Create our string modification
+            const capAndSnakeCasePlugin: string = await StringUtils.capAndSnakeCaseString(safePluginName);
+
+            let configUpdates: PluginConfig = {
+                'plugin-name': pluginName,
+                'plugin-path': newPluginPath,
+                'plugin-description': pluginDescription,
+                'front-end-framework': frontEndFramework,
+            };
+
+            if (projectName && typeof projectName !== 'undefined') {
+                configUpdates['project-name'] = projectName;
+                configUpdates['project-namespace'] = await StringUtils.pascalCaseString(projectName);
+            }
+
+            // // Update our config before we scaffold theme, so we can use it in our scaffold functions
+            configUpdates = await updateScaffoldJson(configFilePath, configUpdates);
+
+            return {
+                projectName: configUpdates['project-name'],
+                pluginName: pluginName,
+                pluginsPath: pluginsPath,
+                newPluginPath: newPluginPath,
+                pluginDescription: pluginDescription,
+                frontEndFramework: frontEndFramework,
+                siteUrl: siteUrl,
+                devSiteUrl: devSiteUrl,
+                safePluginName: safePluginName,
+                capAndSnakeCasePlugin: capAndSnakeCasePlugin,
+                projectNamespace: configUpdates['project-namespace'],
+            };
 
         } catch (err: any) {
-            console.log('ScaffoldTheme.scaffoldTheme()');
+            console.log('ScaffoldTheme.buildValueObject()');
             console.error(err);
         }
-    }
+    };
 }
 
 ScaffoldPlugin.performScaffolding().catch(err => console.error(err));

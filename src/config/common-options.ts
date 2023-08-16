@@ -15,37 +15,40 @@ const getCommonOptions = async (jsonFileParsed: ProjectConfig): Promise<Array<In
 
         // @todo Refactor this into a Promise which can be used by theme as well
         // Gather the information we need if the user didn't use the init command
-        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['project-name'] === '') {
-            const projectNameOption: InquirerCliOptions = {
-                type: 'input',
-                name: 'projectName',
-                message: 'What is the name of your WordPress site?',
-                default: 'scaffold-project',
-            };
+        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined') {
 
-            commonOptions.unshift(projectNameOption);
-        }
+            if (jsonFileParsed['project-name'] === '') {
+                const projectNameOption: InquirerCliOptions = {
+                    type: 'input',
+                    name: 'projectName',
+                    message: 'What is the name of your WordPress site?',
+                    default: 'scaffold-project',
+                };
 
-        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['site-url'] === '') {
-            const siteUrlOption: InquirerCliOptions = {
-                type: 'input',
-                name: 'siteUrl',
-                message: 'What is the URL of your WordPress site?',
-                default: 'https://example.com',
-            };
+                commonOptions.unshift(projectNameOption);
+            }
 
-            commonOptions.push(siteUrlOption);
-        }
+            if (jsonFileParsed['site-url'] === '') {
+                const siteUrlOption: InquirerCliOptions = {
+                    type: 'input',
+                    name: 'siteUrl',
+                    message: 'What is the URL of your WordPress site?',
+                    default: 'https://example.com',
+                };
 
-        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['dev-site-url'] === '') {
-            const devSiteUrl: InquirerCliOptions = {
-                type: 'input',
-                name: 'devSiteUrl',
-                message: 'What is the development URL of your WordPress site?',
-                default: 'https://example.com.test',
-            };
+                commonOptions.push(siteUrlOption);
+            }
 
-            commonOptions.push(devSiteUrl);
+            if (jsonFileParsed['dev-site-url'] === '') {
+                const devSiteUrl: InquirerCliOptions = {
+                    type: 'input',
+                    name: 'devSiteUrl',
+                    message: 'What is the development URL of your WordPress site?',
+                    default: 'https://example.com.test',
+                };
+
+                commonOptions.push(devSiteUrl);
+            }
         }
 
         return commonOptions;

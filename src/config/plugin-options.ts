@@ -12,7 +12,7 @@ import getCommonOptions from './common-options.js';
  *
  * @type {[{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string, choices: string[]}]}
  */
-const pluginOptions: Array<InquirerCliOptions> = [
+let pluginOptions: Array<InquirerCliOptions> = [
     {
         type: 'input',
         name: 'pluginName',
@@ -51,7 +51,7 @@ const getPluginOptions = async (): Promise<Array<any> | undefined> => {
         const commonOptions: InquirerCliOptions = await getCommonOptions(jsonFileParsed);
 
         // "Merge" our arrays
-        pluginOptions.concat(commonOptions)
+        pluginOptions = pluginOptions.concat(commonOptions);
 
         return pluginOptions;
 
@@ -59,6 +59,6 @@ const getPluginOptions = async (): Promise<Array<any> | undefined> => {
         console.log('getPluginOptions()');
         console.error(err);
     }
-}
+};
 
 export default getPluginOptions;
