@@ -1,6 +1,8 @@
 // Interfaces
 import ThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
+import PluginAnswers from '../interfaces/plugin/interface-plugin-anwsers.js';
+
 
 export default abstract class AbstractScaffold {
     /**
@@ -19,5 +21,5 @@ export default abstract class AbstractScaffold {
      *
      * @return Promise<void>
      */
-    protected static scaffoldFiles = async (answers: InitAnswers | ThemeAnswers | any):  Promise<void> => {};
+    protected static scaffoldFiles = async (answers: InitAnswers | ThemeAnswers | PluginAnswers | any):  Promise<void> => {};
 }

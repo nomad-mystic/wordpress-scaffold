@@ -2,25 +2,27 @@
 import InquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
 import ProjectConfig from '../interfaces/project/interface-project-config.js';
 
+// Functions
 import { getInternalConfig } from '../utils/get-config.js';
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
+import getCommonOptions from './common-options.js';
 
 /**
- * @description Interactive CLI options for building the theme
+ * @description Interactive CLI options for building the plugin
  *
  * @type {[{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string, choices: string[]}]}
  */
-const themeOptions: Array<InquirerCliOptions> = [
+const pluginOptions: Array<InquirerCliOptions> = [
     {
         type: 'input',
-        name: 'themeName',
-        message: 'What is the name of your theme?',
-        default: 'scaffold-theme',
+        name: 'pluginName',
+        message: 'What is the name of your plugin?',
+        default: 'scaffold-plugin',
     },
     {
         type: 'input',
-        name: 'themeDescription',
-        message: 'What would like the description of the theme be?',
+        name: 'pluginDescription',
+        message: 'What would like the description of the plugin to be?',
         default: '',
     },
     {
@@ -39,50 +41,24 @@ const themeOptions: Array<InquirerCliOptions> = [
  *
  * @return Promise<void>
  */
-const getThemeOptions = async (): Promise<Array<any> | undefined> => {
+const getPluginOptions = async (): Promise<Array<any> | undefined> => {
     try {
         await scaffoldInternal();
 
         let jsonFileParsed: ProjectConfig = await getInternalConfig('project/project-config.json');
 
-        // Gather the information we need if the user didn't use the init command
-        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['project-name'] === '') {
-            const projectNameOption: InquirerCliOptions = {
-                type: 'input',
-                name: 'projectName',
-                message: 'What is the name of your WordPress site?',
-                default: 'scaffold-project',
-            };
+        // Check if we need common options
+        const commonOptions: InquirerCliOptions = await getCommonOptions(jsonFileParsed);
 
-            themeOptions.unshift(projectNameOption);
-        }
+        // "Merge" our arrays
+        pluginOptions.concat(commonOptions)
 
-        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['site-url'] === '' || jsonFileParsed['dev-site-url'] === '') {
-            const siteUrlOption: InquirerCliOptions = {
-                type: 'input',
-                name: 'siteUrl',
-                message: 'What is the URL of your WordPress site?',
-                default: 'https://example.com',
-            };
-
-            const devSiteUrl: InquirerCliOptions = {
-                type: 'input',
-                name: 'devSiteUrl',
-                message: 'What is the development URL of your WordPress site?',
-                default: 'https://example.com.test',
-            };
-
-            themeOptions.push(siteUrlOption);
-            themeOptions.push(devSiteUrl);
-        }
-
-        return themeOptions;
+        return pluginOptions;
 
     } catch (err) {
-
+        console.log('getPluginOptions()');
         console.error(err);
-
     }
 }
 
-export default getThemeOptions;
+export default getPluginOptions;

@@ -49,7 +49,7 @@ class ScaffoldTheme extends AbstractScaffold {
             this.isDebugFullMode = await DebugUtils.isDebugFullMode();
 
             // Bail early
-            await this.checkForWordPressInstall();
+            await PathUtils.checkForWordPressInstall();
 
             const answers: ThemeAnswers | void = await InquirerCli.performPromptsTasks(await getThemeOptions()).catch((err) => console.error(err));
 
@@ -60,36 +60,6 @@ class ScaffoldTheme extends AbstractScaffold {
             console.error(err);
         }
     };
-
-    /**
-     * @description Make sure we have a WordPress install at this root folder
-     * @public
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @return Promise<void>
-     */
-    private static checkForWordPressInstall  = async (): Promise<void> => {
-        try {
-            // Enable debug mode?
-            const isDebugMode: boolean = await DebugUtils.isDebugMode();
-            const isInstalled: boolean | undefined = await PathUtils.isWordpressInstall();
-
-            // Let the user know they need to be in the root of the project and bail early
-            if (!isInstalled && !isDebugMode) {
-
-                console.log(colors.yellow('Your path is not at the root of your WordPress install.'));
-                console.log(colors.yellow(`You are located at ${this.whereAmI}`));
-                console.log(colors.yellow('Please move to the root WordPress install folder.'));
-
-                process.exit(1);
-            }
-
-        } catch (err: any) {
-            console.log('ScaffoldTheme.checkForWordPressInstall()');
-            console.error(err);
-
-        }
-    }
 
     /**
      * {@inheritDoc AbstractScaffold}

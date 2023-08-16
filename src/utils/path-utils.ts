@@ -6,12 +6,16 @@ import { PathLike, readdirSync } from 'fs';
 
 // Community Modules
 import fs from 'fs-extra';
-import fuzzy from 'fuzzy';
-// import { random } from 'lodash';
+import colors from 'colors';
 
 // Package modules
 import DebugUtils from './debug-utils.js';
 
+/**
+ * @class
+ * @classdesc
+ * @author Keith Murphy | nomadmystics@gmail.com
+ */
 export default class PathUtils {
     /**
      * @description Gets the current path
@@ -74,12 +78,31 @@ export default class PathUtils {
 
     };
 
-    public static checkFileExists = async (path: string, exit = false): Promise<void> => {
+    /**
+     * @description Make sure we have a WordPress install at this root folder
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return Promise<void>
+     */
+    public static checkForWordPressInstall  = async (): Promise<void> => {
         try {
+            // Enable debug mode?
+            const isDebugMode: boolean = await DebugUtils.isDebugMode();
+            const isInstalled: boolean | undefined = await PathUtils.isWordpressInstall();
 
+            // Let the user know they need to be in the root of the project and bail early
+            if (!isInstalled && !isDebugMode) {
 
-        } catch (err) {
+                console.log(colors.yellow('Your path is not at the root of your WordPress install.'));
+                console.log(colors.yellow(`You are located at ${this.whereAmI}`));
+                console.log(colors.yellow('Please move to the root WordPress install folder.'));
 
+                process.exit(1);
+            }
+
+        } catch (err: any) {
+            console.log('ScaffoldTheme.checkForWordPressInstall()');
             console.error(err);
 
         }
