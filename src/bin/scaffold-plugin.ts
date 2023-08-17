@@ -23,7 +23,9 @@ import PluginAnswers from '../interfaces/plugin/interface-plugin-anwsers.js';
 // Functions
 import getPluginOptions from '../config/plugin-options.js';
 import scaffoldPlugin from "../scaffold/plugin/scaffold-plugin.js";
-import updateScaffoldJson from "../scaffold/common/update-scaffold-json.js";
+
+import updateScaffoldJson, { UpdateProjectJson } from "../scaffold/common/update-scaffold-json.js";
+
 import PluginAnswerValues from "../interfaces/plugin/interface-plugin-answer-values.js";
 import PluginConfig from "../interfaces/plugin/interface-plugin-config.js";
 // import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
@@ -159,8 +161,8 @@ class ScaffoldPlugin extends AbstractScaffold {
                 configUpdates['project-namespace'] = await StringUtils.pascalCaseString(projectName);
             }
 
-            // // Update our config before we scaffold theme, so we can use it in our scaffold functions
-            configUpdates = await updateScaffoldJson(configFilePath, configUpdates);
+            // Update our config before we scaffold plugin, so we can use it in our scaffold functions
+            configUpdates = await UpdateProjectJson.update(configUpdates, true);
 
             return configUpdates;
 

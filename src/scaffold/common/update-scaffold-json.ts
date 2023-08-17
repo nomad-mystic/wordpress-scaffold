@@ -4,15 +4,17 @@ import fs from 'fs';
 // Package modules
 import StringUtils from '../../utils/string-utils.js';
 import { scaffoldInternal } from './scaffold-internal.js';
+import PathUtils from "../../utils/path-utils.js";
 
 /**
  * @description Updates our internal JSON with properties for use later
  *
  * @param {string} filePath
  * @param {any} json
+ * @param {boolean} isPlugin
  * @return {string}
  */
-const updateScaffoldJson = async (filePath: string, json: any): Promise<string | any> => {
+const updateScaffoldJson = async (filePath: string, json: any, isPlugin: boolean = false): Promise<string | any> => {
     try {
         await scaffoldInternal();
 
@@ -94,5 +96,75 @@ const updateScaffoldJson = async (filePath: string, json: any): Promise<string |
 
     }
 };
+
+export class UpdateProjectJson {
+    private static isDebugFullMode: boolean = false;
+    private static whereAmI: string = '';
+
+    // Setup our arrays for json update logic
+    private static dashedValues: Array<string> = [
+        'project-name',
+        'active-theme',
+    ];
+
+    private static disallowedKeys: Array<string> = [
+        'database-setup',
+        'database-name',
+        'database-password',
+        'database-username',
+        'site-admin-password',
+        'site-admin-user',
+        'admin-email',
+    ];
+
+    public static update = async (configUpdates: any, isPlugin: boolean = false): Promise<string | any> => {
+        try {
+            // Make sure we have the Project JSON scaffolded
+            await scaffoldInternal();
+
+            // Gather our location
+            this.whereAmI = await PathUtils.whereAmI();
+
+            const projectConfigObject = await this.getProjectConfigObject();
+
+            console.log(projectConfigObject);
+
+        } catch (err: any) {
+
+            console.error(err);
+
+        }
+    };
+
+    /**
+     * @description Get the "Global" project config
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return Promise<string | object | any>
+     */
+    public static getProjectConfigObject = async (): Promise<string | object | any> => {
+        try {
+
+            // Get our config file
+            const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
+
+            let jsonFile: string = fs.readFileSync(configFilePath, 'utf-8');
+
+            // Baily Early
+            if (!jsonFile || typeof jsonFile === 'undefined' || jsonFile === '') {
+                return '';
+            }
+
+            return JSON.parse(jsonFile);
+
+        } catch (err: any) {
+
+            console.error(err);
+
+        }
+    };
+}
+
 
 export default updateScaffoldJson;
