@@ -55,6 +55,7 @@ class ScaffoldPlugin extends AbstractScaffold {
             // Bail early
             await PathUtils.checkForWordPressInstall();
 
+            // Get our answers
             const answers: PluginAnswers | void = await InquirerCli.performPromptsTasks(await getPluginOptions()).catch((err) => console.error(err));
 
             await this.scaffoldFiles(answers);
@@ -70,7 +71,6 @@ class ScaffoldPlugin extends AbstractScaffold {
      */
     protected static scaffoldFiles = async (answers: PluginAnswers | any): Promise<void> => {
         try {
-
             const pluginValues: PluginAnswerValues  = await this.buildValueObject(answers);
 
             await scaffoldPlugin(pluginValues);
@@ -85,7 +85,13 @@ class ScaffoldPlugin extends AbstractScaffold {
         }
     };
 
-
+    /**
+     * @description Build an object of our needed values for scaffolding the plugin
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<PluginAnswerValues | any>}
+     */
     private static buildValueObject = async (answers: PluginAnswers | any): Promise<PluginAnswerValues | any> => {
         try {
             const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
