@@ -73,7 +73,9 @@ class ScaffoldPlugin extends AbstractScaffold {
         try {
             const pluginValues: PluginAnswerValues  = await this.buildValueObject(answers);
 
-            await scaffoldPlugin(pluginValues);
+            let config = await this.updateProjectConfig(pluginValues);
+
+            // await scaffoldPlugin(pluginValues);
 
             // Let the user know it has been created
             console.log(colors.green(`Your ${answers.pluginName} plugin has been scaffold.`));
@@ -94,8 +96,6 @@ class ScaffoldPlugin extends AbstractScaffold {
      */
     private static buildValueObject = async (answers: PluginAnswers | any): Promise<PluginAnswerValues | any> => {
         try {
-            const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
-
             // Absolute path of the themes folder
             const pluginsPath: string | undefined = await PathUtils.getPluginsFolderPath();
 
@@ -104,8 +104,8 @@ class ScaffoldPlugin extends AbstractScaffold {
             const pluginName: string =  answers.pluginName ? answers.pluginName.trim() : '';
             const pluginDescription: string = answers.pluginDescription ? answers.pluginDescription.trim() : '';
             const frontEndFramework: string = answers.frontEndFramework ? answers.frontEndFramework : '';
-            const siteUrl: string = answers.siteUrl ? answers.siteUrl : '';
-            const devSiteUrl: string = answers.devSiteUrl ? answers.devSiteUrl : '';
+            const siteUrl: string = answers.siteUrl;
+            const devSiteUrl: string = answers.devSiteUrl;
 
             // Make folder "safe" if there are spaces
             const safePluginName: string = await StringUtils.addDashesToString(pluginName);
@@ -115,6 +115,37 @@ class ScaffoldPlugin extends AbstractScaffold {
 
             // Create our string modification
             const capAndSnakeCasePlugin: string = await StringUtils.capAndSnakeCaseString(safePluginName);
+
+            return {
+                projectName: projectName,
+                pluginName: pluginName,
+                pluginsPath: pluginsPath,
+                newPluginPath: newPluginPath,
+                pluginDescription: pluginDescription,
+                frontEndFramework: frontEndFramework,
+                siteUrl: siteUrl,
+                devSiteUrl: devSiteUrl,
+                safePluginName: safePluginName,
+                capAndSnakeCasePlugin: capAndSnakeCasePlugin,
+            };
+
+        } catch (err: any) {
+            console.log('ScaffoldTheme.buildValueObject()');
+            console.error(err);
+        }
+    };
+
+    private static updateProjectConfig = async (pluginValues: PluginAnswerValues): Promise<PluginConfig | any> => {
+        try {
+            let {
+                projectName,
+                pluginName,
+                newPluginPath,
+                pluginDescription,
+                frontEndFramework,
+            } = pluginValues;
+
+            const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
 
             let configUpdates: PluginConfig = {
                 'plugin-name': pluginName,
@@ -131,25 +162,14 @@ class ScaffoldPlugin extends AbstractScaffold {
             // // Update our config before we scaffold theme, so we can use it in our scaffold functions
             configUpdates = await updateScaffoldJson(configFilePath, configUpdates);
 
-            return {
-                projectName: configUpdates['project-name'],
-                pluginName: pluginName,
-                pluginsPath: pluginsPath,
-                newPluginPath: newPluginPath,
-                pluginDescription: pluginDescription,
-                frontEndFramework: frontEndFramework,
-                siteUrl: siteUrl,
-                devSiteUrl: devSiteUrl,
-                safePluginName: safePluginName,
-                capAndSnakeCasePlugin: capAndSnakeCasePlugin,
-                projectNamespace: configUpdates['project-namespace'],
-            };
+            return configUpdates;
 
         } catch (err: any) {
-            console.log('ScaffoldTheme.buildValueObject()');
+
             console.error(err);
+
         }
-    };
+    }
 }
 
 ScaffoldPlugin.performScaffolding().catch(err => console.error(err));
