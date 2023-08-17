@@ -16,7 +16,7 @@ const scaffoldPlugin = async (values: PluginAnswerValues): Promise<void> => {
             pluginsPath,
             newPluginPath,
             pluginDescription,
-            frontEndFramework,
+            pluginFrontEndFramework,
             safePluginName,
             capAndSnakeCasePlugin,
         } = values;
@@ -34,7 +34,7 @@ const scaffoldPlugin = async (values: PluginAnswerValues): Promise<void> => {
         fse.copySync(`${path.join(`${packageRootDir}/scaffolding/plugin`)}`, newPluginPathString, { overwrite: false });
 
         // Copy our files over the JS files into the theme
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/plugin-root/front-end-scaffolding/${frontEndFramework?.toLowerCase()}/js`)}`,
+        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/plugin-root/front-end-scaffolding/${pluginFrontEndFramework?.toLowerCase()}/js`)}`,
             `${newPluginPathString}/src/js`,
             {
                 overwrite: false
@@ -42,7 +42,7 @@ const scaffoldPlugin = async (values: PluginAnswerValues): Promise<void> => {
         );
 
         // Copy our files over the plugin root files into the theme
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/plugin-root/front-end-scaffolding/${frontEndFramework?.toLowerCase()}/plugin-root`)}`,
+        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/plugin-root/front-end-scaffolding/${pluginFrontEndFramework?.toLowerCase()}/plugin-root`)}`,
             newPluginPathString,
             {
                 overwrite: false

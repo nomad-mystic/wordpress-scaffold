@@ -27,7 +27,7 @@ let pluginOptions: Array<InquirerCliOptions> = [
     },
     {
         type: 'list',
-        name: 'frontEndFramework',
+        name: 'pluginFrontEndFramework',
         message: 'What front-end framework would you like to add?',
         choices: ['None', 'Vue'],
         default: 'None',

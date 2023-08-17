@@ -4,7 +4,7 @@ export default interface PluginAnswerValues {
     pluginsPath?: string;
     newPluginPath?: string;
     pluginDescription?: string;
-    frontEndFramework?: string;
+    pluginFrontEndFramework?: string;
     safePluginName?: string;
     capAndSnakeCasePlugin?: string;
     projectNamespace?: string;

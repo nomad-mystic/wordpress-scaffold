@@ -2,7 +2,6 @@
 
 // Community modules
 import 'dotenv/config';
-
 import colors from 'colors';
 
 // Package modules
@@ -16,22 +15,17 @@ import DebugUtils from '../utils/debug-utils.js';
 import StringUtils from '../utils/string-utils.js';
 
 // Interfaces
-import ThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
-import ThemeAnswerValues from '../interfaces/theme/interface-theme-answer-values.js';
 import PluginAnswers from '../interfaces/plugin/interface-plugin-anwsers.js';
 
 // Functions
 import getPluginOptions from '../config/plugin-options.js';
+
 import scaffoldPlugin from "../scaffold/plugin/scaffold-plugin.js";
 
-import updateScaffoldJson, { UpdateProjectJson } from "../scaffold/common/update-scaffold-json.js";
+import updateScaffoldJson, { ProjectJson } from '../scaffold/common/update-scaffold-json.js';
 
 import PluginAnswerValues from "../interfaces/plugin/interface-plugin-answer-values.js";
 import PluginConfig from "../interfaces/plugin/interface-plugin-config.js";
-// import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
-// import scaffoldPlugin from '../scaffold/plugin/scaffold-plugin.js';
-// import scaffoldThemeRoot from '../scaffold/theme/scaffold-root.js';
-// import updateScaffoldClasses from '../scaffold/theme/scaffold-classes.js';
 
 /**
  * @classdesc Scaffold a new theme based on user's inputs
@@ -105,7 +99,7 @@ class ScaffoldPlugin extends AbstractScaffold {
             const projectName: string = answers.projectName ? answers.projectName : '';
             const pluginName: string =  answers.pluginName ? answers.pluginName.trim() : '';
             const pluginDescription: string = answers.pluginDescription ? answers.pluginDescription.trim() : '';
-            const frontEndFramework: string = answers.frontEndFramework ? answers.frontEndFramework : '';
+            const pluginFrontEndFramework: string = answers.pluginFrontEndFramework ? answers.pluginFrontEndFramework : '';
             const siteUrl: string = answers.siteUrl;
             const devSiteUrl: string = answers.devSiteUrl;
 
@@ -124,7 +118,7 @@ class ScaffoldPlugin extends AbstractScaffold {
                 pluginsPath: pluginsPath,
                 newPluginPath: newPluginPath,
                 pluginDescription: pluginDescription,
-                frontEndFramework: frontEndFramework,
+                pluginFrontEndFramework: pluginFrontEndFramework,
                 siteUrl: siteUrl,
                 devSiteUrl: devSiteUrl,
                 safePluginName: safePluginName,
@@ -144,16 +138,14 @@ class ScaffoldPlugin extends AbstractScaffold {
                 pluginName,
                 newPluginPath,
                 pluginDescription,
-                frontEndFramework,
+                pluginFrontEndFramework,
             } = pluginValues;
-
-            const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
 
             let configUpdates: PluginConfig = {
                 'plugin-name': pluginName,
                 'plugin-path': newPluginPath,
                 'plugin-description': pluginDescription,
-                'front-end-framework': frontEndFramework,
+                'plugin-front-end-framework': pluginFrontEndFramework,
             };
 
             if (projectName && typeof projectName !== 'undefined') {
@@ -162,7 +154,7 @@ class ScaffoldPlugin extends AbstractScaffold {
             }
 
             // Update our config before we scaffold plugin, so we can use it in our scaffold functions
-            configUpdates = await UpdateProjectJson.update(configUpdates, true);
+            configUpdates = await ProjectJson.update(configUpdates, true);
 
             return configUpdates;
 

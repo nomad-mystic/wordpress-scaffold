@@ -3,7 +3,7 @@ import fs from 'fs';
 
 // Package modules
 import StringUtils from '../../utils/string-utils.js';
-import { scaffoldInternal } from './scaffold-internal.js';
+import {scaffoldInternal} from './scaffold-internal.js';
 import PathUtils from "../../utils/path-utils.js";
 
 /**
@@ -97,9 +97,10 @@ const updateScaffoldJson = async (filePath: string, json: any, isPlugin: boolean
     }
 };
 
-export class UpdateProjectJson {
+export class ProjectJson {
     private static isDebugFullMode: boolean = false;
     private static whereAmI: string = '';
+    private static configFilePath: string = '';
 
     // Setup our arrays for json update logic
     private static dashedValues: Array<string> = [
@@ -115,9 +116,13 @@ export class UpdateProjectJson {
         'site-admin-password',
         'site-admin-user',
         'admin-email',
+        'plugin-name',
+        'plugin-path',
+        'plugin-description',
+        'plugin-front-end-framework',
     ];
 
-    public static update = async (configUpdates: any, isPlugin: boolean = false): Promise<string | any> => {
+    public static update = async (configUpdates: object, isPlugin: boolean = false): Promise<object | any> => {
         try {
             // Make sure we have the Project JSON scaffolded
             await scaffoldInternal();
@@ -125,14 +130,22 @@ export class UpdateProjectJson {
             // Gather our location
             this.whereAmI = await PathUtils.whereAmI();
 
-            const projectConfigObject = await this.getProjectConfigObject();
+            // Get our config file
+            this.configFilePath = `${this.whereAmI}/internal/project/project-config.json`;
 
-            console.log(projectConfigObject);
+            let projectConfigObject = await this.getProjectConfigObject();
+
+            projectConfigObject = await this.performRootJsonUpdate(projectConfigObject, configUpdates);
+
+            if (isPlugin) {
+                projectConfigObject = await this.performPluginJsonUpdate(projectConfigObject, configUpdates);
+            }
+
+            return projectConfigObject;
 
         } catch (err: any) {
-
+            console.log('UpdateProjectJson.update()')
             console.error(err);
-
         }
     };
 
@@ -146,10 +159,7 @@ export class UpdateProjectJson {
     public static getProjectConfigObject = async (): Promise<string | object | any> => {
         try {
 
-            // Get our config file
-            const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
-
-            let jsonFile: string = fs.readFileSync(configFilePath, 'utf-8');
+            let jsonFile: string = fs.readFileSync(this.configFilePath, 'utf-8');
 
             // Baily Early
             if (!jsonFile || typeof jsonFile === 'undefined' || jsonFile === '') {
@@ -164,6 +174,97 @@ export class UpdateProjectJson {
 
         }
     };
+
+    private static performRootJsonUpdate = async (projectConfigObject: any, configUpdates: any): Promise<object | any> => {
+        try {
+            let property: keyof typeof configUpdates;
+
+            for (property in configUpdates) {
+                // Sanity Check
+                if (Object.hasOwn(configUpdates, property) && property && typeof property !== 'undefined') {
+                    // These come through the CLI as camelCase
+                    let dashedProperty: string = await StringUtils.camelCaseToDash(property);
+
+                    // What if there value isn't empty?
+                    if (configUpdates[property] &&
+                        typeof configUpdates[property] === 'undefined' &&
+                        configUpdates[property] !== ''
+                    ) {
+                        continue;
+                    }
+
+                    // Update the values
+                    if (configUpdates[property] &&
+                        typeof configUpdates[property] !== 'undefined' &&
+                        typeof configUpdates[property] === 'string' &&
+                        this.dashedValues.includes(dashedProperty)
+                    ) {
+                        projectConfigObject[`${dashedProperty}`] = await StringUtils.addDashesToString(configUpdates[property].trim());
+
+                        // @todo Pretty specific maybe refactor and abstract this out?
+                        if (dashedProperty === 'project-name') {
+                            projectConfigObject['project-namespace'] = await StringUtils.pascalCaseString(projectConfigObject['project-name']);
+
+                            continue;
+                        }
+
+                        continue;
+                    }
+
+                    // Some information we don't want to save, so do that here
+                    if (typeof configUpdates[property] !== 'undefined' && !this.disallowedKeys.includes(dashedProperty)) {
+                        projectConfigObject[`${dashedProperty}`] = configUpdates[property];
+                    }
+
+                } // End sanity check
+            } // End for
+
+            // Write our updated values
+            fs.writeFileSync(this.configFilePath, JSON.stringify(projectConfigObject));
+
+            return JSON.parse(fs.readFileSync(this.configFilePath, 'utf-8'));
+
+        } catch (err: any) {
+
+            console.error(err);
+
+        }
+    };
+
+    private static performPluginJsonUpdate = async (projectConfigObject: any, configUpdates: any): Promise<void> => {
+        try {
+            let alreadyExists: boolean = false;
+            let activePlugins: Array<any> = projectConfigObject['active-plugins'];
+
+            // Check if we have an active key by the same name
+            for (let plugin = 0; plugin < activePlugins.length; plugin++) {
+                if (activePlugins[plugin] && typeof activePlugins[plugin] !== 'undefined') {
+
+                    if (activePlugins[plugin]?.['plugin-name'] && activePlugins[plugin]?.['plugin-name'] === configUpdates['plugin-name']) {
+
+                        alreadyExists = true;
+
+                        break;
+                    }
+                }
+            }
+
+            if (!alreadyExists) {
+                activePlugins.push(configUpdates);
+            }
+
+            projectConfigObject['active-plugins'] = activePlugins;
+
+            // @todo Need to save
+            console.log(projectConfigObject);
+            console.log(configUpdates);
+
+        } catch (err: any) {
+
+            console.error(err);
+
+        }
+    }
 }
 
 
