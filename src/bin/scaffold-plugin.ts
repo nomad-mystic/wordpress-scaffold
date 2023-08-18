@@ -131,6 +131,13 @@ class ScaffoldPlugin extends AbstractScaffold {
         }
     };
 
+    /**
+     * @description Update our project config object based on user inputs
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<PluginConfig | any>}
+     */
     private static updateProjectConfig = async (pluginValues: PluginAnswerValues): Promise<PluginConfig | any> => {
         try {
             let {
@@ -154,14 +161,13 @@ class ScaffoldPlugin extends AbstractScaffold {
             }
 
             // Update our config before we scaffold plugin, so we can use it in our scaffold functions
-            configUpdates = await ProjectJson.update(configUpdates, true);
+            configUpdates = await ProjectJson.update(configUpdates, 'plugin');
 
             return configUpdates;
 
         } catch (err: any) {
-
+            console.log('ScaffoldPlugin.updateProjectConfig()');
             console.error(err);
-
         }
     }
 }

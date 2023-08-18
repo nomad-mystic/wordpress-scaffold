@@ -122,7 +122,7 @@ export class ProjectJson {
         'plugin-front-end-framework',
     ];
 
-    public static update = async (configUpdates: object, isPlugin: boolean = false): Promise<object | any> => {
+    public static update = async (configUpdates: object, type: string = ''): Promise<object | any> => {
         try {
             // Make sure we have the Project JSON scaffolded
             await scaffoldInternal();
@@ -137,7 +137,7 @@ export class ProjectJson {
 
             projectConfigObject = await this.performRootJsonUpdate(projectConfigObject, configUpdates);
 
-            if (isPlugin) {
+            if (type === 'plugin') {
                 projectConfigObject = await this.performPluginJsonUpdate(projectConfigObject, configUpdates);
             }
 
@@ -175,6 +175,13 @@ export class ProjectJson {
         }
     };
 
+    /**
+     * @description Updates the root level config values
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<object | any>}
+     */
     private static performRootJsonUpdate = async (projectConfigObject: any, configUpdates: any): Promise<object | any> => {
         try {
             let property: keyof typeof configUpdates;
@@ -225,9 +232,8 @@ export class ProjectJson {
             return JSON.parse(fs.readFileSync(this.configFilePath, 'utf-8'));
 
         } catch (err: any) {
-
+            console.log('ProjectJson.performRootJsonUpdate()');
             console.error(err);
-
         }
     };
 
