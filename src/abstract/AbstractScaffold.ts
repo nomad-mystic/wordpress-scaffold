@@ -12,7 +12,7 @@ export default abstract class AbstractScaffold {
      *
      * @return Promise<void>
      */
-    public static performScaffolding = async (): Promise<void> => {}
+    public static initializeScaffolding = async (): Promise<void> => {}
 
     /**
      * @description Perform tasks based on the user's answers

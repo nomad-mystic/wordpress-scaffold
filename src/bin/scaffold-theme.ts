@@ -40,7 +40,7 @@ class ScaffoldTheme extends AbstractScaffold {
     /**
      * {@inheritDoc AbstractScaffold}
      */
-    public static performScaffolding = async (): Promise<void> => {
+    public static initializeScaffolding = async (): Promise<void> => {
         try {
             // Gather our location
             this.whereAmI = await PathUtils.whereAmI();
@@ -214,4 +214,4 @@ class ScaffoldTheme extends AbstractScaffold {
     }
 }
 
-ScaffoldTheme.performScaffolding().catch(err => console.error(err));
+ScaffoldTheme.initializeScaffolding().catch(err => console.error(err));

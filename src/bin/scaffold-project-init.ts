@@ -43,7 +43,7 @@ class ScaffoldProject extends AbstractScaffold {
      *
      * @return Promise<void>
      */
-    public static performScaffolding = async (): Promise<void> => {
+    public static initializeScaffolding = async (): Promise<void> => {
         try {
             const answers: InitAnswers | void = await InquirerCli.performPromptsTasks(await getProjectOptions()).catch((err) => console.error(err));
 
@@ -170,4 +170,4 @@ class ScaffoldProject extends AbstractScaffold {
     }
 }
 
-ScaffoldProject.performScaffolding().catch(err => console.error(err));
+ScaffoldProject.initializeScaffolding().catch(err => console.error(err));

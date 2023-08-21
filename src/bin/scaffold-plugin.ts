@@ -40,7 +40,7 @@ class ScaffoldPlugin extends AbstractScaffold {
     /**
      * {@inheritDoc AbstractScaffold}
      */
-    public static performScaffolding = async (): Promise<void> => {
+    public static initializeScaffolding = async (): Promise<void> => {
         try {
             // Gather our location
             this.whereAmI = await PathUtils.whereAmI();
@@ -69,9 +69,9 @@ class ScaffoldPlugin extends AbstractScaffold {
         try {
             const pluginValues: PluginAnswerValues  = await this.buildValueObject(answers);
 
-            let config = await this.updateProjectConfig(pluginValues);
+            let pluginConfig = await this.updateProjectConfig(pluginValues);
 
-            // await scaffoldPlugin(pluginValues);
+            await this.performScaffold(pluginValues, pluginConfig);
 
             // Let the user know it has been created
             console.log(colors.green(`Your ${answers.pluginName} plugin has been scaffold.`));
@@ -87,6 +87,7 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @description Build an object of our needed values for scaffolding the plugin
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
+     * @todo refactor into Abstract class method in theme and project
      *
      * @return {Promise<PluginAnswerValues | any>}
      */
@@ -135,6 +136,7 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @description Update our project config object based on user inputs
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
+     * @todo refactor into Abstract class method in theme and project
      *
      * @return {Promise<PluginConfig | any>}
      */
@@ -169,8 +171,29 @@ class ScaffoldPlugin extends AbstractScaffold {
             console.log('ScaffoldPlugin.updateProjectConfig()');
             console.error(err);
         }
-    }
+    };
+
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     * @todo refactor into Abstract class method in theme and project
+     *
+     * @return {Promise<void>}
+     */
+    private static performScaffold = async (values: PluginAnswerValues, pluginConfig: PluginConfig): Promise<void> => {
+        try {
+
+            console.log(values);
+            console.log(pluginConfig);
+
+
+        } catch (err: any) {
+            console.log('ScaffoldPlugin.performScaffold()');
+            console.error(err);
+        }
+    };
 }
 
-ScaffoldPlugin.performScaffolding().catch(err => console.error(err));
+ScaffoldPlugin.initializeScaffolding().catch(err => console.error(err));
 
