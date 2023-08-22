@@ -216,12 +216,32 @@ class ScaffoldPlugin extends AbstractScaffold {
                 {
                     fileName: 'package.json',
                     stringToUpdate: 'SCAFFOLD_NAME',
-                    updateString: values.pluginDescription,
+                    updateString: values.safePluginName,
                 },
                 {
                     fileName: 'package.json',
                     stringToUpdate: 'SCAFFOLD_DESCRIPTION',
                     updateString: values.pluginDescription,
+                },
+                {
+                    fileName: 'plugin-name.php',
+                    stringToUpdate: 'SCAFFOLD_NAME',
+                    updateString: values.safePluginName,
+                },
+                {
+                    fileName: 'plugin-name.php',
+                    stringToUpdate: 'SCAFFOLD_DESCRIPTION',
+                    updateString: values.pluginDescription,
+                },
+                {
+                    fileName: 'plugin-name.php',
+                    stringToUpdate: 'SCAFFOLD_DESCRIPTION',
+                    updateString: values.pluginDescription,
+                },
+                {
+                    fileName: 'plugin-name.php',
+                    stringToUpdate: 'CAPS_AND_SNAKE_NAME',
+                    updateString: values.capAndSnakeCasePlugin,
                 },
             ];
 
@@ -253,7 +273,7 @@ class ScaffoldPlugin extends AbstractScaffold {
             await UpdateTypeFiles.updateFiles(values, updateObjectsArray);
 
             await UpdateTypeFiles.updateClassFiles(values);
-            
+
         } catch (err: any) {
             console.log('ScaffoldPlugin.performScaffold()');
             console.error(err);

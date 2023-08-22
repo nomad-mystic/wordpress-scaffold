@@ -1,20 +1,17 @@
 <?php
 /**
-  Plugin Name: PLUGIN_NAME
-  Description: PLUGIN_DESCRIPTION
+  Plugin Name: SCAFFOLD_NAME
+  Description: SCAFFOLD_DESCRIPTION
   Version: 1.0
-  Author: PLUGIN_AUTHOR
 */
 
-// @todo Get plugin name and build constants
-
 // Plugin specific constants
-define('PLUGIN_NAME_PLUGIN_DIR', plugin_dir_path(__FILE__));
-define('PLUGIN_NAME_THEME_DIR', get_stylesheet_directory());
+define('CAPS_AND_SNAKE_NAME_PLUGIN_DIR', plugin_dir_path(__FILE__));
+define('CAPS_AND_SNAKE_NAME_THEME_DIR', get_stylesheet_directory());
 
-const PLUGIN_NAME_TEXT_DOMAIN = 'PLUGIN_NAME';
+const CAPS_AND_SNAKE_NAME_TEXT_DOMAIN = 'SCAFFOLD_NAME';
 
-if (file_exists(PLUGIN_NAME_PLUGIN_DIR . 'vendor/autoload.php')) {
-    require_once(PLUGIN_NAME_PLUGIN_DIR . 'vendor/autoload.php');
+if (file_exists(CAPS_AND_SNAKE_NAME_PLUGIN_DIR . 'vendor/autoload.php')) {
+    require_once(CAPS_AND_SNAKE_NAME_PLUGIN_DIR . 'vendor/autoload.php');
 }
 
