@@ -6,10 +6,20 @@ import fse from "fs-extra";
 import path from "path";
 
 import {packageRootDir} from "../../utils/package-root.js";
-import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json-updates.js";
+import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
 import {updateScaffoldFile} from "../common/update-scaffold-file.js";
+import ScaffoldCopyFolders from '../../interfaces/common/interface-scaffold-copy-folders.js';
 
-const scaffoldPlugin = async (values: PluginAnswerValues): Promise<void> => {
+
+/**
+    // Copy/Update
+    /scaffold/plugin/**
+    /scaffold/common/root/**
+    /scaffold/common/classes/**
+    /scaffold/common/classes/font-end-scaffolding/**
+    /scaffold/common/classes/project-root/**
+ */
+const scaffoldPlugin = async (values: PluginAnswerValues, foldersToCopy: Array<any>): Promise<void> => {
     try {
         let {
             pluginName,
@@ -21,33 +31,36 @@ const scaffoldPlugin = async (values: PluginAnswerValues): Promise<void> => {
             capAndSnakeCasePlugin,
         } = values;
 
-        const newPluginPathString: string = newPluginPath ? newPluginPath : '';
+        const newPluginPathString: string = values.newPluginPath ? values.newPluginPath : '';
 
         // Bail early
         if (fs.existsSync(newPluginPathString)) {
-            console.log(colors.red('There is already a theme with that name. Please use another name.'));
+            console.log(colors.red('There is already a plugin with that name. Please use another name.'));
 
             process.exit(0);
         }
 
-        // Copy our files over to the themes folder
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/plugin`)}`, newPluginPathString, { overwrite: false });
+        // let copyFolder;
 
-        // Copy our files over the JS files into the theme
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/plugin-root/front-end-scaffolding/${pluginFrontEndFramework?.toLowerCase()}/js`)}`,
-            `${newPluginPathString}/src/js`,
-            {
-                overwrite: false
-            }
-        );
+        for (let copyFolder of foldersToCopy) {
+            console.log(copyFolder.source);
+            console.log(copyFolder.destination);
 
-        // Copy our files over the plugin root files into the theme
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/plugin-root/front-end-scaffolding/${pluginFrontEndFramework?.toLowerCase()}/plugin-root`)}`,
-            newPluginPathString,
-            {
-                overwrite: false
-            }
-        );
+            fse.copySync(`${path.join(`${packageRootDir}/${copyFolder.source}`)}`,
+                copyFolder.destination,
+                {
+                    overwrite: false
+                }
+            );
+        }
+
+        // composer.json
+        // SCAFFOLD_NAME
+        // SCAFFOLD_TYPE
+        // SCAFFOLD_DESCRIPTION
+        // PASCAL_NAME
+
+
 
         // Our updates
         const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
@@ -77,12 +90,12 @@ const scaffoldPlugin = async (values: PluginAnswerValues): Promise<void> => {
         for (let update: number = 0; update < updateObjectsArray.length; update++) {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
-                updateScaffoldFile(
-                    newPluginPathString,
-                    updateObjectsArray[update].fileName,
-                    updateObjectsArray[update].stringToUpdate,
-                    updateObjectsArray[update].updateString,
-                );
+                // updateScaffoldFile(
+                //     newPluginPathString,
+                //     updateObjectsArray[update].fileName,
+                //     updateObjectsArray[update].stringToUpdate,
+                //     updateObjectsArray[update].updateString,
+                // );
             }
         }
 

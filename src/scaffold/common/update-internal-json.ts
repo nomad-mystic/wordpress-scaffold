@@ -5,6 +5,8 @@ import fs from 'fs';
 import StringUtils from '../../utils/string-utils.js';
 import {scaffoldInternal} from './scaffold-internal.js';
 import PathUtils from "../../utils/path-utils.js";
+import ProjectConfig from "../../interfaces/project/interface-project-config.js";
+import ActivePlugins from "../../interfaces/project/interface-active-plugins.js";
 
 /**
  * @description Updates our internal JSON with properties for use later
@@ -14,7 +16,7 @@ import PathUtils from "../../utils/path-utils.js";
  * @param {boolean} isPlugin
  * @return {string}
  */
-const updateScaffoldJson = async (filePath: string, json: any, isPlugin: boolean = false): Promise<string | any> => {
+const updateInternalJson = async (filePath: string, json: any, isPlugin: boolean = false): Promise<string | any> => {
     try {
         await scaffoldInternal();
 
@@ -91,7 +93,7 @@ const updateScaffoldJson = async (filePath: string, json: any, isPlugin: boolean
 
     } catch (err) {
 
-        console.log('updateScaffoldJson()');
+        console.log('updateInternalJson()');
         console.error(err);
 
     }
@@ -141,10 +143,34 @@ export class ProjectJson {
                 projectConfigObject = await this.performPluginJsonUpdate(projectConfigObject, configUpdates);
             }
 
+            // await this.saveFile(projectConfigObject);
+
             return projectConfigObject;
 
         } catch (err: any) {
-            console.log('UpdateProjectJson.update()')
+            console.log('UpdateProjectJson.update()');
+            console.error(err);
+        }
+    };
+
+    /**
+     * @description
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<void>}
+     */
+    private static saveFile = async (projectConfigObject: ProjectConfig): Promise<void> => {
+        try {
+
+            // Write our updated values
+            fs.writeFileSync(this.configFilePath, JSON.stringify(projectConfigObject));
+
+            // Let the user know
+            console.log('The internal project config file has been saved.')
+
+        } catch (err: any) {
+            console.log('UpdateProjectJson.saveFile()');
             console.error(err);
         }
     };
@@ -156,7 +182,7 @@ export class ProjectJson {
      *
      * @return Promise<string | object | any>
      */
-    public static getProjectConfigObject = async (): Promise<string | object | any> => {
+    public static getProjectConfigObject = async (): Promise<ProjectConfig | any> => {
         try {
 
             let jsonFile: string = fs.readFileSync(this.configFilePath, 'utf-8');
@@ -169,7 +195,7 @@ export class ProjectJson {
             return JSON.parse(jsonFile);
 
         } catch (err: any) {
-
+            console.log('getProjectConfigObject')
             console.error(err);
 
         }
@@ -226,9 +252,6 @@ export class ProjectJson {
                 } // End sanity check
             } // End for
 
-            // Write our updated values
-            fs.writeFileSync(this.configFilePath, JSON.stringify(projectConfigObject));
-
             return JSON.parse(fs.readFileSync(this.configFilePath, 'utf-8'));
 
         } catch (err: any) {
@@ -237,13 +260,22 @@ export class ProjectJson {
         }
     };
 
-    private static performPluginJsonUpdate = async (projectConfigObject: any, configUpdates: any): Promise<void> => {
+    /**
+     * @description
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {any} projectConfigObject
+     * @param {any} configUpdates
+     * @return { Promise<object | any>}
+     */
+    private static performPluginJsonUpdate = async (projectConfigObject: any, configUpdates: any): Promise<object | any> => {
         try {
             let alreadyExists: boolean = false;
-            let activePlugins: Array<any> = projectConfigObject['active-plugins'];
+            let activePlugins: Array<ActivePlugins> = projectConfigObject['active-plugins'];
 
             // Check if we have an active key by the same name
-            for (let plugin = 0; plugin < activePlugins.length; plugin++) {
+            for (let plugin: number = 0; plugin < activePlugins.length; plugin++) {
                 if (activePlugins[plugin] && typeof activePlugins[plugin] !== 'undefined') {
 
                     if (activePlugins[plugin]?.['plugin-name'] && activePlugins[plugin]?.['plugin-name'] === configUpdates['plugin-name']) {
@@ -255,23 +287,37 @@ export class ProjectJson {
                 }
             }
 
+            // Push our update or let the user know one already exists
             if (!alreadyExists) {
+
                 activePlugins.push(configUpdates);
+
+            } else {
+
+                console.log(`Plugin ${configUpdates['plugin-name']} already exists in the schema. Please try another name.`)
+
             }
 
             projectConfigObject['active-plugins'] = activePlugins;
 
-            // @todo Need to save
-            console.log(projectConfigObject);
-            console.log(configUpdates);
+            if (this.isDebugFullMode) {
+                console.log('ProjectJson.performPluginJsonUpdate()');
+
+                console.log('projectConfigObject');
+                console.log(projectConfigObject);
+
+                console.log('configUpdates');
+                console.log(configUpdates);
+            }
+
+            return projectConfigObject;
 
         } catch (err: any) {
-
+            console.log('ProjectJson.performPluginJsonUpdate()');
             console.error(err);
-
         }
     }
 }
 
 
-export default updateScaffoldJson;
+export default updateInternalJson;

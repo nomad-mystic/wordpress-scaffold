@@ -21,7 +21,7 @@ import ThemeConfig from '../interfaces/theme/interface-theme-config.js';
 import ThemeAnswerValues from '../interfaces/theme/interface-theme-answer-values.js';
 
 // Functions
-import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
+import updateInternalJson from '../scaffold/common/update-internal-json.js';
 import getThemeOptions from '../config/theme-options.js';
 import scaffoldTheme from '../scaffold/theme/scaffold-theme.js';
 import scaffoldThemeRoot from '../scaffold/theme/scaffold-root.js';
@@ -134,7 +134,7 @@ class ScaffoldTheme extends AbstractScaffold {
             }
 
             // // Update our config before we scaffold theme, so we can use it in our scaffold functions
-            configUpdates = await updateScaffoldJson(configFilePath, configUpdates);
+            configUpdates = await updateInternalJson(configFilePath, configUpdates);
 
             return {
                 projectName: configUpdates['project-name'],

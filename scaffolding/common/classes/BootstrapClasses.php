@@ -1,12 +1,9 @@
 <?php
 
-namespace classes;
+namespace PASCAL_NAME;
 
 use ReflectionClass;
 use ReflectionException;
-
-use function PASCAL_NAME\add_action;
-use function PASCAL_NAME\add_filter;
 
 if (!defined('ABSPATH')) {
     exit;

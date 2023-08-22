@@ -10,7 +10,7 @@ import fs from 'fs';
 // Package modules
 import getProjectOptions from '../config/project-options.js';
 import scaffoldProject from '../scaffold/project/scaffold-project.js';
-import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
+import updateInternalJson from '../scaffold/common/update-internal-json.js';
 
 // Interfaces
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
@@ -147,10 +147,10 @@ class ScaffoldProject extends AbstractScaffold {
         try {
             const filePath: string = `${this.whereAmI}/internal/project/project-config.json`;
 
-            await updateScaffoldJson(filePath, answers);
+            await updateInternalJson(filePath, answers);
 
             // Manually update these properties
-            const config = await updateScaffoldJson(filePath, {
+            const config = await updateInternalJson(filePath, {
                 'absolute-project-folder': this.whereAmI,
             });
 

@@ -1,0 +1,24 @@
+{
+    "name": "SCAFFOLD_NAME/SCAFFOLD_NAME",
+    "description": "SCAFFOLD_DESCRIPTION",
+    "type": "project",
+    "scripts": {
+        "auto-load-classes": "composer dump-autoload -o"
+    },
+    "autoload": {
+        "psr-4": {
+            "PASCAL_NAME\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes"],
+            "PASCAL_NAMEBase\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/base"],
+            "PASCAL_NAMETraits\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/traits"],
+            "PASCAL_NAMEUtils\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/utils"],
+            "PASCAL_NAMEInterfaces\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/interfaces"],
+            "PASCAL_NAMEShortcodes\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/shortcodes"],
+            "PASCAL_NAMEPostTypes\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/post-types"],
+            "PASCAL_NAMEPostTypesTaxonomies\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/post-types/taxonomies"],
+            "PASCAL_NAMEPostTypesAdmin\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/post-types/admin"],
+            "PASCAL_NAMEPostTypesUtils\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/post-types/utils"],
+            "PASCAL_NAMERest\\": ["wp-content/SCAFFOLD_TYPE/SCAFFOLD_NAME/classes/rest"]
+        }
+    },
+    "require": {}
+}

@@ -120,6 +120,31 @@ export default class PathUtils {
             console.error(err);
 
         }
-    }
+    };
+
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return
+     */
+    public static validateIsPath = async (path: string, message: string, exit: boolean = false): Promise<void> => {
+        try {
+
+            if (fs.existsSync(path)) {
+                console.log(colors.red(message));
+
+                if (exit) {
+                    process.exit(0);
+                }
+            }
+
+        } catch (err: any) {
+
+            console.error(err);
+
+        }
+    };
 }
 

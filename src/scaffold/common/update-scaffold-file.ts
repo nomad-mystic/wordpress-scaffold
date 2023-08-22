@@ -5,6 +5,7 @@ import fs from 'fs';
  * @description This will update the content of a new scaffold file with users inputs
  * @public
  * @author Keith Murphy | nomadmystics@gmail.com
+ * @todo Refactor Theme and project root in the class (UpdateTypeFiles)
  *
  * @param {string | undefined} updatePath
  * @param {string | undefined} fileName

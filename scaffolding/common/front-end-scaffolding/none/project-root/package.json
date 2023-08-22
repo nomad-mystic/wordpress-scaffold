@@ -1,0 +1,41 @@
+{
+    "name": "THEME_NAME",
+    "version": "1.0.0",
+    "description": "THEME_DESCRIPTION",
+    "main": "webpack.config.js",
+    "scripts": {
+        "production": "NODE_ENV=production webpack --config=webpack.config.js && npm run delete-maps",
+        "development": "NODE_ENV=development webpack --config=webpack.config.js --watch",
+        "delete-maps": "find ./ -name '*.map' -delete"
+    },
+    "author": "",
+    "license": "",
+    "homepage": "",
+    "devDependencies": {
+        "@babel/core": "^7.16.7",
+        "@babel/plugin-proposal-async-generator-functions": "^7.16.7",
+        "@babel/plugin-proposal-class-properties": "^7.16.7",
+        "@babel/plugin-proposal-export-default-from": "^7.16.7",
+        "@babel/plugin-proposal-object-rest-spread": "^7.16.7",
+        "@babel/plugin-transform-arrow-functions": "^7.16.7",
+        "@babel/plugin-transform-async-to-generator": "^7.16.7",
+        "@babel/plugin-transform-modules-commonjs": "^7.16.7",
+        "@babel/plugin-transform-object-assign": "^7.16.7",
+        "@babel/plugin-transform-runtime": "^7.16.7",
+        "@babel/preset-env": "^7.16.7",
+        "autoprefixer": "^10.4.2",
+        "babel-loader": "^8.2.3",
+        "core-js": "^3.21.1",
+        "file-loader": "^6.2.0",
+        "mini-css-extract-plugin": "^2.4.6",
+        "node-sass-glob-importer": "^5.3.2",
+        "postcss": "^8.4.5",
+        "postcss-loader": "^6.2.1",
+        "sass": "^1.47.0",
+        "sass-loader": "^12.4.0",
+        "terser-webpack-plugin": "^5.3.0",
+        "webpack": "^5.65.0",
+        "webpack-cli": "^4.9.1",
+        "webpack-notifier": "^1.15.0"
+    }
+}
