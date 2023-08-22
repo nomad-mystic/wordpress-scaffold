@@ -196,7 +196,66 @@ class ScaffoldPlugin extends AbstractScaffold {
             // console.log(values);
             // console.log(pluginConfig);
 
-            // Our updates
+            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.buildUpdateObjectArray(values);
+
+            const foldersToCopy: Array<ScaffoldCopyFolders> = await this.buildFolderToCopy(values);
+
+            await UpdateTypeFiles.copyFiles(foldersToCopy);
+
+            await UpdateTypeFiles.updateFiles(values, updateObjectsArray);
+
+            await UpdateTypeFiles.updateClassFiles(values);
+
+        } catch (err: any) {
+            console.log('ScaffoldPlugin.performScaffold()');
+            console.error(err);
+        }
+    };
+
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<Array<ScaffoldCopyFolders> | any>}
+     */
+    private static buildFolderToCopy = async (values: PluginAnswerValues): Promise<Array<ScaffoldCopyFolders> | any> => {
+        try {
+
+            const foldersToCopy: Array<ScaffoldCopyFolders> = [
+                {
+                    source: 'scaffolding/plugin',
+                    destination: `${values.finalPath}`,
+                },
+                {
+                    source: 'scaffolding/common/classes',
+                    destination: `${values.finalPath}/classes`,
+                },
+                {
+                    source: `scaffolding/common/front-end-scaffolding/${values.pluginFrontEndFramework?.toLowerCase()}/js`,
+                    destination: `${values.finalPath}/src/js`,
+                },
+                {
+                    source: `scaffolding/common/front-end-scaffolding/${values.pluginFrontEndFramework?.toLowerCase()}/project-root`,
+                    destination: `${values.finalPath}`,
+                },
+                {
+                    source: 'scaffolding/common/project-root',
+                    destination: `${values.finalPath}`,
+                },
+            ];
+
+            return foldersToCopy;
+
+        } catch (err: any) {
+            console.log('ScaffoldPlugin.buildFolderToCopy()');
+            console.error(err);
+        }
+    };
+
+    private static buildUpdateObjectArray = async (values: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
+        try {
+
             const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
                 {
                     fileName: 'composer.json',
@@ -245,37 +304,10 @@ class ScaffoldPlugin extends AbstractScaffold {
                 },
             ];
 
-            const foldersToCopy: Array<ScaffoldCopyFolders> = [
-                {
-                    source: 'scaffolding/plugin',
-                    destination: `${values.finalPath}`,
-                },
-                {
-                    source: 'scaffolding/common/classes',
-                    destination: `${values.finalPath}/classes`,
-                },
-                {
-                    source: `scaffolding/common/front-end-scaffolding/${values.pluginFrontEndFramework?.toLowerCase()}/js`,
-                    destination: `${values.finalPath}/src/js`,
-                },
-                {
-                    source: `scaffolding/common/front-end-scaffolding/${values.pluginFrontEndFramework?.toLowerCase()}/project-root`,
-                    destination: `${values.finalPath}`,
-                },
-                {
-                    source: 'scaffolding/common/project-root',
-                    destination: `${values.finalPath}`,
-                },
-            ];
-
-            await UpdateTypeFiles.copyFiles(foldersToCopy);
-
-            await UpdateTypeFiles.updateFiles(values, updateObjectsArray);
-
-            await UpdateTypeFiles.updateClassFiles(values);
+            return updateObjectsArray;
 
         } catch (err: any) {
-            console.log('ScaffoldPlugin.performScaffold()');
+            console.log('ScaffoldPlugin.buildUpdateObjectArray()');
             console.error(err);
         }
     };
