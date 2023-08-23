@@ -11,7 +11,7 @@ if (!defined('ABSPATH')) {
 
 /**
  * Class BootstrapClasses
- * @package KeithTesting1
+ * @package PASCAL_NAME
  */
 class BootstrapClasses
 {

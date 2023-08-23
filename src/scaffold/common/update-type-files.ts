@@ -4,14 +4,15 @@ import path from 'path';
 
 // Community Modules
 import fse from 'fs-extra';
-import { glob } from "glob";
+import { glob } from 'glob';
 
 // Package Modules
 import { packageRootDir } from '../../utils/package-root.js';
 
+// Interfaces
 import PluginAnswerValues from '../../interfaces/plugin/interface-plugin-answer-values.js';
-import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json-updates.js";
-import ScaffoldCopyFolders from "../../interfaces/common/interface-scaffold-copy-folders.js";
+import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
+import ScaffoldCopyFolders from '../../interfaces/common/interface-scaffold-copy-folders.js';
 
 /**
  * @classdesc This class is used to update file contents based on the data it takes in.
@@ -23,8 +24,6 @@ export default class UpdateTypeFiles {
      * @description Copy over the files we need based on what is provided to this
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
-     * @example
-     *
      *
      * @return {Promise<void>}
      */
@@ -69,7 +68,6 @@ export default class UpdateTypeFiles {
                 }
             }
 
-
         } catch (err: any) {
             console.log('UpdateTypeFiles.updateFiles()');
             console.error(err);
@@ -95,8 +93,6 @@ export default class UpdateTypeFiles {
     ): Promise<void> => {
         try {
             let updatedContent: string = '';
-
-            console.log(`${updatePath}/${fileName}`);
 
             // Make sure the files exists before we start updating them
             if (fs.existsSync(`${updatePath}/${fileName}`)) {
@@ -184,6 +180,8 @@ export default class UpdateTypeFiles {
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
+     * @param {any} values
+     * @param {string} type
      * @return {Promise<void>}
      */
     public static updateWebpack = async (values: any, type: string = 'theme'): Promise<void> => {

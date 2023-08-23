@@ -2,7 +2,6 @@
 
 // Community modules
 import 'dotenv/config';
-import colors from 'colors';
 
 // Package modules
 // Classes
@@ -80,8 +79,11 @@ class ScaffoldPlugin extends AbstractScaffold {
             await this.performScaffold(pluginValues, pluginConfig);
 
             // Let the user know it has been created
-            await MessagingUtils.displayColoredMessage(`Your ${pluginValues.pluginName} plugin has been scaffold.`, 'green');
-            await MessagingUtils.displayColoredMessage(`Check: ${pluginValues.finalPath}`, 'yellow');
+            await MessagingUtils.displayColoredMessage(`Your ${pluginValues.pluginName} plugin has been scaffold! \n`, 'green');
+            await MessagingUtils.displayColoredMessage(`Check: ${pluginValues.finalPath} \n`, 'yellow');
+            await MessagingUtils.displayColoredMessage(`Don\'t forget to run these commands in the root of the plugin`, 'yellow');
+            await MessagingUtils.displayColoredMessage(`$ composer run-script auto-load-classes`, 'green');
+            await MessagingUtils.displayColoredMessage(`$ nvm use && npm install`, 'green');
 
         } catch (err: any) {
             console.log('ScaffoldTheme.scaffoldFiles()');
