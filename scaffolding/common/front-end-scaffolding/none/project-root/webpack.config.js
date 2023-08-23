@@ -3,25 +3,25 @@ const fs = require('fs');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackNotifier = require('webpack-notifier');
-const globImporter = require('node-sass-glob-importer');
 const TerserPlugin = require('terser-webpack-plugin');
+const globImporter = require('node-sass-glob-importer');
+
 
 const babelConfig = require('./babel.config.json');
 
-const config = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'internal/project/project-config.json'), 'utf-8'));
-const activeTheme = config['active-theme'];
+WEBPACK_PATH
 
 module.exports = () => {
     let config = {
         mode: process.env.NODE_ENV,
         entry: {
             main: [
-                path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/js/main.js`),
-                path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/scss/main.scss`),
+                path.resolve(__dirname, `${finalPath}/src/js/main.js`),
+                path.resolve(__dirname, `${finalPath}/src/scss/main.scss`),
             ],
             admin: [
-                path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/js/admin.js`),
-                path.resolve(__dirname, `wp-content/themes/${activeTheme}/src/scss/admin.scss`),
+                path.resolve(__dirname, `${finalPath}/src/js/admin.js`),
+                path.resolve(__dirname, `${finalPath}/src/scss/admin.scss`),
             ],
         },
         optimization: {
@@ -33,8 +33,8 @@ module.exports = () => {
             ],
         },
         output: {
-            path: path.resolve(__dirname, `wp-content/themes/${activeTheme}/`),
-            publicPath: `wp-content/themes/${activeTheme}/`,
+            path: path.resolve(__dirname, `${finalPath}/`),
+            publicPath: `${finalPath}/`,
             filename: 'js/[name].js',
         },
         module: {
@@ -89,7 +89,7 @@ module.exports = () => {
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // all options are optional
-                filename: `./wp-content/themes/${activeTheme}/css/[name].css`,
+                filename: `${finalPath}/css/[name].css`,
                 chunkFilename: '[id].css',
                 ignoreOrder: false, // Enable to remove warnings about conflicting order
             }),
@@ -103,7 +103,7 @@ module.exports = () => {
         ],
     };
 
-    // Drupal doesn't like eval() so we have to modify for development
+    // Development overwrites
     if (process.env.NODE_ENV === 'development') {
         config.devtool = 'source-map';
     }

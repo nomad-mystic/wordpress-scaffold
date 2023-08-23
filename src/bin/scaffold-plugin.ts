@@ -94,6 +94,7 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @author Keith Murphy | nomadmystics@gmail.com
      * @todo refactor into Abstract class method in theme and project
      *
+     * @param {PluginAnswers | any} answers
      * @return {Promise<PluginAnswerValues | any>}
      */
     private static buildValueObject = async (answers: PluginAnswers | any): Promise<PluginAnswerValues | any> => {
@@ -146,6 +147,7 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @author Keith Murphy | nomadmystics@gmail.com
      * @todo refactor into Abstract class method in theme and project
      *
+     * @param {PluginAnswerValues} pluginValues
      * @return {Promise<PluginConfig | any>}
      */
     private static updateProjectConfig = async (pluginValues: PluginAnswerValues): Promise<PluginConfig | any> => {
@@ -183,28 +185,27 @@ class ScaffoldPlugin extends AbstractScaffold {
 
     /**
      * @description
-     * @public
+     * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      * @todo refactor into Abstract class method in theme and project
      *
+     * @param {PluginAnswerValues} pluginValues
+     * @param {PluginConfig} pluginConfig
      * @return {Promise<void>}
      */
-    private static performScaffold = async (values: PluginAnswerValues, pluginConfig: PluginConfig): Promise<void> => {
+    private static performScaffold = async (pluginValues: PluginAnswerValues, pluginConfig: PluginConfig): Promise<void> => {
         try {
+            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.buildUpdateObjectArray(pluginValues);
 
-
-            // console.log(values);
-            // console.log(pluginConfig);
-
-            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.buildUpdateObjectArray(values);
-
-            const foldersToCopy: Array<ScaffoldCopyFolders> = await this.buildFolderToCopy(values);
+            const foldersToCopy: Array<ScaffoldCopyFolders> = await this.buildFoldersToCopy(pluginValues);
 
             await UpdateTypeFiles.copyFiles(foldersToCopy);
 
-            await UpdateTypeFiles.updateFiles(values, updateObjectsArray);
+            await UpdateTypeFiles.updateFiles(pluginValues, updateObjectsArray);
 
-            await UpdateTypeFiles.updateClassFiles(values);
+            await UpdateTypeFiles.updateClassFiles(pluginValues);
+
+            await UpdateTypeFiles.updateWebpack(pluginValues, 'plugin');
 
         } catch (err: any) {
             console.log('ScaffoldPlugin.performScaffold()');
@@ -214,45 +215,54 @@ class ScaffoldPlugin extends AbstractScaffold {
 
     /**
      * @description
-     * @public
+     * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
+     * @param {PluginAnswerValues} pluginValues
      * @return {Promise<Array<ScaffoldCopyFolders> | any>}
      */
-    private static buildFolderToCopy = async (values: PluginAnswerValues): Promise<Array<ScaffoldCopyFolders> | any> => {
+    private static buildFoldersToCopy = async (pluginValues: PluginAnswerValues): Promise<Array<ScaffoldCopyFolders> | any> => {
         try {
 
             const foldersToCopy: Array<ScaffoldCopyFolders> = [
                 {
                     source: 'scaffolding/plugin',
-                    destination: `${values.finalPath}`,
+                    destination: `${pluginValues.finalPath}`,
                 },
                 {
                     source: 'scaffolding/common/classes',
-                    destination: `${values.finalPath}/classes`,
+                    destination: `${pluginValues.finalPath}/classes`,
                 },
                 {
-                    source: `scaffolding/common/front-end-scaffolding/${values.pluginFrontEndFramework?.toLowerCase()}/js`,
-                    destination: `${values.finalPath}/src/js`,
+                    source: `scaffolding/common/front-end-scaffolding/${pluginValues.pluginFrontEndFramework?.toLowerCase()}/js`,
+                    destination: `${pluginValues.finalPath}/src/js`,
                 },
                 {
-                    source: `scaffolding/common/front-end-scaffolding/${values.pluginFrontEndFramework?.toLowerCase()}/project-root`,
-                    destination: `${values.finalPath}`,
+                    source: `scaffolding/common/front-end-scaffolding/${pluginValues.pluginFrontEndFramework?.toLowerCase()}/project-root`,
+                    destination: `${pluginValues.finalPath}`,
                 },
                 {
                     source: 'scaffolding/common/project-root',
-                    destination: `${values.finalPath}`,
+                    destination: `${pluginValues.finalPath}`,
                 },
             ];
 
             return foldersToCopy;
 
         } catch (err: any) {
-            console.log('ScaffoldPlugin.buildFolderToCopy()');
+            console.log('ScaffoldPlugin.buildFoldersToCopy()');
             console.error(err);
         }
     };
 
+    /**
+     * @description
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {PluginAnswerValues} values
+     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     */
     private static buildUpdateObjectArray = async (values: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
@@ -271,6 +281,11 @@ class ScaffoldPlugin extends AbstractScaffold {
                     fileName: 'composer.json',
                     stringToUpdate: 'SCAFFOLD_DESCRIPTION',
                     updateString: values.pluginDescription,
+                },
+                {
+                    fileName: 'composer.json',
+                    stringToUpdate: 'PASCAL_NAME',
+                    updateString: values.namespace,
                 },
                 {
                     fileName: 'package.json',
@@ -301,6 +316,11 @@ class ScaffoldPlugin extends AbstractScaffold {
                     fileName: 'plugin-name.php',
                     stringToUpdate: 'CAPS_AND_SNAKE_NAME',
                     updateString: values.capAndSnakeCasePlugin,
+                },
+                {
+                    fileName: 'webpack.config.js',
+                    stringToUpdate: 'SCAFFOLD_NAME',
+                    updateString: values.pluginName,
                 },
             ];
 

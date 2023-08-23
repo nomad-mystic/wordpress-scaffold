@@ -4,29 +4,31 @@ import path from 'path';
 
 // Community Modules
 import fse from 'fs-extra';
+import { glob } from "glob";
 
 // Package Modules
-import PluginAnswerValues from '../../interfaces/plugin/interface-plugin-answer-values.js';
 import { packageRootDir } from '../../utils/package-root.js';
-import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json-updates.js";
-import {glob} from "glob";
-import {updateScaffoldFile} from "./update-scaffold-file.js";
 
+import PluginAnswerValues from '../../interfaces/plugin/interface-plugin-answer-values.js';
+import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json-updates.js";
+import ScaffoldCopyFolders from "../../interfaces/common/interface-scaffold-copy-folders.js";
 
 /**
- * @classdesc
+ * @classdesc This class is used to update file contents based on the data it takes in.
  * @class UpdateTypeFiles
  * @author Keith Murphy | nomadmystics@gmail.com
  */
 export default class UpdateTypeFiles {
     /**
-     * @description
+     * @description Copy over the files we need based on what is provided to this
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
+     * @example
+     *
      *
      * @return {Promise<void>}
      */
-    public static copyFiles = async (foldersToCopy: Array<any>): Promise<void> => {
+    public static copyFiles = async (foldersToCopy: Array<ScaffoldCopyFolders>): Promise<void> => {
         try {
 
             for (let copyFolder of foldersToCopy) {
@@ -44,6 +46,13 @@ export default class UpdateTypeFiles {
         }
     };
 
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<void>}
+     */
     public static updateFiles = async (values: PluginAnswerValues, updateObjectsArray: Array<ScaffoldJsonUpdates>): Promise<void> => {
         try {
 
@@ -62,11 +71,10 @@ export default class UpdateTypeFiles {
 
 
         } catch (err: any) {
-
+            console.log('UpdateTypeFiles.updateFiles()');
             console.error(err);
-
         }
-    }
+    };
 
     /**
      * @description This will update the content of a new scaffold file with users inputs
@@ -85,11 +93,12 @@ export default class UpdateTypeFiles {
         stringToUpdate: any,
         updateString: any
     ): Promise<void> => {
-
         try {
             let updatedContent: string = '';
 
-            // MAke sure the files exists before we start updating them
+            console.log(`${updatePath}/${fileName}`);
+
+            // Make sure the files exists before we start updating them
             if (fs.existsSync(`${updatePath}/${fileName}`)) {
                 // Get our file in memory
                 let fileContents: string = fs.readFileSync(`${updatePath}/${fileName}`, 'utf8');
@@ -108,6 +117,13 @@ export default class UpdateTypeFiles {
         }
     };
 
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<void>}
+     */
     public static updateClassFiles = async (values: any): Promise<void> => {
         try {
             let updateObjectsArray: Array<ScaffoldJsonUpdates> = [];
@@ -148,9 +164,6 @@ export default class UpdateTypeFiles {
             for (let update: number = 0; update < updateObjectsArray.length; update++) {
                 if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
-                    console.log('updateObjectsArray[update]');
-                    console.log(updateObjectsArray[update]);
-
                     await this.updateFile(
                         updateObjectsArray[update].updatePath,
                         updateObjectsArray[update].fileName,
@@ -164,5 +177,29 @@ export default class UpdateTypeFiles {
             console.log('UpdateTypeFiles.updateClassFiles()');
             console.error(err);
         }
-    }
+    };
+
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<void>}
+     */
+    public static updateWebpack = async (values: any, type: string = 'theme'): Promise<void> => {
+        try {
+            let webpackContent: string = fs.readFileSync(`${packageRootDir}/src/scaffold/mocks/mock-${type}-webpack.txt`, 'utf8');
+
+            await this.updateFile(
+                values.finalPath,
+                'webpack.config.js',
+                'WEBPACK_PATH',
+                webpackContent,
+            );
+
+        } catch (err: any) {
+            console.log('UpdateTypeFiles.updateWebpack()');
+            console.error(err);
+        }
+    };
 }

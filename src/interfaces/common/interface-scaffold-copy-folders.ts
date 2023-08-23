@@ -1,4 +1,4 @@
 export default interface ScaffoldCopyFolders {
-    source?: string;
-    destination?: string;
+    source: string;
+    destination: string;
 }
