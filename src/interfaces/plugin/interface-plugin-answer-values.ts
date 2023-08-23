@@ -1,12 +1,13 @@
 export default interface PluginAnswerValues {
     projectName?: string;
-    pluginName?: string;
+    name?: string;
     pluginsPath?: string;
     finalPath: string;
-    pluginDescription?: string;
+    description?: string;
     pluginFrontEndFramework?: string;
-    safePluginName?: string;
+    safeName?: string;
     capAndSnakeCasePlugin?: string;
     projectNamespace?: string;
     namespace?: string;
+    type?: string;
 };

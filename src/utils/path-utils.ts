@@ -37,7 +37,7 @@ export default class PathUtils {
             return path.resolve(process.cwd());
 
         }
-    }
+    };
 
     /**
      * @description Check if the users is the root of the project or another folder
@@ -129,7 +129,7 @@ export default class PathUtils {
      *
      * @return
      */
-    public static validateIsPath = async (path: string, message: string, exit: boolean = false): Promise<void> => {
+    public static validateIsPathWithDisplay = async (path: string, message: string, exit: boolean = false): Promise<void> => {
         try {
 
             if (fs.existsSync(path)) {
@@ -144,6 +144,25 @@ export default class PathUtils {
 
             console.error(err);
 
+        }
+    };
+
+
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<boolean | any>}
+     */
+    public static validateIsPath = async (path: string): Promise<boolean | any> => {
+        try {
+
+            return fs.existsSync(path);
+
+        } catch (err: any) {
+            console.log('validateIsPath');
+            console.error(err);
         }
     };
 }

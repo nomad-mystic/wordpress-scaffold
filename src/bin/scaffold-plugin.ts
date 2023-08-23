@@ -24,7 +24,9 @@ import ScaffoldJsonUpdates from '../interfaces/common/interface-scaffold-json-up
 // Functions
 import getPluginOptions from '../config/plugin-options.js';
 import UpdateTypeFiles from '../scaffold/common/update-type-files.js';
-import MessagingUtils from "../utils/messaging-utils.js";
+import MessagingUtils from '../utils/messaging-utils.js';
+import CreateObjectArrays from '../scaffold/common/create-object-arrays.js';
+import fse from "fs-extra";
 
 /**
  * @classdesc Scaffold a new theme based on user's inputs
@@ -33,8 +35,31 @@ import MessagingUtils from "../utils/messaging-utils.js";
  * @author Keith Murphy | nomadmystics@gmail.com
  */
 class ScaffoldPlugin extends AbstractScaffold {
+    /**
+     * @type boolean
+     * @private
+     */
     private static isDebugFullMode: boolean = false;
+
+    /**
+     * @type string
+     * @private
+     */
     private static whereAmI: string = '';
+
+    /**
+     * @type boolean
+     * @private
+     */
+    private static composerExists: boolean | any = false;
+
+    /**
+     * @type boolean
+     * @private
+     */
+    private static packageExists: boolean | any = false;
+
+    private static pluginValues: PluginAnswerValues;
 
     /**
      * {@inheritDoc AbstractScaffold}
@@ -53,6 +78,7 @@ class ScaffoldPlugin extends AbstractScaffold {
             // Get our answers
             const answers: PluginAnswers | void = await InquirerCli.performPromptsTasks(await getPluginOptions()).catch((err) => console.error(err));
 
+            // Start the scaffolding process
             await this.scaffoldFiles(answers);
 
         } catch (err: any) {
@@ -67,26 +93,51 @@ class ScaffoldPlugin extends AbstractScaffold {
     protected static scaffoldFiles = async (answers: PluginAnswers | any): Promise<void> => {
         try {
             // Build the values we need
-            const pluginValues: PluginAnswerValues  = await this.buildValueObject(answers);
+            this.pluginValues = await this.buildValueObject(answers);
 
             // Validate we aren't overwriting another plugin with the same name
-            await PathUtils.validateIsPath(pluginValues.finalPath, 'There is already a plugin with that name. Please use another name.', true);
+            await PathUtils.validateIsPathWithDisplay(this.pluginValues.finalPath, 'There is already a plugin with that name. Please use another name.', true);
+
+            // Create our checks before we start the copy process
+            this.composerExists = PathUtils.validateIsPath(`${this.pluginValues.finalPath}/composer.json`);
+            this.packageExists = PathUtils.validateIsPath(`${this.pluginValues.finalPath}/package.json`);
 
             // Update the internal JSON files
-            let pluginConfig = await this.updateProjectConfig(pluginValues);
+            let pluginConfig = await this.updateProjectConfig(this.pluginValues);
 
             // Update the individual files we need to scaffold
-            await this.performScaffold(pluginValues, pluginConfig);
+            await this.performScaffold(this.pluginValues, pluginConfig);
 
-            // Let the user know it has been created
-            await MessagingUtils.displayColoredMessage(`Your ${pluginValues.pluginName} plugin has been scaffold! \n`, 'green');
-            await MessagingUtils.displayColoredMessage(`Check: ${pluginValues.finalPath} \n`, 'yellow');
-            await MessagingUtils.displayColoredMessage(`Don\'t forget to run these commands in the root of the plugin`, 'yellow');
-            await MessagingUtils.displayColoredMessage(`$ composer run-script auto-load-classes`, 'green');
-            await MessagingUtils.displayColoredMessage(`$ nvm use && npm install`, 'green');
+            await this.displayEndingMessages(this.pluginValues);
 
         } catch (err: any) {
             console.log('ScaffoldTheme.scaffoldFiles()');
+            console.error(err);
+        }
+    };
+
+    // @todo Refactor into helper method {MessagingUtils.displayEndingMessages}
+    private static displayEndingMessages = async (values: PluginAnswerValues): Promise<void> => {
+        try {
+            // Let the user know it has been created
+            await MessagingUtils.displayColoredMessage(`Your ${values.name} plugin has been scaffold! \n`, 'green');
+            await MessagingUtils.displayColoredMessage(`Check: ${values.finalPath} \n`, 'yellow');
+
+
+            if (!this.composerExists || !this.packageExists) {
+                await MessagingUtils.displayColoredMessage(`Don\'t forget to run these commands in the root of the ${values.type}`, 'yellow');
+            }
+
+            if (!this.composerExists) {
+                await MessagingUtils.displayColoredMessage(`$ composer run-script auto-load-classes`, 'green');
+            }
+
+            if (!this.packageExists) {
+                await MessagingUtils.displayColoredMessage(`$ nvm use && npm install`, 'green');
+            }
+
+        } catch (err: any) {
+            console.log('displayEndingMessages()');
             console.error(err);
         }
     };
@@ -107,30 +158,31 @@ class ScaffoldPlugin extends AbstractScaffold {
 
             // User inputs
             const projectName: string = answers.projectName ? answers.projectName : '';
-            const pluginName: string =  answers.pluginName ? answers.pluginName.trim() : '';
-            const pluginDescription: string = answers.pluginDescription ? answers.pluginDescription.trim() : '';
+            const name: string =  answers.name ? answers.name.trim() : '';
+            const description: string = answers.description ? answers.description.trim() : '';
             const pluginFrontEndFramework: string = answers.pluginFrontEndFramework ? answers.pluginFrontEndFramework : '';
             const siteUrl: string = answers.siteUrl;
             const devSiteUrl: string = answers.devSiteUrl;
 
             // Make folder "safe" if there are spaces
-            const safePluginName: string = await StringUtils.addDashesToString(pluginName);
+            const safeName: string = await StringUtils.addDashesToString(name);
 
             // Create the finalized path for the scaffolded theme
-            const finalPluginPath: string = `${pluginsPath}/${safePluginName}`;
+            const finalPluginPath: string = `${pluginsPath}/${safeName}`;
 
             // Create our string modification
-            const capAndSnakeCasePlugin: string = await StringUtils.capAndSnakeCaseString(safePluginName);
+            const capAndSnakeCasePlugin: string = await StringUtils.capAndSnakeCaseString(safeName);
 
-            const pluginNamespace: string =  await StringUtils.pascalCaseString(safePluginName);
+            const pluginNamespace: string =  await StringUtils.pascalCaseString(safeName);
 
             return {
+                type: 'plugin',
                 projectName: projectName,
-                pluginName: pluginName,
-                safePluginName: safePluginName,
+                name: name,
+                safeName: safeName,
                 pluginsPath: pluginsPath,
                 finalPath: finalPluginPath,
-                pluginDescription: pluginDescription,
+                description: description,
                 pluginFrontEndFramework: pluginFrontEndFramework,
                 siteUrl: siteUrl,
                 devSiteUrl: devSiteUrl,
@@ -157,16 +209,16 @@ class ScaffoldPlugin extends AbstractScaffold {
         try {
             let {
                 projectName,
-                pluginName,
+                name,
                 finalPath,
-                pluginDescription,
+                description,
                 pluginFrontEndFramework,
             } = pluginValues;
 
             let configUpdates: PluginConfig = {
-                'plugin-name': pluginName,
+                'plugin-name': name,
                 'plugin-path': finalPath,
-                'plugin-description': pluginDescription,
+                'plugin-description': description,
                 'plugin-front-end-framework': pluginFrontEndFramework,
             };
 
@@ -263,69 +315,51 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {PluginAnswerValues} values
+     * @param {PluginAnswerValues} pluginValues
      * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
      */
-    private static buildUpdateObjectArray = async (values: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    private static buildUpdateObjectArray = async (pluginValues: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
             const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
                 {
-                    fileName: 'composer.json',
-                    stringToUpdate: 'SCAFFOLD_TYPE',
-                    updateString: 'plugins',
-                },
-                {
-                    fileName: 'composer.json',
-                    stringToUpdate: 'SCAFFOLD_NAME',
-                    updateString: values.safePluginName,
-                },
-                {
-                    fileName: 'composer.json',
-                    stringToUpdate: 'SCAFFOLD_DESCRIPTION',
-                    updateString: values.pluginDescription,
-                },
-                {
-                    fileName: 'composer.json',
-                    stringToUpdate: 'PASCAL_NAME',
-                    updateString: values.namespace,
-                },
-                {
-                    fileName: 'package.json',
-                    stringToUpdate: 'SCAFFOLD_NAME',
-                    updateString: values.safePluginName,
-                },
-                {
-                    fileName: 'package.json',
-                    stringToUpdate: 'SCAFFOLD_DESCRIPTION',
-                    updateString: values.pluginDescription,
-                },
-                {
                     fileName: 'plugin-name.php',
                     stringToUpdate: 'SCAFFOLD_NAME',
-                    updateString: values.safePluginName,
+                    updateString: pluginValues.safeName,
                 },
                 {
                     fileName: 'plugin-name.php',
                     stringToUpdate: 'SCAFFOLD_DESCRIPTION',
-                    updateString: values.pluginDescription,
+                    updateString: pluginValues.description,
                 },
                 {
                     fileName: 'plugin-name.php',
                     stringToUpdate: 'SCAFFOLD_DESCRIPTION',
-                    updateString: values.pluginDescription,
+                    updateString: pluginValues.description,
                 },
                 {
                     fileName: 'plugin-name.php',
                     stringToUpdate: 'CAPS_AND_SNAKE_NAME',
-                    updateString: values.capAndSnakeCasePlugin,
+                    updateString: pluginValues.capAndSnakeCasePlugin,
                 },
                 {
                     fileName: 'webpack.config.js',
                     stringToUpdate: 'SCAFFOLD_NAME',
-                    updateString: values.pluginName,
+                    updateString: pluginValues.name,
                 },
             ];
+
+            const composerObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.createComposerObjects(pluginValues, this.composerExists);
+
+            if (!this.composerExists) {
+                updateObjectsArray.push(...composerObjects);
+            }
+
+            const packageObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.createPackageObjects(pluginValues, this.packageExists);
+
+            if (!this.packageExists) {
+                updateObjectsArray.push(...packageObjects);
+            }
 
             return updateObjectsArray;
 
