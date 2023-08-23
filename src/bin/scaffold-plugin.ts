@@ -25,6 +25,7 @@ import ScaffoldJsonUpdates from '../interfaces/common/interface-scaffold-json-up
 // Functions
 import getPluginOptions from '../config/plugin-options.js';
 import UpdateTypeFiles from '../scaffold/common/update-type-files.js';
+import MessagingUtils from "../utils/messaging-utils.js";
 
 /**
  * @classdesc Scaffold a new theme based on user's inputs
@@ -79,8 +80,8 @@ class ScaffoldPlugin extends AbstractScaffold {
             await this.performScaffold(pluginValues, pluginConfig);
 
             // Let the user know it has been created
-            console.log(colors.green(`Your ${pluginValues.pluginName} plugin has been scaffold.`));
-            console.log(colors.yellow(`Check: ${pluginValues.finalPath}`));
+            await MessagingUtils.displayColoredMessage(`Your ${pluginValues.pluginName} plugin has been scaffold.`, 'green');
+            await MessagingUtils.displayColoredMessage(`Check: ${pluginValues.finalPath}`, 'yellow');
 
         } catch (err: any) {
             console.log('ScaffoldTheme.scaffoldFiles()');
