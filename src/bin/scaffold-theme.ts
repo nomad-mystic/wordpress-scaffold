@@ -76,7 +76,7 @@ class ScaffoldTheme extends AbstractScaffold {
             await this.updateScaffoldClasses(themeValues);
 
             // Let the user know it has been created
-            console.log(colors.green(`Your ${themeValues.themeName} theme has been scaffold.`));
+            console.log(colors.green(`Your ${themeValues.name} theme has been scaffold.`));
             console.log(colors.yellow(`Check: ${themeValues.themesPath}/${themeValues.safeThemeName}`));
 
         } catch (err: any) {
@@ -138,9 +138,9 @@ class ScaffoldTheme extends AbstractScaffold {
 
             return {
                 projectName: configUpdates['project-name'],
-                themeName: themeName,
+                name: themeName,
                 themesPath: themesPath,
-                newThemePath: newThemePath,
+                finalPath: newThemePath,
                 themeDescription: themeDescription,
                 frontEndFramework: frontEndFramework,
                 siteUrl: siteUrl,

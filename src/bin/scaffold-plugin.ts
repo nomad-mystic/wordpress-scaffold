@@ -2,6 +2,7 @@
 
 // Community modules
 import 'dotenv/config';
+import fse from "fs-extra";
 
 // Package modules
 // Classes
@@ -26,7 +27,6 @@ import getPluginOptions from '../config/plugin-options.js';
 import UpdateTypeFiles from '../scaffold/common/update-type-files.js';
 import MessagingUtils from '../utils/messaging-utils.js';
 import CreateObjectArrays from '../scaffold/common/create-object-arrays.js';
-import fse from "fs-extra";
 
 /**
  * @classdesc Scaffold a new theme based on user's inputs
@@ -51,14 +51,18 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @type boolean
      * @private
      */
-    private static composerExists: boolean | any = false;
+    private static composerAlreadyExists: boolean | any = false;
 
     /**
      * @type boolean
      * @private
      */
-    private static packageExists: boolean | any = false;
+    private static packageAlreadyExists: boolean | any = false;
 
+    /**
+     * @type PluginAnswerValues
+     * @private
+     */
     private static pluginValues: PluginAnswerValues;
 
     /**
@@ -99,8 +103,8 @@ class ScaffoldPlugin extends AbstractScaffold {
             await PathUtils.validateIsPathWithDisplay(this.pluginValues.finalPath, 'There is already a plugin with that name. Please use another name.', true);
 
             // Create our checks before we start the copy process
-            this.composerExists = PathUtils.validateIsPath(`${this.pluginValues.finalPath}/composer.json`);
-            this.packageExists = PathUtils.validateIsPath(`${this.pluginValues.finalPath}/package.json`);
+            this.composerAlreadyExists = PathUtils.validateIsPath(`${this.pluginValues.finalPath}/composer.json`);
+            this.packageAlreadyExists = PathUtils.validateIsPath(`${this.pluginValues.finalPath}/package.json`);
 
             // Update the internal JSON files
             let pluginConfig = await this.updateProjectConfig(this.pluginValues);
@@ -108,36 +112,10 @@ class ScaffoldPlugin extends AbstractScaffold {
             // Update the individual files we need to scaffold
             await this.performScaffold(this.pluginValues, pluginConfig);
 
-            await this.displayEndingMessages(this.pluginValues);
+            await MessagingUtils.displayEndingMessages(this.pluginValues, this.composerAlreadyExists, this.packageAlreadyExists);
 
         } catch (err: any) {
             console.log('ScaffoldTheme.scaffoldFiles()');
-            console.error(err);
-        }
-    };
-
-    // @todo Refactor into helper method {MessagingUtils.displayEndingMessages}
-    private static displayEndingMessages = async (values: PluginAnswerValues): Promise<void> => {
-        try {
-            // Let the user know it has been created
-            await MessagingUtils.displayColoredMessage(`Your ${values.name} plugin has been scaffold! \n`, 'green');
-            await MessagingUtils.displayColoredMessage(`Check: ${values.finalPath} \n`, 'yellow');
-
-
-            if (!this.composerExists || !this.packageExists) {
-                await MessagingUtils.displayColoredMessage(`Don\'t forget to run these commands in the root of the ${values.type}`, 'yellow');
-            }
-
-            if (!this.composerExists) {
-                await MessagingUtils.displayColoredMessage(`$ composer run-script auto-load-classes`, 'green');
-            }
-
-            if (!this.packageExists) {
-                await MessagingUtils.displayColoredMessage(`$ nvm use && npm install`, 'green');
-            }
-
-        } catch (err: any) {
-            console.log('displayEndingMessages()');
             console.error(err);
         }
     };
@@ -349,15 +327,15 @@ class ScaffoldPlugin extends AbstractScaffold {
                 },
             ];
 
-            const composerObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.createComposerObjects(pluginValues, this.composerExists);
+            const composerObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.createComposerObjects(pluginValues, this.composerAlreadyExists);
 
-            if (!this.composerExists) {
+            if (!this.composerAlreadyExists) {
                 updateObjectsArray.push(...composerObjects);
             }
 
-            const packageObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.createPackageObjects(pluginValues, this.packageExists);
+            const packageObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.createPackageObjects(pluginValues, this.packageAlreadyExists);
 
-            if (!this.packageExists) {
+            if (!this.packageAlreadyExists) {
                 updateObjectsArray.push(...packageObjects);
             }
 

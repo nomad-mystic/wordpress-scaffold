@@ -9,5 +9,5 @@ export default interface PluginAnswerValues {
     capAndSnakeCasePlugin?: string;
     projectNamespace?: string;
     namespace?: string;
-    type?: string;
+    type?: 'plugin';
 };

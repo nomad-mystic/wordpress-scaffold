@@ -1,8 +1,8 @@
 export default interface ThemeAnswerValues {
     projectName?: string;
-    themeName?: string;
+    name?: string;
     themesPath?: string;
-    newThemePath?: string;
+    finalPath?: string;
     themeDescription?: string;
     frontEndFramework?: string;
     siteUrl?: string;
@@ -10,4 +10,5 @@ export default interface ThemeAnswerValues {
     safeThemeName?: string;
     capAndSnakeCaseTheme?: string;
     projectNamespace?: string;
+    type?: 'theme';
 }

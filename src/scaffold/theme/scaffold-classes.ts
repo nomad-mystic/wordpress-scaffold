@@ -20,14 +20,14 @@ import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 const updateScaffoldClasses = async (values: ThemeAnswerValues): Promise<void> => {
     try {
         let {
-            newThemePath,
+            finalPath,
             projectNamespace,
         } = values;
 
         let updateObjectsArray: Array<ScaffoldJsonUpdates> = [];
 
         // Create our checks before we start the copy process
-        const phpFiles = glob.sync(`${newThemePath}/classes/**/*.php`, {
+        const phpFiles = glob.sync(`${finalPath}/classes/**/*.php`, {
             nodir: true,
         });
 
@@ -45,7 +45,7 @@ const updateScaffoldClasses = async (values: ThemeAnswerValues): Promise<void> =
                     const beforeLastSlash: RegExpMatchArray | null = phpFiles[classPath].match(/^(.*[\\\/])/);
 
                     // @todo Check this
-                    classObject.updatePath = beforeLastSlash ? beforeLastSlash[0].slice(0, -1) : newThemePath + 'classes';
+                    classObject.updatePath = beforeLastSlash ? beforeLastSlash[0].slice(0, -1) : finalPath + 'classes';
 
                     classObject.fileName = afterLastSlash;
                     classObject.stringToUpdate = 'PASCAL_NAME';

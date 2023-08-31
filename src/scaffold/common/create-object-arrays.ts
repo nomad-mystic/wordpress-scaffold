@@ -16,10 +16,17 @@ import MessagingUtils from "../../utils/messaging-utils.js";
  * @author Keith Murphy | nomadmystics@gmail.com
  */
 export default class CreateObjectArrays {
-    public static createComposerObjects = async (values: PluginAnswerValues, composerExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     */
+    public static createComposerObjects = async (values: PluginAnswerValues, composerAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
-            if (composerExists) {
+            if (composerAlreadyExists) {
                 await MessagingUtils.displayColoredMessage('Looks like you already have a composer.json file, so this will not be scaffolded', 'red');
                 await MessagingUtils.displayColoredMessage('See documentation on how to autoload classes with psr-4', 'yellow');
                 console.log("\n");
@@ -58,11 +65,17 @@ export default class CreateObjectArrays {
         }
     };
 
-
-    public static createPackageObjects = async (values: PluginAnswerValues, packagesExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     */
+    public static createPackageObjects = async (values: PluginAnswerValues, packageAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
-            if (packagesExists) {
+            if (packageAlreadyExists) {
                 await MessagingUtils.displayColoredMessage('Looks like you already have a package.json file, so this will not be scaffolded', 'red');
                 await MessagingUtils.displayColoredMessage('See documentation on Node.js', 'yellow');
                 console.log("\n");
