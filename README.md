@@ -120,8 +120,8 @@ public function some_action_method(): void
 #### DB Setup 
 ```shell
 $ sudo mysql
-$ CREATE DATABASE databasename;
-$ GRANT ALL PRIVILEGES ON databasename.* TO "wordpressusername"@"localhost" IDENTIFIED BY "password";
+$ CREATE DATABASE <DATABSE_NAME>;
+$ GRANT ALL PRIVILEGES ON <DATABSE_NAME>.* TO "<DATABASE_USER>"@"localhost" IDENTIFIED BY "<DATABASE_PASSWORD>";
 $ FLUSH PRIVILEGES;
 $ EXIT;
 ```
@@ -129,23 +129,38 @@ $ EXIT;
 #### Project Setup
 
 ```shell
-$ mkdir YOUR_PROJECT_NAME
-$ cd YOUR_PROJECT_NAME
-$ ws-scaffold-project-init
+$ mkdir <YOUR_PROJECT_NAME>
+$ cd <YOUR_PROJECT_NAME>
+$ wps --project-init
 ```
 
 #### Theme Setup
 ```shell
-$ cd YOUR_PROJECT_NAME
-$ ws-scaffold-theme
+$ cd <YOUR_PROJECT_NAME>
+$ wps --theme
 ```
 
-### Scaffold todos
-* Classes
-  * Add base on init and append while adding classes
-  
-### Development
-* Mention .env creation
+## Development
+#### Initial Setup
+```shell
+$ git clone git@github.com:nomad-mystic/wordpress-scaffold-cli.git ./scaffold-cli
+$ cd scaffold-cli
+$ nvm use
+$ npm i
+$ npm run dev:tsc
+```
+
+#### Local Testing
+```shell
+$ npm pack ./ --pack-destination="<PATH_TO_FOLDER>"
+$ cd <PATH_TO_FOLDER>
+$ npm i -g <PACKAGE_NAME>
+$ cd <YOUR_PROJECT_NAME>
+$ wps --help
+$ wps --version
+```
+
+> For testing this package in a non-WordPress root folder copy ./env.example to ./.env and update values
 
 ### Resources
 * https://wordpress.org/support/article/creating-database-for-wordpress/
