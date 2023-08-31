@@ -116,7 +116,7 @@ const getProjectOptions = async (): Promise<Array<any> | undefined> => {
             const projectNameOption: InquirerCliOptions = {
                 type: 'input',
                 name: 'projectName',
-                message: 'What is the name of your WordPress site?',
+                message: 'What is the "Project Name" of your WordPress site?',
                 default: 'scaffold-project',
             };
 
