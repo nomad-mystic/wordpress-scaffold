@@ -8,6 +8,7 @@ import { execSync } from 'child_process';
 import { Command, Option } from 'commander';
 
 // Package Modules
+import FileUtils from '../utils/file-utils.js';
 import { packageRootDir } from '../utils/package-root.js';
 
 import CommanderOptions from '../config/commander-options.js';
@@ -16,9 +17,8 @@ import CommanderOptions from '../config/commander-options.js';
  * @description Build our CLI root
  * @public
  * @author Keith Murphy | nomadmystics@gmail.com
- *
  */
-export default class CommanderCli {
+class CommanderCli {
     /**
      * @description Starting point for building the CLI
      * @public
@@ -51,7 +51,6 @@ export default class CommanderCli {
         } catch (err: any) {
             console.log('CommanderCli.buildCommanderCli()');
             console.error(err);
-
         }
     }
 
@@ -65,9 +64,11 @@ export default class CommanderCli {
     private static buildProgram = async (): Promise<Command | undefined> => {
         try {
             const program: Command = new Command();
+            const packageFile = await FileUtils.getFileAsJson(`${packageRootDir}/package.json`)
 
             program.description('CLI for scaffolding WordPress websites');
             program.name('wps');
+            program.version(packageFile.version);
             program.allowUnknownOption(true);
 
             program.addOption(new Option('-pi, --project-init', 'Call the Project Init command'))
@@ -76,11 +77,9 @@ export default class CommanderCli {
 
             return program;
 
-        } catch (err) {
-
+        } catch (err: any) {
             console.log('CommanderCli.buildCommander()');
             console.error(err);
-
         }
     };
 
@@ -105,11 +104,9 @@ export default class CommanderCli {
 
             execSync(fullPath, { stdio: 'inherit' });
 
-        } catch (err) {
-
+        } catch (err: any) {
             console.log('CommanderCli.callCommand()');
             console.error(err);
-
         }
     };
 }
