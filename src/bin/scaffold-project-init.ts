@@ -22,7 +22,7 @@ import DebugUtils from '../utils/debug-utils.js';
 import PathUtils from '../utils/path-utils.js';
 
 import InquirerCli from '../cli/inquirer-cli.js';
-import AbstractScaffold from "../abstract/AbstractScaffold.js";
+import AbstractScaffold from '../abstract/AbstractScaffold.js';
 
 // Bail early!!!
 // Check to make sure we have PHP and WP-CLI

@@ -14,8 +14,8 @@ import { packageRootDir } from '../../utils/package-root.js';
 import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 
 // Interfaces
-import ScaffoldJsonUpdates from "../../interfaces/common/interface-scaffold-json-updates.js";
-import ThemeAnswerValues from "../../interfaces/theme/interface-theme-answer-values.js";
+import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
+import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
 
 /**
  * @description Based on user input scaffold our theme

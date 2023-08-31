@@ -1,9 +1,6 @@
 // Core Modules
 import fs from 'fs';
 
-// Package Modules
-import { packageRootDir } from './package-root.js';
-
 /**
  * @classdesc Add help functions for files to the project
  * @class FileUtils
@@ -11,7 +8,7 @@ import { packageRootDir } from './package-root.js';
  */
 export default class FileUtils {
     /**
-     * @description Pass this a absolute path a it will return a JSON.parsed object back
+     * @description Pass this a absolute path, and it will return a JSON.parsed object back
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
