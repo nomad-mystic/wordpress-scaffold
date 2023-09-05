@@ -1,7 +1,7 @@
 // interfaces
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
 import ProjectConfig from '../interfaces/project/interface-project-config.js';
-import InquirerCliOptions from "../interfaces/cli/interface-options-inquirer-cli.js";
+import InquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
 
 // Utils
 import { getInternalConfig } from '../utils/get-config.js';

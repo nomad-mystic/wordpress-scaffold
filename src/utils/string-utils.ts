@@ -60,7 +60,7 @@ export default class StringUtils {
      * @author Keith Murphy | nomadmystics@gmail.com
      * @link https://gist.github.com/youssman/745578062609e8acac9f?permalink_comment_id=2304728
      *
-     * @param {string} replaceString: string
+     * @param {string} replaceString
      * @returns {string}
      */
     public static camelCaseToDash = async (replaceString: string): Promise<string> => {
