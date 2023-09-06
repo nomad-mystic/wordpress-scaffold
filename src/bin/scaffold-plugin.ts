@@ -254,6 +254,10 @@ class ScaffoldPlugin extends AbstractScaffold {
                     destination: `${pluginValues.finalPath}/src/js`,
                 },
                 {
+                    source: `scaffolding/common/front-end-scaffolding/${pluginValues.frontEndFramework?.toLowerCase()}/scss`,
+                    destination: `${pluginValues.finalPath}/src/scss`,
+                },
+                {
                     source: `scaffolding/common/front-end-scaffolding/${pluginValues.frontEndFramework?.toLowerCase()}/project-root`,
                     destination: `${pluginValues.finalPath}`,
                 },
@@ -286,7 +290,7 @@ class ScaffoldPlugin extends AbstractScaffold {
                 {
                     fileName: 'plugin-name.php',
                     stringToUpdate: 'SCAFFOLD_NAME',
-                    updateString: pluginValues.safeName,
+                    updateString: pluginValues.name,
                 },
                 {
                     fileName: 'plugin-name.php',

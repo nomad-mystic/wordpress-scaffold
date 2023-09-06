@@ -37,11 +37,6 @@ export default class CreateObjectArrays {
             const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
                 {
                     fileName: 'composer.json',
-                    stringToUpdate: 'SCAFFOLD_TYPE',
-                    updateString: 'plugins',
-                },
-                {
-                    fileName: 'composer.json',
                     stringToUpdate: 'SCAFFOLD_NAME',
                     updateString: values.safeName,
                 },
@@ -54,6 +49,11 @@ export default class CreateObjectArrays {
                     fileName: 'composer.json',
                     stringToUpdate: 'PASCAL_NAME',
                     updateString: values.namespace,
+                },
+                {
+                    fileName: 'composer.json',
+                    stringToUpdate: 'PATH_TO_COMPOSER',
+                    updateString: '',
                 },
             ];
 

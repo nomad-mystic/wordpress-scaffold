@@ -7,6 +7,7 @@ import {scaffoldInternal} from './scaffold-internal.js';
 import PathUtils from "../../utils/path-utils.js";
 import ProjectConfig from "../../interfaces/project/interface-project-config.js";
 import ActivePlugins from "../../interfaces/project/interface-active-plugins.js";
+import MessagingUtils from "../../utils/messaging-utils.js";
 
 /**
  * @description Updates our internal JSON with properties for use later
@@ -99,9 +100,28 @@ const updateInternalJson = async (filePath: string, json: any, isPlugin: boolean
     }
 };
 
+/**
+ * @classdesc
+ * @class ProjectJson
+ * @author Keith Murphy | nomadmystics@gmail.com
+ */
 export class ProjectJson {
+    /**
+     * @type boolean
+     * @private
+     */
     private static isDebugFullMode: boolean = false;
+
+    /**
+     * @type string
+     * @private
+     */
     private static whereAmI: string = '';
+
+    /**
+     * @type string
+     * @private
+     */
     private static configFilePath: string = '';
 
     // Setup our arrays for json update logic
@@ -110,6 +130,10 @@ export class ProjectJson {
         'active-theme',
     ];
 
+    /**
+     * @type Array<string>
+     * @private
+     */
     private static disallowedKeys: Array<string> = [
         'database-setup',
         'database-name',
@@ -124,6 +148,15 @@ export class ProjectJson {
         'plugin-front-end-framework',
     ];
 
+    /**
+     * @description Starting point for updating the internal config
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {object} configUpdates
+     * @param {string} type
+     * @return {Promise<object | any>}
+     */
     public static update = async (configUpdates: object, type: string = ''): Promise<object | any> => {
         try {
             // Make sure we have the Project JSON scaffolded
@@ -139,6 +172,7 @@ export class ProjectJson {
 
             projectConfigObject = await this.performRootJsonUpdate(projectConfigObject, configUpdates);
 
+            // Some times need specific updates handel them here
             if (type === 'plugin') {
                 projectConfigObject = await this.performPluginJsonUpdate(projectConfigObject, configUpdates);
             }
@@ -154,10 +188,11 @@ export class ProjectJson {
     };
 
     /**
-     * @description
+     * @description Save our internal JSON file
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
+     * @param {ProjectConfig} projectConfigObject
      * @return {Promise<void>}
      */
     private static saveFile = async (projectConfigObject: ProjectConfig): Promise<void> => {
@@ -167,7 +202,7 @@ export class ProjectJson {
             fs.writeFileSync(this.configFilePath, JSON.stringify(projectConfigObject));
 
             // Let the user know
-            console.log('The internal project config file has been saved.')
+            await MessagingUtils.displayColoredMessage('The internal project config file has been saved.', 'green');
 
         } catch (err: any) {
             console.log('UpdateProjectJson.saveFile()');
@@ -206,6 +241,8 @@ export class ProjectJson {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
+     * @param {any} projectConfigObject
+     * @param {any} configUpdates
      * @return {Promise<object | any>}
      */
     private static performRootJsonUpdate = async (projectConfigObject: any, configUpdates: any): Promise<object | any> => {
@@ -261,7 +298,7 @@ export class ProjectJson {
     };
 
     /**
-     * @description
+     * @description Update our internal config with plugin specific values
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
@@ -274,7 +311,6 @@ export class ProjectJson {
             let activePlugins: Array<ActivePlugins> = projectConfigObject['active-plugins'];
 
             const alreadyExists: boolean | undefined = await this.cleanUpPluginArray(activePlugins, configUpdates);
-
 
             // Push our update or let the user know one already exists
             if (!alreadyExists) {
@@ -312,7 +348,7 @@ export class ProjectJson {
 
     /**
      * @description Do some checks and clean up for the active-plugins object
-     * @public
+     * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
      * @param {Array<ActivePlugins>} activePlugins
@@ -327,16 +363,13 @@ export class ProjectJson {
             for (let plugin: number = 0; plugin < activePlugins.length; plugin++) {
                 if (activePlugins[plugin] && typeof activePlugins[plugin] !== 'undefined') {
 
+                    await this.deleteUnusedPlugin(activePlugins[plugin]);
+
                     // We have a plugin with the same name
                     if (activePlugins[plugin]?.['plugin-name'] && activePlugins[plugin]?.['plugin-name'] === configUpdates['plugin-name']) {
 
-                        // Remove the object since the path for the plugin doesn't exist
-                        if (!fs.existsSync(activePlugins[plugin]?.['plugin-name'])) {
-                            delete activePlugins[plugin];
-                        }
-
                         // There is a valid path and plugin with the same name
-                        if (fs.existsSync(activePlugins[plugin]?.['plugin-name'])) {
+                        if (fs.existsSync(activePlugins[plugin]?.['plugin-path'])) {
                             alreadyExists = true;
                         }
                     }
@@ -346,11 +379,42 @@ export class ProjectJson {
             return alreadyExists;
 
         } catch (err: any) {
-            console.log('cleanUpPluginArray()');
+            console.log('updateInternalJson.cleanUpPluginArray()');
+            console.error(err);
+        }
+    };
+
+    /**
+     * @description
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {ActivePlugins} plugin
+     * @return {Promise<void>}
+     */
+    private static deleteUnusedPlugin = async (plugin: ActivePlugins): Promise<void> => {
+        try {
+            let currentPlugin: ActivePlugins = plugin;
+
+            console.log(currentPlugin?.['plugin-name']);
+            console.log(!fs.existsSync(currentPlugin?.['plugin-path']))
+
+            // Remove the object since the path for the plugin doesn't exist
+            if (!fs.existsSync(currentPlugin?.['plugin-path'])) {
+                currentPlugin['plugin-name'] = undefined;
+                // @ts-ignore
+                currentPlugin['plugin-path'] = undefined;
+                currentPlugin['plugin-description'] = undefined;
+                currentPlugin['plugin-front-end-framework'] = undefined;
+
+
+            }
+
+        } catch (err: any) {
+            console.log('deleteUnusedPlugins()');
             console.error(err);
         }
     };
 }
-
 
 export default updateInternalJson;

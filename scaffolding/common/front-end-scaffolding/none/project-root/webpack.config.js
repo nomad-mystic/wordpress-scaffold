@@ -89,12 +89,12 @@ module.exports = () => {
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output
                 // all options are optional
-                filename: `${finalPath}/css/[name].css`,
+                filename: `css/[name].css`,
                 chunkFilename: '[id].css',
                 ignoreOrder: false, // Enable to remove warnings about conflicting order
             }),
             new WebpackNotifier({
-                title: 'PROJECT_NAME Build',
+                title: 'SCAFFOLD_NAME Build',
                 contentImage: path.join(__dirname, 'webpack-build-icon.png'),
                 alwaysNotify: true,
                 skipFirstNotification: false,

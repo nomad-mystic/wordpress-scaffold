@@ -1,7 +1,7 @@
 // DOCS: https://vuejs.org/guide/introduction.html
 
 import { createApp } from 'vue'
-import TestComponent from './TestComponent.vue';
+import TestComponent from './components/TestComponent.vue';
 
 // Add your components here
 const vueComponents = {
