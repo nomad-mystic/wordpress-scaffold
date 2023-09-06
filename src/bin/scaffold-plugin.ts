@@ -99,12 +99,10 @@ class ScaffoldPlugin extends AbstractScaffold {
             // Build the values we need
             this.pluginValues = await this.buildValueObject(answers);
 
+            console.log(this.pluginValues);
+
             // Validate we aren't overwriting another plugin with the same name
             await PathUtils.validateIsPathWithDisplay(this.pluginValues.finalPath, 'There is already a plugin with that name. Please use another name.', true);
-
-            // Create our checks before we start the copy process
-            this.composerAlreadyExists = PathUtils.validateIsPath(`${this.pluginValues.finalPath}/composer.json`);
-            this.packageAlreadyExists = PathUtils.validateIsPath(`${this.pluginValues.finalPath}/package.json`);
 
             // Update the internal JSON files
             let pluginConfig = await this.updateProjectConfig(this.pluginValues);
@@ -131,6 +129,9 @@ class ScaffoldPlugin extends AbstractScaffold {
      */
     private static buildValueObject = async (answers: PluginAnswers | any): Promise<PluginAnswerValues | any> => {
         try {
+
+            console.log(answers);
+
             // Absolute path of the themes folder
             const pluginsPath: string | undefined = await PathUtils.getPluginsFolderPath();
 
@@ -138,7 +139,7 @@ class ScaffoldPlugin extends AbstractScaffold {
             const projectName: string = answers.projectName ? answers.projectName : '';
             const name: string =  answers.name ? answers.name.trim() : '';
             const description: string = answers.description ? answers.description.trim() : '';
-            const pluginFrontEndFramework: string = answers.pluginFrontEndFramework ? answers.pluginFrontEndFramework : '';
+            const frontEndFramework: string = answers.frontEndFramework ? answers.frontEndFramework : '';
             const siteUrl: string = answers.siteUrl;
             const devSiteUrl: string = answers.devSiteUrl;
 
@@ -161,7 +162,7 @@ class ScaffoldPlugin extends AbstractScaffold {
                 pluginsPath: pluginsPath,
                 finalPath: finalPluginPath,
                 description: description,
-                pluginFrontEndFramework: pluginFrontEndFramework,
+                frontEndFramework: frontEndFramework,
                 siteUrl: siteUrl,
                 devSiteUrl: devSiteUrl,
                 capAndSnakeCasePlugin: capAndSnakeCasePlugin,
@@ -190,14 +191,14 @@ class ScaffoldPlugin extends AbstractScaffold {
                 name,
                 finalPath,
                 description,
-                pluginFrontEndFramework,
+                frontEndFramework,
             } = pluginValues;
 
             let configUpdates: PluginConfig = {
                 'plugin-name': name,
                 'plugin-path': finalPath,
                 'plugin-description': description,
-                'plugin-front-end-framework': pluginFrontEndFramework,
+                'plugin-front-end-framework': frontEndFramework,
             };
 
             if (projectName && typeof projectName !== 'undefined') {
@@ -267,11 +268,11 @@ class ScaffoldPlugin extends AbstractScaffold {
                     destination: `${pluginValues.finalPath}/classes`,
                 },
                 {
-                    source: `scaffolding/common/front-end-scaffolding/${pluginValues.pluginFrontEndFramework?.toLowerCase()}/js`,
+                    source: `scaffolding/common/front-end-scaffolding/${pluginValues.frontEndFramework?.toLowerCase()}/js`,
                     destination: `${pluginValues.finalPath}/src/js`,
                 },
                 {
-                    source: `scaffolding/common/front-end-scaffolding/${pluginValues.pluginFrontEndFramework?.toLowerCase()}/project-root`,
+                    source: `scaffolding/common/front-end-scaffolding/${pluginValues.frontEndFramework?.toLowerCase()}/project-root`,
                     destination: `${pluginValues.finalPath}`,
                 },
                 {

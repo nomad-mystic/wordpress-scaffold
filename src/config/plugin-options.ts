@@ -15,19 +15,19 @@ import getCommonOptions from './common-options.js';
 let pluginOptions: Array<InquirerCliOptions> = [
     {
         type: 'input',
-        name: 'pluginName',
+        name: 'name',
         message: 'What is the name of your plugin?',
         default: 'scaffold-plugin',
     },
     {
         type: 'input',
-        name: 'pluginDescription',
+        name: 'description',
         message: 'What would like the description of the plugin to be?',
         default: '',
     },
     {
         type: 'list',
-        name: 'pluginFrontEndFramework',
+        name: 'frontEndFramework',
         message: 'What front-end framework would you like to add?',
         choices: ['None', 'Vue'],
         default: 'None',
