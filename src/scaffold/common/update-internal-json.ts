@@ -143,7 +143,7 @@ export class ProjectJson {
                 projectConfigObject = await this.performPluginJsonUpdate(projectConfigObject, configUpdates);
             }
 
-            // await this.saveFile(projectConfigObject);
+            await this.saveFile(projectConfigObject);
 
             return projectConfigObject;
 
@@ -271,21 +271,10 @@ export class ProjectJson {
      */
     private static performPluginJsonUpdate = async (projectConfigObject: any, configUpdates: any): Promise<object | any> => {
         try {
-            let alreadyExists: boolean = false;
             let activePlugins: Array<ActivePlugins> = projectConfigObject['active-plugins'];
 
-            // Check if we have an active key by the same name
-            for (let plugin: number = 0; plugin < activePlugins.length; plugin++) {
-                if (activePlugins[plugin] && typeof activePlugins[plugin] !== 'undefined') {
+            const alreadyExists: boolean | undefined = await this.cleanUpPluginArray(activePlugins, configUpdates);
 
-                    if (activePlugins[plugin]?.['plugin-name'] && activePlugins[plugin]?.['plugin-name'] === configUpdates['plugin-name']) {
-
-                        alreadyExists = true;
-
-                        break;
-                    }
-                }
-            }
 
             // Push our update or let the user know one already exists
             if (!alreadyExists) {
@@ -295,6 +284,7 @@ export class ProjectJson {
             } else {
 
                 console.log(`Plugin ${configUpdates['plugin-name']} already exists in the schema. Please try another name.`)
+                process.exit(1);
 
             }
 
@@ -310,6 +300,8 @@ export class ProjectJson {
                 console.log(configUpdates);
             }
 
+            console.log(projectConfigObject);
+
             return projectConfigObject;
 
         } catch (err: any) {
@@ -317,6 +309,47 @@ export class ProjectJson {
             console.error(err);
         }
     }
+
+    /**
+     * @description Do some checks and clean up for the active-plugins object
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {Array<ActivePlugins>} activePlugins
+     * @param {any} configUpdates
+     * @return {Promise<boolean | undefined>}
+     */
+    private static cleanUpPluginArray = async (activePlugins: Array<ActivePlugins>, configUpdates: any): Promise<boolean | undefined> => {
+        try {
+            let alreadyExists: boolean = false;
+
+            // Check if we have an active key by the same name
+            for (let plugin: number = 0; plugin < activePlugins.length; plugin++) {
+                if (activePlugins[plugin] && typeof activePlugins[plugin] !== 'undefined') {
+
+                    // We have a plugin with the same name
+                    if (activePlugins[plugin]?.['plugin-name'] && activePlugins[plugin]?.['plugin-name'] === configUpdates['plugin-name']) {
+
+                        // Remove the object since the path for the plugin doesn't exist
+                        if (!fs.existsSync(activePlugins[plugin]?.['plugin-name'])) {
+                            delete activePlugins[plugin];
+                        }
+
+                        // There is a valid path and plugin with the same name
+                        if (fs.existsSync(activePlugins[plugin]?.['plugin-name'])) {
+                            alreadyExists = true;
+                        }
+                    }
+                }
+            }
+
+            return alreadyExists;
+
+        } catch (err: any) {
+            console.log('cleanUpPluginArray()');
+            console.error(err);
+        }
+    };
 }
 
 

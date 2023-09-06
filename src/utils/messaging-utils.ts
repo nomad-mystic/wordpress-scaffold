@@ -44,7 +44,7 @@ export default class MessagingUtils {
     };
 
     /**
-     * @description
+     * @description Display messages to the user after all the scaffolding has been performed
      * @oublic
      * @author Keith Murphy | nomadmystics@gmail.com
      *

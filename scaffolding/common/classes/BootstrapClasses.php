@@ -24,7 +24,7 @@ class BootstrapClasses
      */
     public function __construct()
     {
-        $composer_file = file_get_contents(ABSPATH . 'composer.json');
+        $composer_file = file_get_contents(CAPS_AND_SNAKE_NAME_PLUGIN_DIR . 'composer.json');
 
         // Let the user know there was an issue with a WordPress alert!!!
         if (empty($composer_file)) {

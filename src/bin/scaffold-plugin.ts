@@ -39,18 +39,6 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @type boolean
      * @private
      */
-    private static isDebugFullMode: boolean = false;
-
-    /**
-     * @type string
-     * @private
-     */
-    private static whereAmI: string = '';
-
-    /**
-     * @type boolean
-     * @private
-     */
     private static composerAlreadyExists: boolean | any = false;
 
     /**
@@ -70,12 +58,6 @@ class ScaffoldPlugin extends AbstractScaffold {
      */
     public static initializeScaffolding = async (): Promise<void> => {
         try {
-            // Gather our location
-            this.whereAmI = await PathUtils.whereAmI();
-
-            // Enable debug mode?
-            this.isDebugFullMode = await DebugUtils.isDebugFullMode();
-
             // Bail early
             await PathUtils.checkForWordPressInstall();
 
@@ -325,6 +307,11 @@ class ScaffoldPlugin extends AbstractScaffold {
                     fileName: 'webpack.config.js',
                     stringToUpdate: 'SCAFFOLD_NAME',
                     updateString: pluginValues.name,
+                },
+                {
+                    fileName: 'classes/BootstrapClasses.php',
+                    stringToUpdate: 'CAPS_AND_SNAKE_NAME',
+                    updateString: pluginValues.capAndSnakeCasePlugin,
                 },
             ];
 
