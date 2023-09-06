@@ -13,6 +13,7 @@ import { packageRootDir } from '../../utils/package-root.js';
 
 /**
  * @description Make sure we have our internal folder, if not copy it over
+ * @deprecated Use ProjectJson
  *
  * @return void
  */

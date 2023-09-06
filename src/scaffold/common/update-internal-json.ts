@@ -1,16 +1,27 @@
-// Community modules
+// Core Modules
 import fs from 'fs';
+import path from 'path';
+
+// Community modules
+import fse from "fs-extra";
 
 // Package modules
+// Utils
 import StringUtils from '../../utils/string-utils.js';
-import {scaffoldInternal} from './scaffold-internal.js';
-import PathUtils from "../../utils/path-utils.js";
-import ProjectConfig from "../../interfaces/project/interface-project-config.js";
-import ActivePlugins from "../../interfaces/project/interface-active-plugins.js";
-import MessagingUtils from "../../utils/messaging-utils.js";
+import PathUtils from '../../utils/path-utils.js';
+import MessagingUtils from '../../utils/messaging-utils.js';
+import { packageRootDir } from '../../utils/package-root.js';
+
+// Interfaces
+import ActivePlugins from '../../interfaces/project/interface-active-plugins.js';
+import ProjectConfig from '../../interfaces/project/interface-project-config.js';
+
+import { scaffoldInternal } from './scaffold-internal.js';
+import DebugUtils from "../../utils/debug-utils.js";
 
 /**
  * @description Updates our internal JSON with properties for use later
+ * @deprecated Use class ProjectJson
  *
  * @param {string} filePath
  * @param {any} json
@@ -101,7 +112,7 @@ const updateInternalJson = async (filePath: string, json: any, isPlugin: boolean
 };
 
 /**
- * @classdesc
+ * @classdesc Perform tasks for updating the internal JSON file
  * @class ProjectJson
  * @author Keith Murphy | nomadmystics@gmail.com
  */
@@ -159,11 +170,14 @@ export class ProjectJson {
      */
     public static update = async (configUpdates: object, type: string = ''): Promise<object | any> => {
         try {
-            // Make sure we have the Project JSON scaffolded
-            await scaffoldInternal();
-
             // Gather our location
             this.whereAmI = await PathUtils.whereAmI();
+
+            // Check for debug mode values
+            this.isDebugFullMode = await DebugUtils.isDebugFullMode();
+
+            // Make sure we have the Project JSON scaffolded
+            await this.scaffoldInternal();
 
             // Get our config file
             this.configFilePath = `${this.whereAmI}/internal/project/project-config.json`;
@@ -182,7 +196,7 @@ export class ProjectJson {
             return projectConfigObject;
 
         } catch (err: any) {
-            console.log('UpdateProjectJson.update()');
+            console.log('ProjectJson.update()');
             console.error(err);
         }
     };
@@ -205,7 +219,27 @@ export class ProjectJson {
             await MessagingUtils.displayColoredMessage('The internal project config file has been saved.', 'green');
 
         } catch (err: any) {
-            console.log('UpdateProjectJson.saveFile()');
+            console.log('ProjectJson.saveFile()');
+            console.error(err);
+        }
+    };
+
+    /**
+     * @description Make sure we have our internal folder, if not copy it over
+     *
+     * @return void
+     */
+    public static scaffoldInternal = async (): Promise<void> => {
+        try {
+
+            if (!fs.existsSync(`${this.whereAmI}/internal`)) {
+
+                fse.copySync(`${path.join(packageRootDir + '/scaffolding/internal')}`, `${this.whereAmI}/internal`, { overwrite: false });
+
+            }
+
+        } catch (err: any) {
+            console.log('ProjectJson.scaffoldInternal()');
             console.error(err);
         }
     };
@@ -230,7 +264,7 @@ export class ProjectJson {
             return JSON.parse(jsonFile);
 
         } catch (err: any) {
-            console.log('getProjectConfigObject')
+            console.log('ProjectJson.getProjectConfigObject');
             console.error(err);
 
         }
@@ -336,8 +370,6 @@ export class ProjectJson {
                 console.log(configUpdates);
             }
 
-            console.log(projectConfigObject);
-
             return projectConfigObject;
 
         } catch (err: any) {
@@ -363,7 +395,12 @@ export class ProjectJson {
             for (let plugin: number = 0; plugin < activePlugins.length; plugin++) {
                 if (activePlugins[plugin] && typeof activePlugins[plugin] !== 'undefined') {
 
-                    await this.deleteUnusedPlugin(activePlugins[plugin]);
+                    const currentPlugin = await this.deleteUnusedPluginProperties(activePlugins[plugin]);
+
+                    // Since this doesn't exist remove it from our array
+                    if (!currentPlugin || typeof currentPlugin === 'undefined' || Object.keys(currentPlugin).length === 0) {
+                        activePlugins.splice(plugin, 1);
+                    }
 
                     // We have a plugin with the same name
                     if (activePlugins[plugin]?.['plugin-name'] && activePlugins[plugin]?.['plugin-name'] === configUpdates['plugin-name']) {
@@ -379,7 +416,7 @@ export class ProjectJson {
             return alreadyExists;
 
         } catch (err: any) {
-            console.log('updateInternalJson.cleanUpPluginArray()');
+            console.log('ProjectJson.cleanUpPluginArray()');
             console.error(err);
         }
     };
@@ -392,26 +429,22 @@ export class ProjectJson {
      * @param {ActivePlugins} plugin
      * @return {Promise<void>}
      */
-    private static deleteUnusedPlugin = async (plugin: ActivePlugins): Promise<void> => {
+    private static deleteUnusedPluginProperties = async (plugin: ActivePlugins): Promise<ActivePlugins | any> => {
         try {
             let currentPlugin: ActivePlugins = plugin;
 
-            console.log(currentPlugin?.['plugin-name']);
-            console.log(!fs.existsSync(currentPlugin?.['plugin-path']))
-
             // Remove the object since the path for the plugin doesn't exist
             if (!fs.existsSync(currentPlugin?.['plugin-path'])) {
-                currentPlugin['plugin-name'] = undefined;
+                delete currentPlugin['plugin-name'];
                 // @ts-ignore
-                currentPlugin['plugin-path'] = undefined;
-                currentPlugin['plugin-description'] = undefined;
-                currentPlugin['plugin-front-end-framework'] = undefined;
-
-
+                delete currentPlugin['plugin-path'];
+                delete currentPlugin['plugin-description'];
+                delete currentPlugin['plugin-front-end-framework'];
             }
 
+            return currentPlugin;
         } catch (err: any) {
-            console.log('deleteUnusedPlugins()');
+            console.log('ProjectJson.deleteUnusedPluginProperties()');
             console.error(err);
         }
     };
