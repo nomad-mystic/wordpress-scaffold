@@ -320,14 +320,14 @@ class ScaffoldPlugin extends AbstractScaffold {
             ];
 
             // Perform composer updates
-            const composerObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.createComposerObjects(pluginValues, this.composerAlreadyExists);
+            const composerObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.readComposerObjects(pluginValues, this.composerAlreadyExists);
 
             if (!this.composerAlreadyExists) {
                 updateObjectsArray.push(...composerObjects);
             }
 
             // Perform package.json updates
-            const packageObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.createPackageObjects(pluginValues, this.packageAlreadyExists);
+            const packageObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.readPackageObjects(pluginValues, this.packageAlreadyExists);
 
             if (!this.packageAlreadyExists) {
                 updateObjectsArray.push(...packageObjects);

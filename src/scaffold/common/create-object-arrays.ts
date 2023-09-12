@@ -1,14 +1,10 @@
-import fse from "fs-extra";
-
 // Package Modules
-// Classes
-import PathUtils from "../../utils/path-utils.js";
+// Utils
+import MessagingUtils from '../../utils/messaging-utils.js';
 
 // Interfaces
 import PluginAnswerValues from '../../interfaces/plugin/interface-plugin-answer-values.js';
 import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
-import colors from "colors";
-import MessagingUtils from "../../utils/messaging-utils.js";
 
 /**
  * @classdesc
@@ -23,7 +19,7 @@ export default class CreateObjectArrays {
      *
      * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
      */
-    public static createComposerObjects = async (values: PluginAnswerValues, composerAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    public static readComposerObjects = async (values: PluginAnswerValues, composerAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
             if (composerAlreadyExists) {
@@ -33,6 +29,27 @@ export default class CreateObjectArrays {
 
                 return [];
             }
+
+            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.createComposerObjects(values);
+
+            return updateObjectsArray;
+
+        } catch (err: any) {
+            console.log('CreateObjectArrays.readComposerObjects()');
+            console.error(err);
+        }
+    };
+
+    /**
+     * @description
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {PluginAnswerValues} values
+     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     */
+    private static createComposerObjects = async (values: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
+        try {
 
             const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
                 {
@@ -53,14 +70,14 @@ export default class CreateObjectArrays {
                 {
                     fileName: 'composer.json',
                     stringToUpdate: 'PATH_TO_COMPOSER',
-                    updateString: '',
+                    updateString: '', // @todo this will need to change on Theme refactor
                 },
             ];
 
             return updateObjectsArray;
 
         } catch (err: any) {
-            console.log('CreateObjectArrays.createComposerObjects()');
+            console.log('createComposerObjects()');
             console.error(err);
         }
     };
@@ -72,7 +89,7 @@ export default class CreateObjectArrays {
      *
      * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
      */
-    public static createPackageObjects = async (values: PluginAnswerValues, packageAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    public static readPackageObjects = async (values: PluginAnswerValues, packageAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
             if (packageAlreadyExists) {
@@ -82,6 +99,27 @@ export default class CreateObjectArrays {
 
                 return [];
             }
+
+            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.createPackageObjects(values);
+
+            return updateObjectsArray;
+
+        } catch (err: any) {
+            console.log('CreateObjectArrays.readPackageObjects()');
+            console.error(err);
+        }
+    };
+
+    /**
+     * @description
+     * @private
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {PluginAnswerValues} values
+     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     */
+    private static createPackageObjects = async (values: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
+        try {
 
             const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
                 {
@@ -99,7 +137,7 @@ export default class CreateObjectArrays {
             return updateObjectsArray;
 
         } catch (err: any) {
-            console.log('CreateObjectArrays.createPackageObjects()');
+            console.log('readPackageObjects()');
             console.error(err);
         }
     };

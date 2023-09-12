@@ -2,7 +2,6 @@ import 'dotenv/config';
 
 // Core Modules
 import path from 'path';
-import { PathLike, readdirSync } from 'fs';
 
 // Community Modules
 import fs from 'fs-extra';
@@ -52,9 +51,8 @@ export default class PathUtils {
             return fs.pathExistsSync(`${await this.whereAmI()}/wp-admin/admin-ajax.php`);
 
         } catch (err) {
-
+            console.log('PathUtils.isWordpressInstall()');
             console.error(err);
-
         }
     };
 
@@ -69,9 +67,8 @@ export default class PathUtils {
             return path.resolve(`${await this.whereAmI()}/wp-content/themes`);
 
         } catch (err) {
-
+            console.log('PathUtils.getThemesFolderPath()');
             console.error(err);
-
         }
     };
 
@@ -86,9 +83,8 @@ export default class PathUtils {
             return path.resolve(`${await this.whereAmI()}/wp-content/plugins`);
 
         } catch (err) {
-
+            console.log('PathUtils.getPluginsFolderPath()');
             console.error(err);
-
         }
     };
 
@@ -116,9 +112,8 @@ export default class PathUtils {
             }
 
         } catch (err: any) {
-            console.log('ScaffoldTheme.checkForWordPressInstall()');
+            console.log('PathUtils.checkForWordPressInstall()');
             console.error(err);
-
         }
     };
 
@@ -141,12 +136,10 @@ export default class PathUtils {
             }
 
         } catch (err: any) {
-
+            console.log('PathUtils.validateIsPathWithDisplay()');
             console.error(err);
-
         }
     };
-
 
     /**
      * @description
@@ -161,7 +154,7 @@ export default class PathUtils {
             return fs.existsSync(path);
 
         } catch (err: any) {
-            console.log('validateIsPath');
+            console.log('PathUtils.validateIsPath');
             console.error(err);
         }
     };
