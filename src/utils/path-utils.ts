@@ -2,16 +2,19 @@ import 'dotenv/config';
 
 // Core Modules
 import path from 'path';
-import { PathLike, readdirSync } from 'fs';
 
 // Community Modules
 import fs from 'fs-extra';
-import fuzzy from 'fuzzy';
-// import { random } from 'lodash';
+import colors from 'colors';
 
 // Package modules
 import DebugUtils from './debug-utils.js';
 
+/**
+ * @class
+ * @classdesc
+ * @author Keith Murphy | nomadmystics@gmail.com
+ */
 export default class PathUtils {
     /**
      * @description Gets the current path
@@ -33,7 +36,7 @@ export default class PathUtils {
             return path.resolve(process.cwd());
 
         }
-    }
+    };
 
     /**
      * @description Check if the users is the root of the project or another folder
@@ -48,11 +51,10 @@ export default class PathUtils {
             return fs.pathExistsSync(`${await this.whereAmI()}/wp-admin/admin-ajax.php`);
 
         } catch (err) {
-
+            console.log('PathUtils.isWordpressInstall()');
             console.error(err);
-
         }
-    }
+    };
 
     /**
      * @description Get the current WP themes folder
@@ -65,24 +67,96 @@ export default class PathUtils {
             return path.resolve(`${await this.whereAmI()}/wp-content/themes`);
 
         } catch (err) {
-
+            console.log('PathUtils.getThemesFolderPath()');
             console.error(err);
-
-            return;
-
         }
-
     };
 
-    public static checkFileExists = async (path: string, exit = false): Promise<void> => {
+    /**
+     * @description Get the current WP themes folder
+     *
+     * @return {Promise<string | void>}
+     */
+    public static getPluginsFolderPath = async (): Promise<string | undefined> => {
         try {
 
+            return path.resolve(`${await this.whereAmI()}/wp-content/plugins`);
 
         } catch (err) {
-
+            console.log('PathUtils.getPluginsFolderPath()');
             console.error(err);
-
         }
-    }
+    };
+
+    /**
+     * @description Make sure we have a WordPress install at this root folder
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return Promise<void>
+     */
+    public static checkForWordPressInstall  = async (): Promise<void> => {
+        try {
+            // Enable debug mode?
+            const isDebugMode: boolean = await DebugUtils.isDebugMode();
+            const isInstalled: boolean | undefined = await PathUtils.isWordpressInstall();
+
+            // Let the user know they need to be in the root of the project and bail early
+            if (!isInstalled && !isDebugMode) {
+
+                console.log(colors.yellow('Your path is not at the root of your WordPress install.'));
+                console.log(colors.yellow(`You are located at ${this.whereAmI}`));
+                console.log(colors.yellow('Please move to the root WordPress install folder.'));
+
+                process.exit(1);
+            }
+
+        } catch (err: any) {
+            console.log('PathUtils.checkForWordPressInstall()');
+            console.error(err);
+        }
+    };
+
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return
+     */
+    public static validateIsPathWithDisplay = async (path: string, message: string, exit: boolean = false): Promise<void> => {
+        try {
+
+            if (fs.existsSync(path)) {
+                console.log(colors.red(message));
+
+                if (exit) {
+                    process.exit(0);
+                }
+            }
+
+        } catch (err: any) {
+            console.log('PathUtils.validateIsPathWithDisplay()');
+            console.error(err);
+        }
+    };
+
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @return {Promise<boolean | any>}
+     */
+    public static validateIsPath = async (path: string): Promise<boolean | any> => {
+        try {
+
+            return fs.existsSync(path);
+
+        } catch (err: any) {
+            console.log('PathUtils.validateIsPath');
+            console.error(err);
+        }
+    };
 }
 

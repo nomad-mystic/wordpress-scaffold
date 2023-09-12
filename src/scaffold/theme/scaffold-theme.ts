@@ -23,7 +23,7 @@ import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-val
  * @param {object} values
  * @param {string} values.themeName
  * @param {string} values.themesPath
- * @param {string} values.newThemePath
+ * @param {string} values.finalPath
  * @param {string} values.themeDescription
  * @param {boolean} values.addFrontEndBuildTools ?
  * @param {string} values.frontEndFramework
@@ -35,16 +35,16 @@ import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-val
 const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
     try {
         let {
-            themeName,
+            name,
             themesPath,
-            newThemePath,
+            finalPath,
             themeDescription,
             frontEndFramework,
             safeThemeName,
             capAndSnakeCaseTheme,
         } = values;
 
-        const newThemePathString: string = newThemePath ? newThemePath : '';
+        const newThemePathString: string = finalPath ? finalPath : '';
 
         // Bail early
         if (fs.existsSync(newThemePathString)) {
@@ -87,7 +87,7 @@ const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
             {
                 fileName: 'style.css',
                 stringToUpdate: 'THEME_NAME',
-                updateString: themeName,
+                updateString: name,
             },
             {
                 fileName: 'style.css',
@@ -101,7 +101,7 @@ const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
             if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
                 updateScaffoldFile(
-                    newThemePath,
+                    finalPath,
                     updateObjectsArray[update].fileName,
                     updateObjectsArray[update].stringToUpdate,
                     updateObjectsArray[update].updateString,

@@ -10,7 +10,7 @@ import fs from 'fs';
 // Package modules
 import getProjectOptions from '../config/project-options.js';
 import scaffoldProject from '../scaffold/project/scaffold-project.js';
-import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
+import updateInternalJson from '../scaffold/common/update-internal-json.js';
 
 // Interfaces
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
@@ -23,11 +23,7 @@ import PathUtils from '../utils/path-utils.js';
 
 import InquirerCli from '../cli/inquirer-cli.js';
 import AbstractScaffold from '../abstract/AbstractScaffold.js';
-
-// Bail early!!!
-// Check to make sure we have PHP and WP-CLI
-CheckDepends.dependencyInstalled('php', 'Sorry, this script requires the PHP CLI');
-CheckDepends.dependencyInstalled('wp', 'Sorry, this script requires the WP-CLI');
+import MessagingUtils from '../utils/messaging-utils.js';
 
 /**
  * @class ScaffoldProject
@@ -43,8 +39,13 @@ class ScaffoldProject extends AbstractScaffold {
      *
      * @return Promise<void>
      */
-    public static performScaffolding = async (): Promise<void> => {
+    public static initializeScaffolding = async (): Promise<void> => {
         try {
+            // Bail early!!!
+            // Check to make sure we have PHP and WP-CLI
+            CheckDepends.dependencyInstalled('php', 'Sorry, this script requires the PHP CLI');
+            CheckDepends.dependencyInstalled('wp', 'Sorry, this script requires the WP-CLI');
+
             const answers: InitAnswers | void = await InquirerCli.performPromptsTasks(await getProjectOptions()).catch((err) => console.error(err));
 
             // Gather our location
@@ -65,13 +66,11 @@ class ScaffoldProject extends AbstractScaffold {
             // Install .git
             await this.installGit();
 
-            // Let the user know it has been created
-            console.log(colors.green(`Your ${config['project-name']} project has been scaffold.`));
+            await MessagingUtils.displayColoredMessage(`Your ${config['project-name']} project has been scaffold.`)
 
         } catch (err: any) {
-
+            console.log('ScaffoldProject.initializeScaffolding()');
             console.error(err);
-
         }
     };
 
@@ -85,15 +84,22 @@ class ScaffoldProject extends AbstractScaffold {
      * @return Promise<void>
      */
     private static downloadWPCoreCode = async (): Promise<void> => {
-        // Change the path for download to our "WordPress" working directory
-        if (this.isDebugFullMode) {
+        try {
 
-            // Build the core files
-            shell.exec(`wp core download --path=${process.env.WORDPRESS_PATH}`);
+            // Change the path for download to our "WordPress" working directory
+            if (this.isDebugFullMode) {
 
-        } else {
-            // Build the core files
-            shell.exec('wp core download');
+                // Build the core files
+                shell.exec(`wp core download --path=${process.env.WORDPRESS_PATH}`);
+
+            } else {
+                // Build the core files
+                shell.exec('wp core download');
+            }
+
+        } catch (err: any) {
+            console.log('ScaffoldProject.downloadWPCoreCode()');
+            console.error(err);
         }
     };
 
@@ -107,15 +113,22 @@ class ScaffoldProject extends AbstractScaffold {
      * @return Promise<void>
      */
     private static installWPCoreDB = async (answers: InitAnswers | void): Promise<void> => {
-        let installCommand: string = `--url="${answers?.siteUrl}" --title="${answers?.siteTitle}" --admin_user="${answers?.siteAdminUser}" --admin_password="${answers?.siteAdminPassword}" --admin_email="${answers?.adminEmail}" --skip-email`;
+        try {
 
-        if (this.isDebugFullMode) {
-            installCommand += ` --path="${process.env.WORDPRESS_PATH}"`;
-        }
+            let installCommand: string = `--url="${answers?.siteUrl}" --title="${answers?.siteTitle}" --admin_user="${answers?.siteAdminUser}" --admin_password="${answers?.siteAdminPassword}" --admin_email="${answers?.adminEmail}" --skip-email`;
 
-        // If we didn't set up the wp-config.php we can't install WordPress
-        if (answers?.databaseSetup) {
-            shell.exec(`wp core install ${installCommand}`);
+            if (this.isDebugFullMode) {
+                installCommand += ` --path="${process.env.WORDPRESS_PATH}"`;
+            }
+
+            // If we didn't set up the wp-config.php we can't install WordPress
+            if (answers?.databaseSetup) {
+                shell.exec(`wp core install ${installCommand}`);
+            }
+
+        } catch (err: any) {
+            console.log('ScaffoldProject.installWPCoreDB()');
+            console.error(err);
         }
     };
 
@@ -127,12 +140,19 @@ class ScaffoldProject extends AbstractScaffold {
      * @return Promise<void>
      */
     private static installGit = async (): Promise<void> => {
-        // Init a git repo if we don't have one already
-        if (CheckDepends.dependencyInstalled('git', '', false) && !fs.existsSync('.git')) {
-            // We don't want to create a git repo if we are debugging
-            if (!this.isDebugFullMode) {
-                shell.exec('git init');
+        try {
+
+            // Init a git repo if we don't have one already
+            if (CheckDepends.dependencyInstalled('git', '', false) && !fs.existsSync('.git')) {
+                // We don't want to create a git repo if we are debugging
+                if (!this.isDebugFullMode) {
+                    shell.exec('git init');
+                }
             }
+
+        } catch (err: any) {
+            console.log('ScaffoldProject.installGit()');
+            console.error(err);
         }
     };
 
@@ -147,10 +167,10 @@ class ScaffoldProject extends AbstractScaffold {
         try {
             const filePath: string = `${this.whereAmI}/internal/project/project-config.json`;
 
-            await updateScaffoldJson(filePath, answers);
+            await updateInternalJson(filePath, answers);
 
             // Manually update these properties
-            const config = await updateScaffoldJson(filePath, {
+            const config = await updateInternalJson(filePath, {
                 'absolute-project-folder': this.whereAmI,
             });
 
@@ -163,11 +183,10 @@ class ScaffoldProject extends AbstractScaffold {
             return config;
 
         } catch (err) {
-
+            console.log('ScaffoldProject.scaffoldFiles()');
             console.error(err);
-
         }
-    }
+    };
 }
 
-ScaffoldProject.performScaffolding().catch(err => console.error(err));
+ScaffoldProject.initializeScaffolding().catch(err => console.error(err));

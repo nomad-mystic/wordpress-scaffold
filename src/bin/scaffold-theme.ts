@@ -21,7 +21,7 @@ import ThemeConfig from '../interfaces/theme/interface-theme-config.js';
 import ThemeAnswerValues from '../interfaces/theme/interface-theme-answer-values.js';
 
 // Functions
-import updateScaffoldJson from '../scaffold/common/update-scaffold-json.js';
+import updateInternalJson from '../scaffold/common/update-internal-json.js';
 import getThemeOptions from '../config/theme-options.js';
 import scaffoldTheme from '../scaffold/theme/scaffold-theme.js';
 import scaffoldThemeRoot from '../scaffold/theme/scaffold-root.js';
@@ -40,7 +40,7 @@ class ScaffoldTheme extends AbstractScaffold {
     /**
      * {@inheritDoc AbstractScaffold}
      */
-    public static performScaffolding = async (): Promise<void> => {
+    public static initializeScaffolding = async (): Promise<void> => {
         try {
             // Gather our location
             this.whereAmI = await PathUtils.whereAmI();
@@ -49,7 +49,7 @@ class ScaffoldTheme extends AbstractScaffold {
             this.isDebugFullMode = await DebugUtils.isDebugFullMode();
 
             // Bail early
-            await this.checkForWordPressInstall();
+            await PathUtils.checkForWordPressInstall();
 
             const answers: ThemeAnswers | void = await InquirerCli.performPromptsTasks(await getThemeOptions()).catch((err) => console.error(err));
 
@@ -60,36 +60,6 @@ class ScaffoldTheme extends AbstractScaffold {
             console.error(err);
         }
     };
-
-    /**
-     * @description Make sure we have a WordPress install at this root folder
-     * @public
-     * @author Keith Murphy | nomadmystics@gmail.com
-     *
-     * @return Promise<void>
-     */
-    private static checkForWordPressInstall  = async (): Promise<void> => {
-        try {
-            // Enable debug mode?
-            const isDebugMode: boolean = await DebugUtils.isDebugMode();
-            const isInstalled: boolean | undefined = await PathUtils.isWordpressInstall();
-
-            // Let the user know they need to be in the root of the project and bail early
-            if (!isInstalled && !isDebugMode) {
-
-                console.log(colors.yellow('Your path is not at the root of your WordPress install.'));
-                console.log(colors.yellow(`You are located at ${this.whereAmI}`));
-                console.log(colors.yellow('Please move to the root WordPress install folder.'));
-
-                process.exit(1);
-            }
-
-        } catch (err: any) {
-            console.log('ScaffoldTheme.checkForWordPressInstall()');
-            console.error(err);
-
-        }
-    }
 
     /**
      * {@inheritDoc AbstractScaffold}
@@ -106,7 +76,7 @@ class ScaffoldTheme extends AbstractScaffold {
             await this.updateScaffoldClasses(themeValues);
 
             // Let the user know it has been created
-            console.log(colors.green(`Your ${themeValues.themeName} theme has been scaffold.`));
+            console.log(colors.green(`Your ${themeValues.name} theme has been scaffold.`));
             console.log(colors.yellow(`Check: ${themeValues.themesPath}/${themeValues.safeThemeName}`));
 
         } catch (err: any) {
@@ -164,13 +134,13 @@ class ScaffoldTheme extends AbstractScaffold {
             }
 
             // // Update our config before we scaffold theme, so we can use it in our scaffold functions
-            configUpdates = await updateScaffoldJson(configFilePath, configUpdates);
+            configUpdates = await updateInternalJson(configFilePath, configUpdates);
 
             return {
                 projectName: configUpdates['project-name'],
-                themeName: themeName,
+                name: themeName,
                 themesPath: themesPath,
-                newThemePath: newThemePath,
+                finalPath: newThemePath,
                 themeDescription: themeDescription,
                 frontEndFramework: frontEndFramework,
                 siteUrl: siteUrl,
@@ -244,4 +214,4 @@ class ScaffoldTheme extends AbstractScaffold {
     }
 }
 
-ScaffoldTheme.performScaffolding().catch(err => console.error(err));
+ScaffoldTheme.initializeScaffolding().catch(err => console.error(err));

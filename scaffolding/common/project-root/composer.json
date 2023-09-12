@@ -1,0 +1,24 @@
+{
+    "name": "SCAFFOLD_NAME/SCAFFOLD_NAME",
+    "description": "SCAFFOLD_DESCRIPTION",
+    "type": "project",
+    "scripts": {
+        "auto-load-classes": "composer dump-autoload -o"
+    },
+    "autoload": {
+        "psr-4": {
+            "PASCAL_NAME\\": ["PATH_TO_COMPOSERclasses"],
+            "PASCAL_NAMEBase\\": ["PATH_TO_COMPOSERclasses/base"],
+            "PASCAL_NAMETraits\\": ["PATH_TO_COMPOSERclasses/traits"],
+            "PASCAL_NAMEUtils\\": ["PATH_TO_COMPOSERclasses/utils"],
+            "PASCAL_NAMEInterfaces\\": ["PATH_TO_COMPOSERclasses/interfaces"],
+            "PASCAL_NAMEShortcodes\\": ["PATH_TO_COMPOSERclasses/shortcodes"],
+            "PASCAL_NAMEPostTypes\\": ["PATH_TO_COMPOSERclasses/post-types"],
+            "PASCAL_NAMEPostTypesTaxonomies\\": ["PATH_TO_COMPOSERclasses/post-types/taxonomies"],
+            "PASCAL_NAMEPostTypesAdmin\\": ["PATH_TO_COMPOSERclasses/post-types/admin"],
+            "PASCAL_NAMEPostTypesUtils\\": ["PATH_TO_COMPOSERclasses/post-types/utils"],
+            "PASCAL_NAMERest\\": ["PATH_TO_COMPOSERclasses/rest"]
+        }
+    },
+    "require": {}
+}

@@ -10,4 +10,5 @@ export default interface InitAnswers {
     projectName?: string | undefined;
     siteUrl?: string | undefined;
     devSiteUrl?: string | undefined;
+    type?: 'project';
 }

@@ -8,5 +8,5 @@ export default interface InquirerCliOptions {
     default?: boolean | string | void;
     choices?: Array<string>
     when?(answers: InitAnswers | ThemeAnswers): void;
-    validate?(value: string): true | string;
+    validate?(value: string): boolean | string;
 }

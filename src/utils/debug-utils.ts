@@ -1,5 +1,7 @@
 // Community modules
 import 'dotenv/config';
+import fs from "fs";
+import colors from "colors";
 
 /**
  * @class DebugUtils

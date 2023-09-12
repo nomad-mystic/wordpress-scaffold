@@ -150,7 +150,16 @@ $ npm i
 $ npm run dev:tsc
 ```
 
-#### Local Testing
+#### Local dev commands
+```shell
+$ npm run dev:wps -- --version
+$ npm run dev:wps -- --help
+$ npm run dev:wps -- --project-init
+$ npm run dev:wps -- --theme
+$ npm run dev:wps -- --plugin
+```
+
+#### Package Testing
 ```shell
 $ npm pack ./ --pack-destination="<PATH_TO_FOLDER>"
 $ cd <PATH_TO_FOLDER>

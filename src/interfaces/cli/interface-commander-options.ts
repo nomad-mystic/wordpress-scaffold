@@ -3,4 +3,4 @@ export default interface InterfaceCommanderOptions {
     readonly theme: object;
     readonly plugin: object;
     [propName: string]: any;
-}
+};

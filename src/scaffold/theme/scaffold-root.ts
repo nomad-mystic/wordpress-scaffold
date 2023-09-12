@@ -62,6 +62,7 @@ const scaffoldThemeRoot = async (values: ThemeAnswerValues): Promise<void> => {
         }
 
         // Check if the composer.json exists and let the user know
+        // @todo maybe bring this into a common set of methods for the plugin as well
         if (composerExists) {
 
             console.log(colors.red('Looks like you already have a composer.json file, so this will not be scaffolded'));

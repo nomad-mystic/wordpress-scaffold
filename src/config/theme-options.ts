@@ -4,13 +4,14 @@ import ProjectConfig from '../interfaces/project/interface-project-config.js';
 
 import { getInternalConfig } from '../utils/get-config.js';
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
+import getCommonOptions from './common-options.js';
 
 /**
  * @description Interactive CLI options for building the theme
  *
  * @type {[{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string, choices: string[]}]}
  */
-const themeOptions: Array<InquirerCliOptions> = [
+let themeOptions: Array<InquirerCliOptions> = [
     {
         type: 'input',
         name: 'themeName',
@@ -45,43 +46,17 @@ const getThemeOptions = async (): Promise<Array<any> | undefined> => {
 
         let jsonFileParsed: ProjectConfig = await getInternalConfig('project/project-config.json');
 
-        // Gather the information we need if the user didn't use the init command
-        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['project-name'] === '') {
-            const projectNameOption: InquirerCliOptions = {
-                type: 'input',
-                name: 'projectName',
-                message: 'What is the name of your WordPress site?',
-                default: 'scaffold-project',
-            };
+        // Check if we need common options
+        const commonOptions: InquirerCliOptions = await getCommonOptions(jsonFileParsed);
 
-            themeOptions.unshift(projectNameOption);
-        }
-
-        if (jsonFileParsed && typeof jsonFileParsed !== 'undefined' && jsonFileParsed['site-url'] === '' || jsonFileParsed['dev-site-url'] === '') {
-            const siteUrlOption: InquirerCliOptions = {
-                type: 'input',
-                name: 'siteUrl',
-                message: 'What is the URL of your WordPress site?',
-                default: 'https://example.com',
-            };
-
-            const devSiteUrl: InquirerCliOptions = {
-                type: 'input',
-                name: 'devSiteUrl',
-                message: 'What is the development URL of your WordPress site?',
-                default: 'https://example.com.test',
-            };
-
-            themeOptions.push(siteUrlOption);
-            themeOptions.push(devSiteUrl);
-        }
+        // "Merge" our arrays
+        themeOptions = themeOptions.concat(commonOptions)
 
         return themeOptions;
 
     } catch (err) {
-
+        console.log('getThemeOptions()');
         console.error(err);
-
     }
 }
 
