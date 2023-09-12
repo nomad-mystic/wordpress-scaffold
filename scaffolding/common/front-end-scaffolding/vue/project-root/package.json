@@ -5,7 +5,9 @@
     "main": "webpack.config.js",
     "scripts": {
         "production": "NODE_ENV=production webpack --config=webpack.config.js && npm run delete-maps",
+        "prod": "npm run production",
         "development": "NODE_ENV=development webpack --config=webpack.config.js --watch",
+        "dev": "npm run development",
         "delete-maps": "find ./ -name '*.map' -delete"
     },
     "author": "",

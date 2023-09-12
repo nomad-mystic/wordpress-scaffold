@@ -12,7 +12,6 @@ import updateInternalJson, { ProjectJson } from '../scaffold/common/update-inter
 
 // Utils
 import PathUtils from '../utils/path-utils.js';
-import DebugUtils from '../utils/debug-utils.js';
 import StringUtils from '../utils/string-utils.js';
 
 // Interfaces
@@ -27,6 +26,7 @@ import getPluginOptions from '../config/plugin-options.js';
 import UpdateTypeFiles from '../scaffold/common/update-type-files.js';
 import MessagingUtils from '../utils/messaging-utils.js';
 import CreateObjectArrays from '../scaffold/common/create-object-arrays.js';
+import DebugUtils from "../utils/debug-utils.js";
 
 /**
  * @classdesc Scaffold a new theme based on user's inputs
@@ -35,6 +35,12 @@ import CreateObjectArrays from '../scaffold/common/create-object-arrays.js';
  * @author Keith Murphy | nomadmystics@gmail.com
  */
 class ScaffoldPlugin extends AbstractScaffold {
+    /**
+     * @type boolean
+     * @private
+     */
+    private static isDebugFullMode: boolean = false;
+
     /**
      * @type boolean
      * @private
@@ -61,6 +67,9 @@ class ScaffoldPlugin extends AbstractScaffold {
             // Bail early
             await PathUtils.checkForWordPressInstall();
 
+            // Check for debug mode values
+            this.isDebugFullMode = await DebugUtils.isDebugFullMode();
+
             // Get our answers
             const answers: PluginAnswers | void = await InquirerCli.performPromptsTasks(await getPluginOptions()).catch((err) => console.error(err));
 
@@ -81,7 +90,9 @@ class ScaffoldPlugin extends AbstractScaffold {
             // Build the values we need
             this.pluginValues = await this.buildValueObject(answers);
 
-            console.log(this.pluginValues);
+            if (this.isDebugFullMode) {
+                console.log(this.pluginValues);
+            }
 
             // Validate we aren't overwriting another plugin with the same name
             await PathUtils.validateIsPathWithDisplay(this.pluginValues.finalPath, 'There is already a plugin with that name. Please use another name.', true);
@@ -111,9 +122,6 @@ class ScaffoldPlugin extends AbstractScaffold {
      */
     private static buildValueObject = async (answers: PluginAnswers | any): Promise<PluginAnswerValues | any> => {
         try {
-
-            console.log(answers);
-
             // Absolute path of the themes folder
             const pluginsPath: string | undefined = await PathUtils.getPluginsFolderPath();
 

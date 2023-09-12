@@ -32,10 +32,6 @@ export default class StringUtils {
     public static capAndSnakeCaseString = async (replaceString: string): Promise<string> => {
         let snakeCaseString: string = replaceString.replaceAll('-', '_');
 
-        console.log(snakeCaseString);
-
-        console.log(snakeCaseString.toUpperCase());
-
         return snakeCaseString.toUpperCase();
     };
 
