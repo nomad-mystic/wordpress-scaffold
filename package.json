@@ -5,19 +5,20 @@
     "main": "index.js",
     "type": "module",
     "scripts": {
-        "dev:project-init": "node ./dist/src/bin/scaffold-project-init.js",
-        "dev:plugin": "node ./dist/src/bin/scaffold-plugin.js",
-        "dev:theme": "node ./dist/src/bin/scaffold-theme.js",
-        "dev:wps": "./dist/src/bin/commander-cli.js",
+        "dev:project-init": "node ./dist/bin/scaffold-project-init.js",
+        "dev:plugin": "node ./dist/bin/scaffold-plugin.js",
+        "dev:theme": "node ./dist/bin/scaffold-theme.js",
+        "dev:wps": "./dist/bin/commander-cli.js",
         "dev:tsc": "tsc --watch --project ./",
+        "dev": "npm run dev:tsc",
         "production:build": "tsc --project ./",
         "postpack": "tsc --project ./"
     },
     "bin": {
-        "wps-scaffold-project-init": "./dist/src/bin/scaffold-project-init.js",
-        "wps-scaffold-plugin": "./dist/src/bin/scaffold-plugin.js",
-        "wps-scaffold-theme": "./dist/src/bin/scaffold-theme.js",
-        "wps": "./dist/src/bin/commander-cli.js"
+        "wps-scaffold-project-init": "./dist/bin/scaffold-project-init.js",
+        "wps-scaffold-plugin": "./dist/bin/scaffold-plugin.js",
+        "wps-scaffold-theme": "./dist/bin/scaffold-theme.js",
+        "wps": "./dist/bin/commander-cli.js"
     },
     "repository": {
         "type": "git",
