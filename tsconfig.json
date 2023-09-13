@@ -12,7 +12,7 @@
 
         /* Modules */
         "module": "esnext",
-        "rootDir": "./",
+        "rootDir": "./src",
         "moduleResolution": "node16",
         "rootDirs": [],
         "types": [

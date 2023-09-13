@@ -147,7 +147,7 @@ $ git clone git@github.com:nomad-mystic/wordpress-scaffold-cli.git ./scaffold-cl
 $ cd scaffold-cli
 $ nvm use
 $ npm i
-$ npm run dev:tsc
+$ npm run dev:tsc | npm run dev | npm run production:build 
 ```
 
 #### Local dev commands
