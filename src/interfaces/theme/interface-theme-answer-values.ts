@@ -1,14 +1,15 @@
 export default interface ThemeAnswerValues {
+    type?: 'theme';
     projectName?: string;
     name?: string;
+    safeName?: string;
     themesPath?: string;
     finalPath?: string;
-    themeDescription?: string;
+    description?: string;
     frontEndFramework?: string;
     siteUrl?: string;
     devSiteUrl?: string;
-    safeThemeName?: string;
     capAndSnakeCaseTheme?: string;
     projectNamespace?: string;
-    type?: 'theme';
+    namespace?: string;
 }

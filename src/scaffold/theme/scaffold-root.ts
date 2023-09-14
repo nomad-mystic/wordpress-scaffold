@@ -30,9 +30,9 @@ const scaffoldThemeRoot = async (values: ThemeAnswerValues): Promise<void> => {
     try {
         let {
             projectName,
-            themeDescription,
+            description,
             frontEndFramework,
-            safeThemeName,
+            safeName,
             projectNamespace,
         } = values;
 

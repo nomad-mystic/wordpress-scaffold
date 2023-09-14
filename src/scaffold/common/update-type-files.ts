@@ -13,6 +13,7 @@ import { packageRootDir } from '../../utils/package-root.js';
 import PluginAnswerValues from '../../interfaces/plugin/interface-plugin-answer-values.js';
 import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
 import ScaffoldCopyFolders from '../../interfaces/common/interface-scaffold-copy-folders.js';
+import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
 
 /**
  * @classdesc This class is used to update file contents based on the data it takes in.
@@ -25,6 +26,7 @@ export default class UpdateTypeFiles {
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
+     * @param {Array<ScaffoldCopyFolders>} foldersToCopy
      * @return {Promise<void>}
      */
     public static copyFiles = async (foldersToCopy: Array<ScaffoldCopyFolders>): Promise<void> => {
@@ -46,13 +48,15 @@ export default class UpdateTypeFiles {
     };
 
     /**
-     * @description
+     * @description For each update object passed search and replace the values on our files
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
+     * @param {PluginAnswerValues | ThemeAnswerValues} values
+     * @param {Array<ScaffoldJsonUpdates>} updateObjectsArray
      * @return {Promise<void>}
      */
-    public static updateFiles = async (values: PluginAnswerValues, updateObjectsArray: Array<ScaffoldJsonUpdates>): Promise<void> => {
+    public static updateFiles = async (values: PluginAnswerValues | ThemeAnswerValues, updateObjectsArray: Array<ScaffoldJsonUpdates>): Promise<void> => {
         try {
 
             // Update our files based on object properties
@@ -60,10 +64,10 @@ export default class UpdateTypeFiles {
                 if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
                     await this.updateFile(
-                        values.finalPath,
-                        updateObjectsArray[update].fileName,
-                        updateObjectsArray[update].stringToUpdate,
-                        updateObjectsArray[update].updateString,
+                        values?.finalPath,
+                        updateObjectsArray[update]?.fileName,
+                        updateObjectsArray[update]?.stringToUpdate,
+                        updateObjectsArray[update]?.updateString,
                     );
                 }
             }
@@ -114,13 +118,14 @@ export default class UpdateTypeFiles {
     };
 
     /**
-     * @description
+     * @description Based on the values from our answers update out class files
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
+     *  @param {PluginAnswerValues | ThemeAnswerValues} values
      * @return {Promise<void>}
      */
-    public static updateClassFiles = async (values: any): Promise<void> => {
+    public static updateClassFiles = async (values: PluginAnswerValues | ThemeAnswerValues): Promise<void> => {
         try {
             let updateObjectsArray: Array<ScaffoldJsonUpdates> = [];
 
@@ -147,7 +152,7 @@ export default class UpdateTypeFiles {
 
                         classObject.fileName = afterLastSlash;
                         classObject.stringToUpdate = 'PASCAL_NAME';
-                        classObject.updateString = values.namespace;
+                        classObject.updateString = values?.namespace;
 
                         classFileUpdates.push(classObject);
                     }
@@ -161,10 +166,10 @@ export default class UpdateTypeFiles {
                 if (updateObjectsArray[update] && typeof updateObjectsArray[update] !== 'undefined') {
 
                     await this.updateFile(
-                        updateObjectsArray[update].updatePath,
-                        updateObjectsArray[update].fileName,
-                        updateObjectsArray[update].stringToUpdate,
-                        updateObjectsArray[update].updateString,
+                        updateObjectsArray[update]?.updatePath,
+                        updateObjectsArray[update]?.fileName,
+                        updateObjectsArray[update]?.stringToUpdate,
+                        updateObjectsArray[update]?.updateString,
                     );
 
                 }
