@@ -5,6 +5,7 @@ import MessagingUtils from '../../utils/messaging-utils.js';
 // Interfaces
 import PluginAnswerValues from '../../interfaces/plugin/interface-plugin-answer-values.js';
 import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
+import ThemeAnswerValues from "../../interfaces/theme/interface-theme-answer-values.js";
 
 /**
  * @classdesc
@@ -19,7 +20,7 @@ export default class CreateObjectArrays {
      *
      * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
      */
-    public static readComposerObjects = async (values: PluginAnswerValues, composerAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    public static readComposerObjects = async (values: PluginAnswerValues | ThemeAnswerValues, composerAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
             if (composerAlreadyExists) {
@@ -30,9 +31,7 @@ export default class CreateObjectArrays {
                 return [];
             }
 
-            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.createComposerObjects(values);
-
-            return updateObjectsArray;
+            return await this.createComposerObjects(values);
 
         } catch (err: any) {
             console.log('CreateObjectArrays.readComposerObjects()');
@@ -48,7 +47,7 @@ export default class CreateObjectArrays {
      * @param {PluginAnswerValues} values
      * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
      */
-    private static createComposerObjects = async (values: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    private static createComposerObjects = async (values: PluginAnswerValues | ThemeAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
             const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
@@ -89,7 +88,7 @@ export default class CreateObjectArrays {
      *
      * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
      */
-    public static readPackageObjects = async (values: PluginAnswerValues, packageAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    public static readPackageObjects = async (values: PluginAnswerValues | ThemeAnswerValues, packageAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
             if (packageAlreadyExists) {
@@ -100,9 +99,7 @@ export default class CreateObjectArrays {
                 return [];
             }
 
-            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.createPackageObjects(values);
-
-            return updateObjectsArray;
+            return await this.createPackageObjects(values);
 
         } catch (err: any) {
             console.log('CreateObjectArrays.readPackageObjects()');
@@ -118,7 +115,7 @@ export default class CreateObjectArrays {
      * @param {PluginAnswerValues} values
      * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
      */
-    private static createPackageObjects = async (values: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    private static createPackageObjects = async (values: PluginAnswerValues | ThemeAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
         try {
 
             const updateObjectsArray: Array<ScaffoldJsonUpdates> = [

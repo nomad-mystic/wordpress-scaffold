@@ -1,7 +1,7 @@
 <?php
 
 // Extract values from config
-$active_theme = 'scaffold-theme';
+$active_theme = 'SAFE_NAME';
 
 // Get out theme config
 $project_config = file_get_contents(ABSPATH . 'internal/project/project-config.json');

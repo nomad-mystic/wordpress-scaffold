@@ -9,6 +9,9 @@ import { glob } from 'glob';
 // Package Modules
 import { packageRootDir } from '../../utils/package-root.js';
 
+// Classes
+import DebugUtils from '../../utils/debug-utils.js';
+
 // Interfaces
 import PluginAnswerValues from '../../interfaces/plugin/interface-plugin-answer-values.js';
 import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
@@ -22,6 +25,12 @@ import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-val
  */
 export default class UpdateTypeFiles {
     /**
+     * @private
+     * @type boolean
+     */
+    private static debugMode: boolean = false;
+
+    /**
      * @description Copy over the files we need based on what is provided to this
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
@@ -32,10 +41,15 @@ export default class UpdateTypeFiles {
     public static copyFiles = async (foldersToCopy: Array<ScaffoldCopyFolders>): Promise<void> => {
         try {
 
+            if (this.debugMode) {
+                await DebugUtils.classDebug('UpdateTypeFiles.copyFiles()', foldersToCopy);
+            }
+
             for (let copyFolder of foldersToCopy) {
-                fse.copySync(`${path.join(`${packageRootDir}/${copyFolder.source}`)}`,
-                    copyFolder.destination,
-                    {
+                const sourceFolder: string = `${path.join(`${packageRootDir}/${copyFolder.source}`)}`;
+                const destination: string = copyFolder.destination;
+
+                fse.copySync(sourceFolder, destination, {
                         overwrite: false
                     }
                 );
@@ -58,6 +72,11 @@ export default class UpdateTypeFiles {
      */
     public static updateFiles = async (values: PluginAnswerValues | ThemeAnswerValues, updateObjectsArray: Array<ScaffoldJsonUpdates>): Promise<void> => {
         try {
+
+            if (this.debugMode) {
+                await DebugUtils.classDebug('UpdateTypeFiles.updateFiles()', values);
+                await DebugUtils.classDebug('UpdateTypeFiles.updateFiles()', updateObjectsArray);
+            }
 
             // Update our files based on object properties
             for (let update: number = 0; update < updateObjectsArray.length; update++) {
@@ -194,7 +213,7 @@ export default class UpdateTypeFiles {
             let webpackContent: string = fs.readFileSync(`${packageRootDir}/src/scaffold/mocks/mock-${type}-webpack.txt`, 'utf8');
 
             await this.updateFile(
-                values.finalPath,
+                values.finalPath, // @todo This needs to be project root?
                 'webpack.config.js',
                 'WEBPACK_PATH',
                 webpackContent,

@@ -2,13 +2,12 @@
 
 // Community modules
 import 'dotenv/config';
-import fse from "fs-extra";
 
 // Package modules
 // Classes
 import InquirerCli from '../cli/inquirer-cli.js';
 import AbstractScaffold from '../abstract/AbstractScaffold.js';
-import updateInternalJson, { ProjectJson } from '../scaffold/common/update-internal-json.js';
+import {ProjectJson} from '../scaffold/common/update-internal-json.js';
 
 // Utils
 import PathUtils from '../utils/path-utils.js';
@@ -248,7 +247,7 @@ class ScaffoldPlugin extends AbstractScaffold {
     private static buildFoldersToCopy = async (pluginValues: PluginAnswerValues): Promise<Array<ScaffoldCopyFolders> | any> => {
         try {
 
-            const foldersToCopy: Array<ScaffoldCopyFolders> = [
+            return [
                 {
                     source: 'scaffolding/plugin',
                     destination: `${pluginValues.finalPath}`,
@@ -273,9 +272,11 @@ class ScaffoldPlugin extends AbstractScaffold {
                     source: 'scaffolding/common/project-root',
                     destination: `${pluginValues.finalPath}`,
                 },
+                {
+                    source: 'scaffolding/common/root',
+                    destination: `${pluginValues.finalPath}`,
+                },
             ];
-
-            return foldersToCopy;
 
         } catch (err: any) {
             console.log('ScaffoldPlugin.buildFoldersToCopy()');

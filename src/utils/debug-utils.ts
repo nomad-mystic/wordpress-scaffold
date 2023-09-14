@@ -46,4 +46,26 @@ export default class DebugUtils {
 
         return wordPressDebugPath;
     };
+
+    /**
+     * @description
+     * @public
+     * @author Keith Murphy | nomadmystics@gmail.com
+     *
+     * @param {string} message
+     * @param {any} debugObject
+     * @return {Promise<void>}
+     */
+    public static classDebug = async (message: string, debugObject: any): Promise<void> => {
+        try {
+
+            console.log(message);
+            console.log(debugObject);
+
+        } catch (err: any) {
+
+            console.error(err);
+
+        }
+    };
 }

@@ -4,7 +4,7 @@ export default interface ThemeAnswerValues {
     name?: string;
     safeName?: string;
     themesPath?: string;
-    finalPath?: string;
+    finalPath: string;
     description?: string;
     frontEndFramework?: string;
     siteUrl?: string;

@@ -75,7 +75,7 @@ const scaffoldThemeRoot = async (values: ThemeAnswerValues): Promise<void> => {
                 {
                     fileName: 'composer.json',
                     stringToUpdate: 'THEME_NAME',
-                    updateString: safeThemeName,
+                    updateString: safeName,
                 },
                 {
                     fileName: 'composer.json',
@@ -85,7 +85,7 @@ const scaffoldThemeRoot = async (values: ThemeAnswerValues): Promise<void> => {
                 {
                     fileName: 'composer.json',
                     stringToUpdate: 'THEME_DESCRIPTION',
-                    updateString: themeDescription,
+                    updateString: description,
                 },
             ];
 
@@ -103,12 +103,12 @@ const scaffoldThemeRoot = async (values: ThemeAnswerValues): Promise<void> => {
                 {
                     fileName: 'package.json',
                     stringToUpdate: 'THEME_NAME',
-                    updateString: safeThemeName,
+                    updateString: safeName,
                 },
                 {
                     fileName: 'package.json',
                     stringToUpdate: 'THEME_DESCRIPTION',
-                    updateString: themeDescription,
+                    updateString: description,
                 },
                 {
                     fileName: 'webpack.config.js',
