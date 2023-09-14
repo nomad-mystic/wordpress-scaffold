@@ -93,7 +93,7 @@ class CommanderCli {
     private static callCommand = async (command: string): Promise<void> => {
         try {
             const path: string = CommanderOptions[command].path as string;
-            const fullPath: string = `${packageRootDir}dist/${path}`;
+            const fullPath: string = `${packageRootDir}/dist/${path}`;
 
             // Bail early
             if (!fs.existsSync(fullPath)) {
