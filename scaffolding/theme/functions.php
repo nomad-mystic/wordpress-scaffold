@@ -37,8 +37,6 @@ if (file_exists(ABSPATH . "wp-content/themes/{$active_theme}/classes/BootstrapCl
     require_once(ABSPATH . "wp-content/themes/{$active_theme}/classes/BootstrapClasses.php");
 }
 
-
-
 // Auto require includes PHP files
 if (is_dir(get_stylesheet_directory() . '/includes/')) {
     $includes_php_path = get_stylesheet_directory() . '/includes/';

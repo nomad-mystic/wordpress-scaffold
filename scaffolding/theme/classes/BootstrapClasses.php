@@ -28,8 +28,9 @@ class BootstrapClasses
 
         // Let the user know there was an issue with a WordPress alert!!!
         if (empty($composer_file)) {
-            add_action( 'admin_notices', function() {
-                printf( '<div class="notice notice-error"><p>Warning: %s</p></div>', 'Composer.json missing from the project, please add!');
+            add_action('admin_notices', function () {
+                printf('<div class="notice notice-error"><p>Warning: %s</p></div>',
+                    'Composer.json missing from the project, please add!');
             });
 
             return;
@@ -50,7 +51,7 @@ class BootstrapClasses
      * @param string|false $composer_file
      * @return array
      */
-    private function get_composer_classes(string | false $composer_file): array
+    private function get_composer_classes(string|false $composer_file): array
     {
         $classes = [];
         $count = 0;
@@ -107,7 +108,6 @@ class BootstrapClasses
         for ($namespace = 0; $namespace < count($composer_classes); $namespace++) {
             // Sanity check
             if (!empty($composer_classes[$namespace])) {
-
                 // For each of the classes check if we have hooks and build
                 if (isset($composer_classes[$namespace]->namespace) &&
                     !empty($composer_classes[$namespace]->namespace) &&
@@ -116,20 +116,16 @@ class BootstrapClasses
                 ) {
                     for ($class = 0; $class < count($composer_classes[$namespace]->classes); $class++) {
                         // Store our current needed variables
-                        $class_filename =  basename($composer_classes[$namespace]->classes[$class], '.php');
+                        $class_filename = basename($composer_classes[$namespace]->classes[$class], '.php');
                         $current_namespace = $composer_classes[$namespace]->namespace;
 
                         // Name sure things don't blow up here
                         if (class_exists($current_namespace . "\\" . $class_filename)) {
-
                             // Don't call this over and over again, no need to create an infinite loop here
                             if ($class_filename !== 'BootstrapClasses') {
-
                                 $this->instantiate_class($current_namespace . "\\" . $class_filename);
-
                             }
                         }
-
                     } // End for
                 } // End if
             } // End if
@@ -158,7 +154,6 @@ class BootstrapClasses
 
         // Sanity check and bail early if there aren't any methods
         if (!empty($methods)) {
-
             foreach ($methods as $method) {
                 if (!empty($method)) {
                     $method_name = $method->getName();
@@ -167,7 +162,7 @@ class BootstrapClasses
                     $doc_blocks = $reflector->getMethod($method_name)->getdoccomment();
 
                     // Define the regular expression pattern to use for string matching (Checking for @ in docBlock)
-                    $pattern = "#(@[a-zA-Z]+\s*[a-zA-Z0-9, ()_].*)#";
+                    $pattern = "#(@[a-zA-Z]+\s*[a-zA-Z0-9].*)#im";
                     $matches = null;
 
                     // Perform the regular expression on the string provided
@@ -175,7 +170,6 @@ class BootstrapClasses
 
                     // Make sure we have match with @ in the docBlock
                     if (!empty($matches[0]) && is_array($matches[0])) {
-
                         // We need to check for priority in the doc blocks first then apply theme to the action or filter
                         $priority = 10;
                         $priority_value = $this->check_for_property('@priority', $matches[0]);
@@ -190,22 +184,22 @@ class BootstrapClasses
                         foreach ($matches[0] as $block_property) {
                             if (!empty($block_property)) {
                                 // Check for filter or action
-                                preg_match('/@add_action*(.*)$/m', $block_property, $action_found);
-                                preg_match('/@add_filter*(.*)$/m', $block_property, $filter_found);
+                                preg_match('/@add_action*(.*)$/im', $block_property, $action_found);
+                                preg_match('/@add_filter*(.*)$/im', $block_property, $filter_found);
 
                                 // Here we go
-                                if(!empty($action_found)) {
+                                if (!empty($action_found)) {
                                     // Grab the hook name
-                                    $action = trim($action_found[1], ' ');
+                                    $action = trim($action_found[1]);
 
                                     // Do the action
                                     add_action($action, [$class, $method_name], $priority);
                                 }
 
                                 // Here we go
-                                if(!empty($filter_found)) {
+                                if (!empty($filter_found)) {
                                     // Grab the hook name
-                                    $filter = trim($filter_found[1], ' ');
+                                    $filter = trim($filter_found[1]);
 
                                     // Do the filter
                                     add_filter($filter, [$class, $method_name], $priority);
