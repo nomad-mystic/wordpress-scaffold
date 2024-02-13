@@ -7,7 +7,7 @@ import fse from "fs-extra";
 // Package modules
 // Classes
 import InquirerCli from '../cli/inquirer-cli.js';
-import AbstractScaffold from '../abstract/AbstractScaffold.js';
+import AbstractScaffold from '../abstract/abstract-scaffold.js';
 import updateInternalJson, { ProjectJson } from '../scaffold/common/update-internal-json.js';
 
 // Utils

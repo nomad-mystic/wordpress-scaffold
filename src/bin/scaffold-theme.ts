@@ -8,7 +8,7 @@ import colors from 'colors';
 // Package modules
 // Classes
 import InquirerCli from '../cli/inquirer-cli.js';
-import AbstractScaffold from '../abstract/AbstractScaffold.js';
+import AbstractScaffold from '../abstract/abstract-scaffold.js';
 
 // Utils
 import PathUtils from '../utils/path-utils.js';
