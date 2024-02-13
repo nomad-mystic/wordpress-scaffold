@@ -24,7 +24,7 @@ import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-val
  * @param {string} values.themeName
  * @param {string} values.themesPath
  * @param {string} values.finalPath
- * @param {string} values.themeDescription
+ * @param {string} values.description
  * @param {boolean} values.addFrontEndBuildTools ?
  * @param {string} values.frontEndFramework
  * @param {string} values.safeThemeName
@@ -38,7 +38,7 @@ const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
             name,
             themesPath,
             finalPath,
-            themeDescription,
+            description,
             frontEndFramework,
             safeThemeName,
             capAndSnakeCaseTheme,
@@ -92,7 +92,7 @@ const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
             {
                 fileName: 'style.css',
                 stringToUpdate: 'THEME_DESCRIPTION',
-                updateString: themeDescription,
+                updateString: description,
             },
         ];
 

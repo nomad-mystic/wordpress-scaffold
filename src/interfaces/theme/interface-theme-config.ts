@@ -3,7 +3,7 @@ export default interface ThemeConfig {
     'active-theme-path'?: string;
     'absolute-project-folder'?: string;
     'absolute-themes-folder'?: string;
-    'theme-description'?: string;
+    'description'?: string;
     'front-end-framework'?: string;
     'site-url'?: string;
     'dev-site-url'?: string;

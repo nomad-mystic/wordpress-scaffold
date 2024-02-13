@@ -20,7 +20,7 @@ let themeOptions: Array<InquirerCliOptions> = [
     },
     {
         type: 'input',
-        name: 'themeDescription',
+        name: 'description',
         message: 'What would like the description of the theme be?',
         default: '',
     },

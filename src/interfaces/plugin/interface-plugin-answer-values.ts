@@ -1,13 +1,10 @@
-export default interface PluginAnswerValues {
-    projectName?: string;
-    name?: string;
+import InterfaceAnswerValues from '../common/interface-answer-values.js';
+
+export default interface PluginAnswerValues extends InterfaceAnswerValues {
     pluginsPath?: string;
-    finalPath: string;
-    description?: string;
     frontEndFramework?: string;
     safeName?: string;
     capAndSnakeCasePlugin?: string;
-    projectNamespace?: string;
     namespace?: string;
     type?: 'plugin';
 };

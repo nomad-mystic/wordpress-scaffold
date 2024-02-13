@@ -103,7 +103,7 @@ class ScaffoldTheme extends AbstractScaffold {
             // User inputs
             const projectName: string = answers.projectName ? answers.projectName : '';
             const themeName: string =  answers.themeName ? answers.themeName.trim() : '';
-            const themeDescription: string = answers.themeDescription ? answers.themeDescription.trim() : '';
+            const description: string = answers.description ? answers.description.trim() : '';
             const frontEndFramework: string = answers.frontEndFramework ? answers.frontEndFramework : '';
             const siteUrl: string = answers.siteUrl ? answers.siteUrl : '';
             const devSiteUrl: string = answers.devSiteUrl ? answers.devSiteUrl : '';
@@ -122,7 +122,7 @@ class ScaffoldTheme extends AbstractScaffold {
                 'active-theme-path': newThemePath,
                 'absolute-project-folder': this.whereAmI,
                 'absolute-themes-folder': themesPath,
-                'theme-description': themeDescription,
+                'description': description,
                 'front-end-framework': frontEndFramework,
                 'site-url': siteUrl,
                 'dev-site-url': devSiteUrl,
@@ -141,7 +141,7 @@ class ScaffoldTheme extends AbstractScaffold {
                 name: themeName,
                 themesPath: themesPath,
                 finalPath: newThemePath,
-                themeDescription: themeDescription,
+                description: description,
                 frontEndFramework: frontEndFramework,
                 siteUrl: siteUrl,
                 devSiteUrl: devSiteUrl,

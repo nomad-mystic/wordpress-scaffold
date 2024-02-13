@@ -10,6 +10,6 @@ export default interface ProjectConfig {
     'dev-site-url': string;
     'absolute-project-folder': string;
     'absolute-themes-folder': string;
-    'theme-description': string;
+    'description': string;
     'front-end-framework': string;
 }
