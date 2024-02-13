@@ -1,5 +1,5 @@
 // Interfaces
-import InquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
+import InterfaceInquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
 import ProjectConfig from '../interfaces/project/interface-project-config.js';
 
 import { getInternalConfig } from '../utils/get-config.js';
@@ -11,7 +11,7 @@ import getCommonOptions from './common-options.js';
  *
  * @type {[{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string, choices: string[]}]}
  */
-let themeOptions: Array<InquirerCliOptions> = [
+let themeOptions: Array<InterfaceInquirerCliOptions> = [
     {
         type: 'input',
         name: 'themeName',
@@ -47,7 +47,7 @@ const getThemeOptions = async (): Promise<Array<any> | undefined> => {
         let jsonFileParsed: ProjectConfig = await getInternalConfig('project/project-config.json');
 
         // Check if we need common options
-        const commonOptions: InquirerCliOptions = await getCommonOptions(jsonFileParsed);
+        const commonOptions: InterfaceInquirerCliOptions = await getCommonOptions(jsonFileParsed);
 
         // "Merge" our arrays
         themeOptions = themeOptions.concat(commonOptions)

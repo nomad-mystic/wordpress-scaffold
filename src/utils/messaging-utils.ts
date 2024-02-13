@@ -2,8 +2,8 @@
 import colors from 'colors';
 
 // Package Modules
-import PluginAnswerValues from '../interfaces/plugin/interface-plugin-answer-values.js';
-import ThemeAnswerValues from '../interfaces/theme/interface-theme-answer-values.js';
+import InterfacePluginAnswerValues from '../interfaces/plugin/interface-plugin-answer-values.js';
+import InterfaceThemeAnswerValues from '../interfaces/theme/interface-theme-answer-values.js';
 
 /**
  * @classdesc
@@ -48,31 +48,31 @@ export default class MessagingUtils {
      * @oublic
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {PluginAnswerValues | ThemeAnswerValues} values
+     * @param {InterfacePluginAnswerValues | InterfaceThemeAnswerValues} values
      * @param {boolean} composerAlreadyExists
      * @param {boolean} packageAlreadyExists
      */
     public static displayEndingMessages = async (
-        values: PluginAnswerValues | ThemeAnswerValues,
+        values: InterfacePluginAnswerValues | InterfaceThemeAnswerValues,
         composerAlreadyExists: boolean,
         packageAlreadyExists: boolean
     ): Promise<void> => {
         try {
             // Let the user know it has been created
-            await MessagingUtils.displayColoredMessage(`Your ${values.name} ${values.type} has been scaffold! \n`, 'green');
-            await MessagingUtils.displayColoredMessage(`Check: ${values.finalPath} \n`, 'yellow');
+            await this.displayColoredMessage(`Your ${ values.name } ${ values.type } has been scaffold! \n`, 'green');
+            await this.displayColoredMessage(`Check: ${ values.finalPath } \n`, 'yellow');
 
             // Let the user know they need to follow-up in the CLI
             if (!composerAlreadyExists || !packageAlreadyExists) {
-                await MessagingUtils.displayColoredMessage(`Don\'t forget to run these commands in the root of the ${values.type}`, 'yellow');
+                await this.displayColoredMessage(`Don\'t forget to run these commands in the root of the ${ values.type }`, 'yellow');
             }
 
             if (!composerAlreadyExists) {
-                await MessagingUtils.displayColoredMessage(`$ composer run-script auto-load-classes`, 'green');
+                await this.displayColoredMessage(`$ composer run-script auto-load-classes`, 'green');
             }
 
             if (!packageAlreadyExists) {
-                await MessagingUtils.displayColoredMessage(`$ nvm use && npm install`, 'green');
+                await this.displayColoredMessage(`$ nvm use && npm install`, 'green');
             }
 
         } catch (err: any) {

@@ -1,4 +1,4 @@
-export default interface ThemeAnswers {
+export default interface InterfaceThemeAnswers {
     projectName?: string;
     themeName?: string;
     description?: string;

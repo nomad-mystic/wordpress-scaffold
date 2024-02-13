@@ -1,5 +1,5 @@
 // Interfaces
-import InquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
+import InterfaceInquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
 import ProjectConfig from '../interfaces/project/interface-project-config.js';
 
 // Functions
@@ -12,7 +12,7 @@ import getCommonOptions from './common-options.js';
  *
  * @type {[{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string},{default: string, name: string, type: string, message: string, choices: string[]}]}
  */
-let pluginOptions: Array<InquirerCliOptions> = [
+let pluginOptions: Array<InterfaceInquirerCliOptions> = [
     {
         type: 'input',
         name: 'name',
@@ -48,7 +48,7 @@ const getPluginOptions = async (): Promise<Array<any> | undefined> => {
         let jsonFileParsed: ProjectConfig = await getInternalConfig('project/project-config.json');
 
         // Check if we need common options
-        const commonOptions: InquirerCliOptions = await getCommonOptions(jsonFileParsed);
+        const commonOptions: InterfaceInquirerCliOptions = await getCommonOptions(jsonFileParsed);
 
         // "Merge" our arrays
         pluginOptions = pluginOptions.concat(commonOptions);

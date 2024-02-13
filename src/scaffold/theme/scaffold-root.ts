@@ -15,18 +15,18 @@ import PathUtils from '../../utils/path-utils.js';
 import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 
 // Interfaces
-import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
-import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
+import InterfaceThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
+import InterfaceScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
 
 /**
  * @description
  * @public
  * @author Keith Murphy | nomadmystics@gmail.com
  *
- * @param {ThemeAnswerValues} values
+ * @param {InterfaceThemeAnswerValues} values
  * @return {Promise<void>}
  */
-const scaffoldThemeRoot = async (values: ThemeAnswerValues): Promise<void> => {
+const scaffoldThemeRoot = async (values: InterfaceThemeAnswerValues): Promise<void> => {
     try {
         let {
             projectName,
@@ -36,7 +36,7 @@ const scaffoldThemeRoot = async (values: ThemeAnswerValues): Promise<void> => {
             projectNamespace,
         } = values;
 
-        let updateObjectsArray: ScaffoldJsonUpdates[] = [];
+        let updateObjectsArray: InterfaceScaffoldJsonUpdates[] = [];
         const whereAmI: string = await PathUtils.whereAmI();
 
         // Create our checks before we start the copy process
@@ -71,7 +71,7 @@ const scaffoldThemeRoot = async (values: ThemeAnswerValues): Promise<void> => {
 
         } else {
 
-            const composerObjects: Array<ScaffoldJsonUpdates> = [
+            const composerObjects: Array<InterfaceScaffoldJsonUpdates> = [
                 {
                     fileName: 'composer.json',
                     stringToUpdate: 'THEME_NAME',
@@ -99,7 +99,7 @@ const scaffoldThemeRoot = async (values: ThemeAnswerValues): Promise<void> => {
             console.log("\n");
 
         } else {
-            const npmObjects: Array<ScaffoldJsonUpdates> = [
+            const npmObjects: Array<InterfaceScaffoldJsonUpdates> = [
                 {
                     fileName: 'package.json',
                     stringToUpdate: 'THEME_NAME',

@@ -16,7 +16,7 @@ import { packageRootDir } from '../../utils/package-root.js';
 
 // Interfaces
 import InitAnswers from '../../interfaces/project/interface-init-answers.js';
-import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
+import InterfaceScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
 import ProjectConfig from '../../interfaces/project/interface-project-config.js';
 
 /**
@@ -38,7 +38,7 @@ const scaffoldProject = async (
         const configFile: string = `${whereAmI}/wp-config.php`;
 
         // Array for updates
-        let updateObjectsArray: Array<ScaffoldJsonUpdates> = [];
+        let updateObjectsArray: Array<InterfaceScaffoldJsonUpdates> = [];
 
         if (fs.existsSync(configFile)) {
             console.log(colors.red('There is already a wp-config.php file.'));
@@ -62,7 +62,7 @@ const scaffoldProject = async (
             }
 
             if (answers?.databaseSetup && typeof answers?.databaseSetup !== 'undefined') {
-                const configDatabaseObjects: Array<ScaffoldJsonUpdates> = [
+                const configDatabaseObjects: Array<InterfaceScaffoldJsonUpdates> = [
                     {
                         fileName: 'wp-config.php',
                         stringToUpdate: 'DATABASE_NAME_HERE',
@@ -83,7 +83,7 @@ const scaffoldProject = async (
                 updateObjectsArray.push(...configDatabaseObjects);
             }
 
-            const configObjects: Array<ScaffoldJsonUpdates>  = [
+            const configObjects: Array<InterfaceScaffoldJsonUpdates>  = [
                 {
                     fileName: 'wp-config.php',
                     stringToUpdate: '// ADD_OUR_SALTS_HERE',

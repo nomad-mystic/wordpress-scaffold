@@ -1,4 +1,4 @@
-export default interface ThemeConfig {
+export default interface InterfaceThemeConfig {
     'active-theme'?: string;
     'active-theme-path'?: string;
     'absolute-project-folder'?: string;

@@ -1,7 +1,7 @@
 // interfaces
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
 import ProjectConfig from '../interfaces/project/interface-project-config.js';
-import InquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
+import InterfaceInquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
 
 // Utils
 import { getInternalConfig } from '../utils/get-config.js';
@@ -10,7 +10,7 @@ import { getInternalConfig } from '../utils/get-config.js';
 import { scaffoldInternal } from '../scaffold/common/scaffold-internal.js';
 import getCommonOptions from "./common-options.js";
 
-let projectOptions: Array<InquirerCliOptions> = [
+let projectOptions: Array<InterfaceInquirerCliOptions> = [
     {
         type: 'confirm',
         name: 'databaseSetup',
@@ -113,7 +113,7 @@ const getProjectOptions = async (): Promise<Array<any> | undefined> => {
         let jsonFileParsed: ProjectConfig = await getInternalConfig('project/project-config.json');
 
         // Check if we need common options
-        const commonOptions: InquirerCliOptions = await getCommonOptions(jsonFileParsed);
+        const commonOptions: InterfaceInquirerCliOptions = await getCommonOptions(jsonFileParsed);
 
         // "Merge" our arrays
         projectOptions = projectOptions.concat(commonOptions);

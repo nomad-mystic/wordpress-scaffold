@@ -1,6 +1,6 @@
 import InterfaceAnswerValues from '../common/interface-answer-values.js';
 
-export default interface PluginAnswerValues extends InterfaceAnswerValues {
+export default interface InterfacePluginAnswerValues extends InterfaceAnswerValues {
     pluginsPath?: string;
     frontEndFramework?: string;
     safeName?: string;

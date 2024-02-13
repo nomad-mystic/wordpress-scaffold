@@ -1,4 +1,4 @@
-export default interface InitAnswers {
+export default interface InterfaceInitAnswers {
     databaseSetup?: boolean | undefined;
     databaseName?: string | undefined;
     databasePassword?: string | undefined;

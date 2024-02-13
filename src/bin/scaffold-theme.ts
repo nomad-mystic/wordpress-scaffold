@@ -16,9 +16,9 @@ import DebugUtils from '../utils/debug-utils.js';
 import StringUtils from '../utils/string-utils.js';
 
 // Interfaces
-import ThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
-import ThemeConfig from '../interfaces/theme/interface-theme-config.js';
-import ThemeAnswerValues from '../interfaces/theme/interface-theme-answer-values.js';
+import InterfaceThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
+import InterfaceThemeConfig from '../interfaces/theme/interface-theme-config.js';
+import InterfaceThemeAnswerValues from '../interfaces/theme/interface-theme-answer-values.js';
 
 // Functions
 import updateInternalJson from '../scaffold/common/update-internal-json.js';
@@ -51,7 +51,7 @@ class ScaffoldTheme extends AbstractScaffold {
             // Bail early
             await PathUtils.checkForWordPressInstall();
 
-            const answers: ThemeAnswers | void = await InquirerCli.performPromptsTasks(await getThemeOptions()).catch((err) => console.error(err));
+            const answers: InterfaceThemeAnswers | void = await InquirerCli.performPromptsTasks(await getThemeOptions()).catch((err) => console.error(err));
 
             await this.scaffoldFiles(answers);
 
@@ -64,9 +64,9 @@ class ScaffoldTheme extends AbstractScaffold {
     /**
      * {@inheritDoc AbstractScaffold}
      */
-    protected static scaffoldFiles = async (answers: ThemeAnswers | any): Promise<void> => {
+    protected static scaffoldFiles = async (answers: InterfaceThemeAnswers | any): Promise<void> => {
         try {
-            const themeValues: ThemeAnswerValues  = await this.buildValueObject(answers);
+            const themeValues: InterfaceThemeAnswerValues  = await this.buildValueObject(answers);
 
             // Build the theme
             await this.scaffoldTheme(themeValues);
@@ -90,10 +90,10 @@ class ScaffoldTheme extends AbstractScaffold {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {ThemeAnswers | any} answers
-     * @return {Promise<ThemeAnswerValues | any>}
+     * @param {InterfaceThemeAnswers | any} answers
+     * @return {Promise<InterfaceThemeAnswerValues | any>}
      */
-    private static buildValueObject = async (answers: ThemeAnswers | any): Promise<ThemeAnswerValues | any> => {
+    private static buildValueObject = async (answers: InterfaceThemeAnswers | any): Promise<InterfaceThemeAnswerValues | any> => {
         try {
             const configFilePath: string = `${this.whereAmI}/internal/project/project-config.json`;
 
@@ -117,7 +117,7 @@ class ScaffoldTheme extends AbstractScaffold {
             // Create our string modification
             const capAndSnakeCaseTheme: string = await StringUtils.capAndSnakeCaseString(safeThemeName);
 
-            let configUpdates: ThemeConfig = {
+            let configUpdates: InterfaceThemeConfig = {
                 'active-theme': safeThemeName,
                 'active-theme-path': newThemePath,
                 'absolute-project-folder': this.whereAmI,
@@ -161,10 +161,10 @@ class ScaffoldTheme extends AbstractScaffold {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {ThemeAnswerValues} themeValues
+     * @param {InterfaceThemeAnswerValues} themeValues
      * @return Promise<void>
      */
-    private static scaffoldTheme = async (themeValues: ThemeAnswerValues): Promise<void> => {
+    private static scaffoldTheme = async (themeValues: InterfaceThemeAnswerValues): Promise<void> => {
         try {
 
             await scaffoldTheme(themeValues);
@@ -180,10 +180,10 @@ class ScaffoldTheme extends AbstractScaffold {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {ThemeAnswerValues} themeValues
+     * @param {InterfaceThemeAnswerValues} themeValues
      * @return Promise<void>
      */
-    private static scaffoldThemeRoot = async (themeValues: ThemeAnswerValues): Promise<void> => {
+    private static scaffoldThemeRoot = async (themeValues: InterfaceThemeAnswerValues): Promise<void> => {
         try {
 
             await scaffoldThemeRoot(themeValues);
@@ -199,10 +199,10 @@ class ScaffoldTheme extends AbstractScaffold {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {ThemeAnswerValues} themeValues
+     * @param {InterfaceThemeAnswerValues} themeValues
      * @return Promise<void>
      */
-    private static updateScaffoldClasses = async (themeValues: ThemeAnswerValues): Promise<void> => {
+    private static updateScaffoldClasses = async (themeValues: InterfaceThemeAnswerValues): Promise<void> => {
         try {
 
             await updateScaffoldClasses(themeValues);

@@ -1,4 +1,4 @@
-export default interface ScaffoldJsonUpdates {
+export default interface InterfaceScaffoldJsonUpdates {
     updatePath?: string;
     fileName?: string;
     stringToUpdate?: string;

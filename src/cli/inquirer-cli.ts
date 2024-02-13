@@ -6,8 +6,7 @@ import colors from 'colors';
 
 // Interfaces
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
-import ThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
-
+import InterfaceThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
 
 /**
  * @class ProjectInit
@@ -19,13 +18,13 @@ class InquirerCli {
      * @author Keith Murphy | nomadmystics@gmail.com
      *
      * @param {Array<any> | undefined} options
-     * @return {Promise<InitAnswers | ThemeAnswers | void>}
+     * @return {Promise<InitAnswers | InterfaceThemeAnswers | void>}
      */
-    public static performPromptsTasks = async (options: Array<any> | undefined): Promise<InitAnswers | ThemeAnswers | void> => {
+    public static performPromptsTasks = async (options: Array<any> | undefined): Promise<InitAnswers | InterfaceThemeAnswers | void> => {
         try {
             const inquirer = await this.getInquirer();
 
-            const answers: InitAnswers | ThemeAnswers | void = await this.performPrompt(inquirer, options);
+            const answers: InitAnswers | InterfaceThemeAnswers | void = await this.performPrompt(inquirer, options);
 
             return answers;
 
@@ -63,9 +62,9 @@ class InquirerCli {
      *
      * @param {any} inquirer
      * @param {Promise<Array<any> | undefined>} options
-     * @return {Promise<InitAnswers | ThemeAnswers | void>}
+     * @return {Promise<InitAnswers | InterfaceThemeAnswers | void>}
      */
-    private static performPrompt = async (inquirer: any, options: Array<any> | undefined): Promise<InitAnswers | ThemeAnswers | void> => {
+    private static performPrompt = async (inquirer: any, options: Array<any> | undefined): Promise<InitAnswers | InterfaceThemeAnswers | void> => {
         try {
             return inquirer.prompt(options)
                 .catch((error: any): void => {

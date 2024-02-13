@@ -1,7 +1,7 @@
 // Interfaces
-import ThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
+import InterfaceThemeAnswers from '../interfaces/theme/interface-theme-answers.js';
 import InitAnswers from '../interfaces/project/interface-init-answers.js';
-import PluginAnswers from '../interfaces/plugin/interface-plugin-anwsers.js';
+import InterfacePluginAnswers from '../interfaces/plugin/interface-plugin-anwsers.js';
 
 /**
  * @classdesc Use this a base for creating the scaffolding for each type of CLI action
@@ -23,8 +23,8 @@ export default abstract class AbstractScaffold {
      * @protected
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {InitAnswers | ThemeAnswers | PluginAnswers | any} answers
+     * @param {InitAnswers | InterfaceThemeAnswers | InterfacePluginAnswers | any} answers
      * @return Promise<void>
      */
-    protected static scaffoldFiles = async (answers: InitAnswers | ThemeAnswers | PluginAnswers | any):  Promise<void> => {};
+    protected static scaffoldFiles = async (answers: InitAnswers | InterfaceThemeAnswers | InterfacePluginAnswers | any):  Promise<void> => {};
 }
