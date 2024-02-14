@@ -179,3 +179,8 @@ $ wps --version
 * https://sass-lang.com/
 * https://webpack.js.org/
 * https://github.com/nvm-sh/nvm
+
+
+### CLI command flow chart
+
+![cli-flow-chart.png](documentation%2Fimages%2Fcli-flow-chart.png)
