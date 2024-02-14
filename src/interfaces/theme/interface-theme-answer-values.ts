@@ -1,14 +1,11 @@
-export default interface ThemeAnswerValues {
-    projectName?: string;
-    name?: string;
+import InterfaceAnswerValues from '../common/interface-answer-values.js';
+
+export default interface InterfaceThemeAnswerValues extends InterfaceAnswerValues {
     themesPath?: string;
-    finalPath?: string;
-    themeDescription?: string;
     frontEndFramework?: string;
     siteUrl?: string;
     devSiteUrl?: string;
     safeThemeName?: string;
     capAndSnakeCaseTheme?: string;
-    projectNamespace?: string;
     type?: 'theme';
 }

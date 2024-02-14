@@ -3,8 +3,8 @@
 import MessagingUtils from '../../utils/messaging-utils.js';
 
 // Interfaces
-import PluginAnswerValues from '../../interfaces/plugin/interface-plugin-answer-values.js';
-import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
+import InterfacePluginAnswerValues from '../../interfaces/plugin/interface-plugin-answer-values.js';
+import InterfaceScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
 
 /**
  * @classdesc
@@ -17,9 +17,9 @@ export default class CreateObjectArrays {
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     * @return {Promise<Array<InterfaceScaffoldJsonUpdates> | any>}
      */
-    public static readComposerObjects = async (values: PluginAnswerValues, composerAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    public static readComposerObjects = async (values: InterfacePluginAnswerValues, composerAlreadyExists: boolean = false): Promise<Array<InterfaceScaffoldJsonUpdates> | any> => {
         try {
 
             if (composerAlreadyExists) {
@@ -30,7 +30,7 @@ export default class CreateObjectArrays {
                 return [];
             }
 
-            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.createComposerObjects(values);
+            const updateObjectsArray: Array<InterfaceScaffoldJsonUpdates> = await this.createComposerObjects(values);
 
             return updateObjectsArray;
 
@@ -45,13 +45,13 @@ export default class CreateObjectArrays {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {PluginAnswerValues} values
-     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     * @param {InterfacePluginAnswerValues} values
+     * @return {Promise<Array<InterfaceScaffoldJsonUpdates> | any>}
      */
-    private static createComposerObjects = async (values: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    private static createComposerObjects = async (values: InterfacePluginAnswerValues): Promise<Array<InterfaceScaffoldJsonUpdates> | any> => {
         try {
 
-            const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
+            const updateObjectsArray: Array<InterfaceScaffoldJsonUpdates> = [
                 {
                     fileName: 'composer.json',
                     stringToUpdate: 'SCAFFOLD_NAME',
@@ -87,9 +87,9 @@ export default class CreateObjectArrays {
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     * @return {Promise<Array<InterfaceScaffoldJsonUpdates> | any>}
      */
-    public static readPackageObjects = async (values: PluginAnswerValues, packageAlreadyExists: boolean = false): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    public static readPackageObjects = async (values: InterfacePluginAnswerValues, packageAlreadyExists: boolean = false): Promise<Array<InterfaceScaffoldJsonUpdates> | any> => {
         try {
 
             if (packageAlreadyExists) {
@@ -100,7 +100,7 @@ export default class CreateObjectArrays {
                 return [];
             }
 
-            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.createPackageObjects(values);
+            const updateObjectsArray: Array<InterfaceScaffoldJsonUpdates> = await this.createPackageObjects(values);
 
             return updateObjectsArray;
 
@@ -115,13 +115,13 @@ export default class CreateObjectArrays {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {PluginAnswerValues} values
-     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     * @param {InterfacePluginAnswerValues} values
+     * @return {Promise<Array<InterfaceScaffoldJsonUpdates> | any>}
      */
-    private static createPackageObjects = async (values: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    private static createPackageObjects = async (values: InterfacePluginAnswerValues): Promise<Array<InterfaceScaffoldJsonUpdates> | any> => {
         try {
 
-            const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
+            const updateObjectsArray: Array<InterfaceScaffoldJsonUpdates> = [
                 {
                     fileName: 'package.json',
                     stringToUpdate: 'SCAFFOLD_NAME',

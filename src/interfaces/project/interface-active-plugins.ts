@@ -1,6 +1,6 @@
-import {PathLike} from "fs";
+import { PathLike } from 'fs';
 
-export default interface ActivePlugins {
+export default interface InterfaceActivePlugins {
     'plugin-name'?: string;
     'plugin-path': PathLike;
     'plugin-description'?: string;

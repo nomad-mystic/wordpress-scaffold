@@ -13,7 +13,7 @@ import MessagingUtils from '../../utils/messaging-utils.js';
 import { packageRootDir } from '../../utils/package-root.js';
 
 // Interfaces
-import ActivePlugins from '../../interfaces/project/interface-active-plugins.js';
+import InterfaceActivePlugins from '../../interfaces/project/interface-active-plugins.js';
 import ProjectConfig from '../../interfaces/project/interface-project-config.js';
 
 import { scaffoldInternal } from './scaffold-internal.js';
@@ -342,7 +342,7 @@ export class ProjectJson {
      */
     private static performPluginJsonUpdate = async (projectConfigObject: any, configUpdates: any): Promise<object | any> => {
         try {
-            let activePlugins: Array<ActivePlugins> = projectConfigObject['active-plugins'];
+            let activePlugins: Array<InterfaceActivePlugins> = projectConfigObject['active-plugins'];
 
             const alreadyExists: boolean | undefined = await this.cleanUpPluginArray(activePlugins, configUpdates);
 
@@ -383,11 +383,11 @@ export class ProjectJson {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {Array<ActivePlugins>} activePlugins
+     * @param {Array<InterfaceActivePlugins>} activePlugins
      * @param {any} configUpdates
      * @return {Promise<boolean | undefined>}
      */
-    private static cleanUpPluginArray = async (activePlugins: Array<ActivePlugins>, configUpdates: any): Promise<boolean | undefined> => {
+    private static cleanUpPluginArray = async (activePlugins: Array<InterfaceActivePlugins>, configUpdates: any): Promise<boolean | undefined> => {
         try {
             let alreadyExists: boolean = false;
 
@@ -426,12 +426,12 @@ export class ProjectJson {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {ActivePlugins} plugin
+     * @param {InterfaceActivePlugins} plugin
      * @return {Promise<void>}
      */
-    private static deleteUnusedPluginProperties = async (plugin: ActivePlugins): Promise<ActivePlugins | any> => {
+    private static deleteUnusedPluginProperties = async (plugin: InterfaceActivePlugins): Promise<InterfaceActivePlugins | any> => {
         try {
-            let currentPlugin: ActivePlugins = plugin;
+            let currentPlugin: InterfaceActivePlugins = plugin;
 
             // Remove the object since the path for the plugin doesn't exist
             if (!fs.existsSync(currentPlugin?.['plugin-path'])) {

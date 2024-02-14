@@ -3,8 +3,8 @@ import { glob } from 'glob';
 
 // Package Modules
 // Interfaces
-import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
-import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
+import InterfaceScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
+import InterfaceThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
 
 // Functions
 import { updateScaffoldFile } from '../common/update-scaffold-file.js';
@@ -14,35 +14,35 @@ import { updateScaffoldFile } from '../common/update-scaffold-file.js';
  * @public
  * @author Keith Murphy | nomadmystics@gmail.com
  *
- * @param {ThemeAnswerValues} values
+ * @param {InterfaceThemeAnswerValues} values
  * @return void
  */
-const updateScaffoldClasses = async (values: ThemeAnswerValues): Promise<void> => {
+const updateScaffoldClasses = async (values: InterfaceThemeAnswerValues): Promise<void> => {
     try {
         let {
             finalPath,
             projectNamespace,
         } = values;
 
-        let updateObjectsArray: Array<ScaffoldJsonUpdates> = [];
+        let updateObjectsArray: Array<InterfaceScaffoldJsonUpdates> = [];
 
         // Create our checks before we start the copy process
-        const phpFiles = glob.sync(`${finalPath}/classes/**/*.php`, {
+        const phpFiles = glob.sync(`${ finalPath }/classes/**/*.php`, {
             nodir: true,
         });
 
-        let classFileUpdates: ScaffoldJsonUpdates[] = [];
+        let classFileUpdates: InterfaceScaffoldJsonUpdates[] = [];
 
         // For each of the classes we scaffold replace their namespace names
         if (phpFiles && typeof phpFiles !== 'undefined' && phpFiles.length > 0) {
             for (let classPath: number = 0; classPath < phpFiles.length; classPath++) {
 
                 if (phpFiles[classPath] && typeof phpFiles[classPath] !== 'undefined') {
-                    let classObject: ScaffoldJsonUpdates = {};
+                    let classObject: InterfaceScaffoldJsonUpdates = {};
 
                     // Extract the information we need
-                    const afterLastSlash: string = phpFiles[classPath].substring(phpFiles[classPath].lastIndexOf('/') + 1);
-                    const beforeLastSlash: RegExpMatchArray | null = phpFiles[classPath].match(/^(.*[\\\/])/);
+                    const afterLastSlash = phpFiles[classPath].substring(phpFiles[classPath].lastIndexOf('/') + 1);
+                    const beforeLastSlash = phpFiles[classPath].match(/^(.*[\\\/])/);
 
                     // @todo Check this
                     classObject.updatePath = beforeLastSlash ? beforeLastSlash[0].slice(0, -1) : finalPath + 'classes';

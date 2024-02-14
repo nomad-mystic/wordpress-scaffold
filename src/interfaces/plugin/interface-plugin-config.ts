@@ -1,7 +1,7 @@
-export default interface PluginConfig {
+export default interface InterfacePluginConfig {
     'absolute-project-folder'?: string;
     'absolute-themes-folder'?: string;
-    'theme-description'?: string;
+    'description'?: string;
     'site-url'?: string;
     'dev-site-url'?: string;
     'project-name'? : string;

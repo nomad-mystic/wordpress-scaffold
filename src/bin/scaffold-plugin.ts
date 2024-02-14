@@ -7,7 +7,7 @@ import fse from "fs-extra";
 // Package modules
 // Classes
 import InquirerCli from '../cli/inquirer-cli.js';
-import AbstractScaffold from '../abstract/AbstractScaffold.js';
+import AbstractScaffold from '../abstract/abstract-scaffold.js';
 import updateInternalJson, { ProjectJson } from '../scaffold/common/update-internal-json.js';
 
 // Utils
@@ -15,11 +15,11 @@ import PathUtils from '../utils/path-utils.js';
 import StringUtils from '../utils/string-utils.js';
 
 // Interfaces
-import PluginAnswers from '../interfaces/plugin/interface-plugin-anwsers.js';
-import PluginAnswerValues from '../interfaces/plugin/interface-plugin-answer-values.js';
-import PluginConfig from '../interfaces/plugin/interface-plugin-config.js';
-import ScaffoldCopyFolders from '../interfaces/common/interface-scaffold-copy-folders.js';
-import ScaffoldJsonUpdates from '../interfaces/common/interface-scaffold-json-updates.js';
+import InterfacePluginAnswers from '../interfaces/plugin/interface-plugin-anwsers.js';
+import InterfacePluginAnswerValues from '../interfaces/plugin/interface-plugin-answer-values.js';
+import InterfacePluginConfig from '../interfaces/plugin/interface-plugin-config.js';
+import InterfaceScaffoldCopyFolders from '../interfaces/common/interface-scaffold-copy-folders.js';
+import InterfaceScaffoldJsonUpdates from '../interfaces/common/interface-scaffold-json-updates.js';
 
 // Functions
 import getPluginOptions from '../config/plugin-options.js';
@@ -54,10 +54,10 @@ class ScaffoldPlugin extends AbstractScaffold {
     private static packageAlreadyExists: boolean | any = false;
 
     /**
-     * @type PluginAnswerValues
+     * @type InterfacePluginAnswerValues
      * @private
      */
-    private static pluginValues: PluginAnswerValues;
+    private static pluginValues: InterfacePluginAnswerValues;
 
     /**
      * {@inheritDoc AbstractScaffold}
@@ -71,7 +71,7 @@ class ScaffoldPlugin extends AbstractScaffold {
             this.isDebugFullMode = await DebugUtils.isDebugFullMode();
 
             // Get our answers
-            const answers: PluginAnswers | void = await InquirerCli.performPromptsTasks(await getPluginOptions()).catch((err) => console.error(err));
+            const answers: InterfacePluginAnswers | void = await InquirerCli.performPromptsTasks(await getPluginOptions()).catch((err) => console.error(err));
 
             // Start the scaffolding process
             await this.scaffoldFiles(answers);
@@ -85,7 +85,7 @@ class ScaffoldPlugin extends AbstractScaffold {
     /**
      * {@inheritDoc AbstractScaffold}
      */
-    protected static scaffoldFiles = async (answers: PluginAnswers | any): Promise<void> => {
+    protected static scaffoldFiles = async (answers: InterfacePluginAnswers | any): Promise<void> => {
         try {
             // Build the values we need
             this.pluginValues = await this.buildValueObject(answers);
@@ -117,10 +117,10 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @author Keith Murphy | nomadmystics@gmail.com
      * @todo refactor into Abstract class method in theme and project
      *
-     * @param {PluginAnswers | any} answers
-     * @return {Promise<PluginAnswerValues | any>}
+     * @param {InterfacePluginAnswers | any} answers
+     * @return {Promise<InterfacePluginAnswerValues | any>}
      */
-    private static buildValueObject = async (answers: PluginAnswers | any): Promise<PluginAnswerValues | any> => {
+    private static buildValueObject = async (answers: InterfacePluginAnswers | any): Promise<InterfacePluginAnswerValues | any> => {
         try {
             // Absolute path of the themes folder
             const pluginsPath: string | undefined = await PathUtils.getPluginsFolderPath();
@@ -171,10 +171,10 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @author Keith Murphy | nomadmystics@gmail.com
      * @todo refactor into Abstract class method in theme and project
      *
-     * @param {PluginAnswerValues} pluginValues
-     * @return {Promise<PluginConfig | any>}
+     * @param {InterfacePluginAnswerValues} pluginValues
+     * @return {Promise<InterfacePluginConfig | any>}
      */
-    private static updateProjectConfig = async (pluginValues: PluginAnswerValues): Promise<PluginConfig | any> => {
+    private static updateProjectConfig = async (pluginValues: InterfacePluginAnswerValues): Promise<InterfacePluginConfig | any> => {
         try {
             let {
                 projectName,
@@ -184,7 +184,7 @@ class ScaffoldPlugin extends AbstractScaffold {
                 frontEndFramework,
             } = pluginValues;
 
-            let configUpdates: PluginConfig = {
+            let configUpdates: InterfacePluginConfig = {
                 'plugin-name': name,
                 'plugin-path': finalPath,
                 'plugin-description': description,
@@ -213,15 +213,15 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @author Keith Murphy | nomadmystics@gmail.com
      * @todo refactor into Abstract class method in theme and project
      *
-     * @param {PluginAnswerValues} pluginValues
-     * @param {PluginConfig} pluginConfig
+     * @param {InterfacePluginAnswerValues} pluginValues
+     * @param {InterfacePluginConfig} pluginConfig
      * @return {Promise<void>}
      */
-    private static performScaffold = async (pluginValues: PluginAnswerValues, pluginConfig: PluginConfig): Promise<void> => {
+    private static performScaffold = async (pluginValues: InterfacePluginAnswerValues, pluginConfig: InterfacePluginConfig): Promise<void> => {
         try {
-            const updateObjectsArray: Array<ScaffoldJsonUpdates> = await this.buildUpdateObjectArray(pluginValues);
+            const updateObjectsArray: Array<InterfaceScaffoldJsonUpdates> = await this.buildUpdateObjectArray(pluginValues);
 
-            const foldersToCopy: Array<ScaffoldCopyFolders> = await this.buildFoldersToCopy(pluginValues);
+            const foldersToCopy: Array<InterfaceScaffoldCopyFolders> = await this.buildFoldersToCopy(pluginValues);
 
             await UpdateTypeFiles.copyFiles(foldersToCopy);
 
@@ -242,13 +242,13 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {PluginAnswerValues} pluginValues
-     * @return {Promise<Array<ScaffoldCopyFolders> | any>}
+     * @param {InterfacePluginAnswerValues} pluginValues
+     * @return {Promise<Array<InterfaceScaffoldCopyFolders> | any>}
      */
-    private static buildFoldersToCopy = async (pluginValues: PluginAnswerValues): Promise<Array<ScaffoldCopyFolders> | any> => {
+    private static buildFoldersToCopy = async (pluginValues: InterfacePluginAnswerValues): Promise<Array<InterfaceScaffoldCopyFolders> | any> => {
         try {
 
-            const foldersToCopy: Array<ScaffoldCopyFolders> = [
+            const foldersToCopy: Array<InterfaceScaffoldCopyFolders> = [
                 {
                     source: 'scaffolding/plugin',
                     destination: `${pluginValues.finalPath}`,
@@ -288,13 +288,13 @@ class ScaffoldPlugin extends AbstractScaffold {
      * @private
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @param {PluginAnswerValues} pluginValues
-     * @return {Promise<Array<ScaffoldJsonUpdates> | any>}
+     * @param {InterfacePluginAnswerValues} pluginValues
+     * @return {Promise<Array<InterfaceScaffoldJsonUpdates> | any>}
      */
-    private static buildUpdateObjectArray = async (pluginValues: PluginAnswerValues): Promise<Array<ScaffoldJsonUpdates> | any> => {
+    private static buildUpdateObjectArray = async (pluginValues: InterfacePluginAnswerValues): Promise<Array<InterfaceScaffoldJsonUpdates> | any> => {
         try {
 
-            const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
+            const updateObjectsArray: Array<InterfaceScaffoldJsonUpdates> = [
                 {
                     fileName: 'plugin-name.php',
                     stringToUpdate: 'SCAFFOLD_NAME',
@@ -328,14 +328,14 @@ class ScaffoldPlugin extends AbstractScaffold {
             ];
 
             // Perform composer updates
-            const composerObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.readComposerObjects(pluginValues, this.composerAlreadyExists);
+            const composerObjects: Array<InterfaceScaffoldJsonUpdates> | any = await CreateObjectArrays.readComposerObjects(pluginValues, this.composerAlreadyExists);
 
             if (!this.composerAlreadyExists) {
                 updateObjectsArray.push(...composerObjects);
             }
 
             // Perform package.json updates
-            const packageObjects: Array<ScaffoldJsonUpdates> | any = await CreateObjectArrays.readPackageObjects(pluginValues, this.packageAlreadyExists);
+            const packageObjects: Array<InterfaceScaffoldJsonUpdates> | any = await CreateObjectArrays.readPackageObjects(pluginValues, this.packageAlreadyExists);
 
             if (!this.packageAlreadyExists) {
                 updateObjectsArray.push(...packageObjects);

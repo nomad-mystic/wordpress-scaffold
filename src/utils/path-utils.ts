@@ -122,12 +122,13 @@ export default class PathUtils {
      * @public
      * @author Keith Murphy | nomadmystics@gmail.com
      *
-     * @return
+     * @return {Promise<void>}
      */
-    public static validateIsPathWithDisplay = async (path: string, message: string, exit: boolean = false): Promise<void> => {
+    public static validateIsPathWithDisplay = async (path: unknown, message: string, exit: boolean = false): Promise<void> => {
         try {
+            const testingPath = path as string;
 
-            if (fs.existsSync(path)) {
+            if (fs.existsSync(testingPath)) {
                 console.log(colors.red(message));
 
                 if (exit) {

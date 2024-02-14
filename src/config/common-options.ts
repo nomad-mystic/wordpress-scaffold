@@ -1,6 +1,6 @@
 // Interfaces
 import ProjectConfig from '../interfaces/project/interface-project-config.js';
-import InquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
+import InterfaceInquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli.js';
 
 /**
  * @description
@@ -9,16 +9,16 @@ import InquirerCliOptions from '../interfaces/cli/interface-options-inquirer-cli
  *
  * @return {Promise<void>}
  */
-const getCommonOptions = async (jsonFileParsed: ProjectConfig): Promise<Array<InquirerCliOptions> | any> => {
+const getCommonOptions = async (jsonFileParsed: ProjectConfig): Promise<Array<InterfaceInquirerCliOptions> | any> => {
     try {
-        let commonOptions: Array<InquirerCliOptions> = [];
+        let commonOptions: Array<InterfaceInquirerCliOptions> = [];
 
         // @todo Refactor this into a Promise which can be used by theme as well
         // Gather the information we need if the user didn't use the init command
         if (jsonFileParsed && typeof jsonFileParsed !== 'undefined') {
 
             if (jsonFileParsed['project-name'] === '') {
-                const projectNameOption: InquirerCliOptions = {
+                const projectNameOption: InterfaceInquirerCliOptions = {
                     type: 'input',
                     name: 'projectName',
                     message: 'What is the name of your WordPress site?',
@@ -29,7 +29,7 @@ const getCommonOptions = async (jsonFileParsed: ProjectConfig): Promise<Array<In
             }
 
             if (jsonFileParsed['site-url'] === '') {
-                const siteUrlOption: InquirerCliOptions = {
+                const siteUrlOption: InterfaceInquirerCliOptions = {
                     type: 'input',
                     name: 'siteUrl',
                     message: 'What is the URL of your WordPress site?',
@@ -40,7 +40,7 @@ const getCommonOptions = async (jsonFileParsed: ProjectConfig): Promise<Array<In
             }
 
             if (jsonFileParsed['dev-site-url'] === '') {
-                const devSiteUrl: InquirerCliOptions = {
+                const devSiteUrl: InterfaceInquirerCliOptions = {
                     type: 'input',
                     name: 'devSiteUrl',
                     message: 'What is the development URL of your WordPress site?',

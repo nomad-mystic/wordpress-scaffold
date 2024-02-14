@@ -14,8 +14,8 @@ import { packageRootDir } from '../../utils/package-root.js';
 import { updateScaffoldFile } from '../common/update-scaffold-file.js';
 
 // Interfaces
-import ScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
-import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
+import InterfaceScaffoldJsonUpdates from '../../interfaces/common/interface-scaffold-json-updates.js';
+import InterfaceThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-values.js';
 
 /**
  * @description Based on user input scaffold our theme
@@ -24,7 +24,7 @@ import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-val
  * @param {string} values.themeName
  * @param {string} values.themesPath
  * @param {string} values.finalPath
- * @param {string} values.themeDescription
+ * @param {string} values.description
  * @param {boolean} values.addFrontEndBuildTools ?
  * @param {string} values.frontEndFramework
  * @param {string} values.safeThemeName
@@ -32,13 +32,13 @@ import ThemeAnswerValues from '../../interfaces/theme/interface-theme-answer-val
  *
  * @return {Promise<void>}
  */
-const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
+const scaffoldTheme = async (values: InterfaceThemeAnswerValues): Promise<void> => {
     try {
         let {
             name,
             themesPath,
             finalPath,
-            themeDescription,
+            description,
             frontEndFramework,
             safeThemeName,
             capAndSnakeCaseTheme,
@@ -54,18 +54,18 @@ const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
         }
 
         // Copy our files over to the themes folder
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/theme`)}`, newThemePathString, { overwrite: false });
+        fse.copySync(`${ path.join(`${ packageRootDir }/scaffolding/theme`) }`, newThemePathString, { overwrite: false });
 
         // Copy our files over the JS files into the theme
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/theme-root/front-end-scaffolding/${frontEndFramework?.toLowerCase()}/js`)}`,
-            `${newThemePathString}/src/js`,
+        fse.copySync(`${ path.join(`${ packageRootDir }/scaffolding/theme-root/front-end-scaffolding/${ frontEndFramework?.toLowerCase() }/js`) }`,
+            `${ newThemePathString }/src/js`,
             {
                 overwrite: false
             }
         );
 
         // Copy our files over the theme root files into the theme
-        fse.copySync(`${path.join(`${packageRootDir}/scaffolding/theme-root/front-end-scaffolding/${frontEndFramework?.toLowerCase()}/theme-root`)}`,
+        fse.copySync(`${ path.join(`${ packageRootDir }/scaffolding/theme-root/front-end-scaffolding/${ frontEndFramework?.toLowerCase() }/theme-root`) }`,
             newThemePathString,
             {
                 overwrite: false
@@ -73,7 +73,7 @@ const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
         );
 
         // Our updates
-        const updateObjectsArray: Array<ScaffoldJsonUpdates> = [
+        const updateObjectsArray: Array<InterfaceScaffoldJsonUpdates> = [
             {
                 fileName: 'functions.php',
                 stringToUpdate: 'THEME_NAME',
@@ -92,7 +92,7 @@ const scaffoldTheme = async (values: ThemeAnswerValues): Promise<void> => {
             {
                 fileName: 'style.css',
                 stringToUpdate: 'THEME_DESCRIPTION',
-                updateString: themeDescription,
+                updateString: description,
             },
         ];
 

@@ -1,4 +1,4 @@
-export default interface ScaffoldCopyFolders {
+export default interface InterfaceScaffoldCopyFolders {
     source: string;
     destination: string;
 }

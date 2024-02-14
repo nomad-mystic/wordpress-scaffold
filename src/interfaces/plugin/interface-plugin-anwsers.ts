@@ -1,4 +1,4 @@
-export default interface PluginAnswers {
+export default interface InterfacePluginAnswers {
     pluginName?: string;
     pluginDescription?: string;
     frontEndFramework?: string;
